@@ -120,9 +120,9 @@ const RegisterView = () => {
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.firstName && errors.firstName)}
+                  error={Boolean(touched.username && errors.username)}
                   fullWidth
-                  helperText={touched.firstName && errors.firstName}
+                  helperText={touched.username && errors.username}
                   label="Username"
                   margin="normal"
                   name="username"
