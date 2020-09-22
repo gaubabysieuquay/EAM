@@ -20,7 +20,7 @@ module.exports = {
       unit: {
         type: Sequelize.STRING
       },
-      origin: {
+      supplier: {
         type: Sequelize.STRING
       },
       purchaseCost: {
