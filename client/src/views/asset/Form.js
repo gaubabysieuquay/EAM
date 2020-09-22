@@ -1,32 +1,68 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { TextField, InputAdornment } from '@material-ui/core';
+import {
+  TextField,
+  InputAdornment,
+  DialogActions,
+  Button
+} from '@material-ui/core';
+import AssetService from 'src/services/asset';
 
 const Form = () => {
   const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Formik
       initialValues={{
-        email: '',
-        username: '',
-        password: ''
+        name:'',
+        barcode:'',
+        serial: '',
+        model:'',
+        supplier: '',
+        purchaseCost: '',
+        warranty: '',
+        note:'',
       }}
-      validationSchema={Yup.object().shape({
-        email: Yup.string()
-          .email('Must be a valid email')
-          .max(255)
-          .required('Email is required'),
-        username: Yup.string()
-          .max(255)
-          .required('Username is required'),
-        password: Yup.string()
-          .max(255)
-          .required('password is required')
+      validationSchema={Yup.object().shape({  
+        barcode: Yup.string()
+        .max(255)
+        .required('Barcode is required'),
+        serial: Yup.string()
+        .max(255)
+        .required('Serial is required'),
+        model: Yup.string()
+        .max(255)
+        .required('Model is required'),
+        supplier: Yup.string()
+        .max(255)
+        .required('Supplier is required'),
+        purchaseCost: Yup.string()
+        .max(255)
+        .required('Purchase Cost is required'),
       })}
-      onSubmit={() => {
+      onSubmit={values => {
         setOpen(true);
+        AssetService.add(
+          values.barcode,
+          values.name,
+          values.serial,
+          values.model,
+          values.supplier,
+          values.purchaseCost,
+          values.warranty,
+          values.note,
+          values.image
+        )
+          .then(response => {
+            console.log(response.data.message);
+          })
+          .catch(err => {
+            console.log(err)
+          });
       }}
     >
       {({
@@ -101,17 +137,13 @@ const Form = () => {
             error={Boolean(touched.purchaseDate && errors.purchaseDate)}
             fullWidth
             helperText={touched.purchaseDate && errors.purchaseDate}
-            label="Purchase Date"
+            label="Ngày mua"
             margin="normal"
             name="purchaseDate"
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">Month</InputAdornment>
-              )
-            }}
+            type="datetime-local"
             InputLabelProps={{
               shrink: true
             }}
@@ -120,7 +152,7 @@ const Form = () => {
             error={Boolean(touched.supplier && errors.supplier)}
             fullWidth
             helperText={touched.supplier && errors.supplier}
-            label="Supplier"
+            label="Nhà cung cấp"
             margin="normal"
             name="supplier"
             onBlur={handleBlur}
@@ -134,7 +166,7 @@ const Form = () => {
             error={Boolean(touched.purchaseCost && errors.purchaseCost)}
             fullWidth
             helperText={touched.purchaseCost && errors.purchaseCost}
-            label="Purchase Cost"
+            label="Giá mua"
             margin="normal"
             name="purchaseCost"
             onBlur={handleBlur}
@@ -142,6 +174,25 @@ const Form = () => {
             variant="outlined"
             InputProps={{
               endAdornment: <InputAdornment position="end">VND</InputAdornment>
+            }}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <TextField
+            error={Boolean(touched.warranty && errors.warranty)}
+            fullWidth
+            helperText={touched.warranty && errors.warranty}
+            label="Bảo hành"
+            margin="normal"
+            name="warranty"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">Month</InputAdornment>
+              )
             }}
             InputLabelProps={{
               shrink: true
@@ -157,10 +208,20 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            rows={4}
+            multiline
             InputLabelProps={{
               shrink: true
             }}
           />
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Hủy
+            </Button>
+            <Button type="submit" disabled={isSubmitting} color="primary">
+              Xác nhận
+            </Button>
+          </DialogActions>
         </form>
       )}
     </Formik>

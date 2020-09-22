@@ -10,14 +10,14 @@ import {
   InputAdornment,
   SvgIcon,
   Dialog,
+  DialogTitle,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
-import Form from "./Form";
+import Form from './Form';
 import add from 'src/services/asset';
 
 const useStyles = makeStyles(theme => ({
@@ -59,16 +59,8 @@ const Toolbar = ({ className, ...rest }) => {
             <DialogContentText>
               Vui lòng điền các thông tin sau!
             </DialogContentText>
-            <Form/>
+            <Form />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Hủy
-            </Button>
-            <Button onClick={handleClose} color="primary">
-              Xác nhận
-            </Button>
-          </DialogActions>
         </Dialog>
       </Box>
       <Box mt={3}>

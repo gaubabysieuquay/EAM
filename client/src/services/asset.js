@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const add = newAsset => {
+const add = newAsset => {
   return axios
-    .post('assets/add', {
+    .post('/assets/add', {
       barcode: newAsset.barcode,
       name: newAsset.name,
       serial: newAsset.serial,
@@ -15,13 +15,13 @@ export const add = newAsset => {
       image: newAsset.image
     })
     .then(res => {
-      console.log('Added');
+      return res.data;
     });
 };
 
-export const update = asset => {
+const update = asset => {
   return axios
-    .put('assets/update', {
+    .put('/assets/update', {
       barcode: asset.barcode,
       name: asset.name,
       serial: asset.serial,
@@ -40,3 +40,4 @@ export const update = asset => {
       console.log(err);
     });
 };
+export default { add, update };
