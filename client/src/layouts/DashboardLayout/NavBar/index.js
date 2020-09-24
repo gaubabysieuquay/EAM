@@ -46,7 +46,7 @@ const items = [
     title: 'Products'
   },
   {
-    href: '/app/asset',
+    href: '/app/assets',
     icon: ShoppingBagIcon,
     title: 'Quản lý cơ sở vật chất'
   },

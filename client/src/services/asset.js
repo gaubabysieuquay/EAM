@@ -1,43 +1,34 @@
-import axios from 'axios';
+import http from 'src/http-common';
 
-const add = newAsset => {
-  return axios
-    .post('/assets/add', {
-      barcode: newAsset.barcode,
-      name: newAsset.name,
-      serial: newAsset.serial,
-      model: newAsset.model,
-      unit: newAsset.unit,
-      supplier: newAsset.supplier,
-      purchaseCost: newAsset.purchaseCost,
-      warranty: newAsset.warranty,
-      note: newAsset.note,
-      image: newAsset.image
-    })
-    .then(res => {
-      return res.data;
-    });
+const getAll = () => {
+  return http.get('/assets');
 };
 
-const update = asset => {
-  return axios
-    .put('/assets/update', {
-      barcode: asset.barcode,
-      name: asset.name,
-      serial: asset.serial,
-      model: asset.model,
-      unit: asset.unit,
-      supplier: asset.supplier,
-      purchaseCost: asset.purchaseCost,
-      warranty: asset.warranty,
-      note: asset.note,
-      image: asset.image
-    })
-    .then(res => {
-      console.log('Updated');
-    })
-    .catch(err => {
-      console.log(err);
-    });
+const get = id => {
+  return http.get(`/assets/${id}`);
 };
-export default { add, update };
+
+const create = data => {
+  return http.post('/assets', data);
+};
+
+const update = (id, data) => {
+  return http.put(`/assets/${id}`, data);
+};
+
+const remove = id => {
+  return http.delete(`/assets/${id}`);
+};
+
+const removeAll = () => {
+  return http.delete(`/assets`);
+};
+
+export default {
+  getAll,
+  get,
+  create,
+  update,
+  remove,
+  removeAll
+};

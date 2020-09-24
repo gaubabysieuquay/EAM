@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
-  Avatar,
   Box,
-  Button,
   Card,
   Checkbox,
   IconButton,
@@ -21,7 +19,6 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import getInitials from 'src/utils/getInitials';
 
 const useStyles = makeStyles(theme => ({
   root: {},

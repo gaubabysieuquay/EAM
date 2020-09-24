@@ -11,6 +11,7 @@ import AssetService from 'src/services/asset';
 
 const Form = () => {
   const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   const handleClose = () => {
     setOpen(false);
@@ -18,50 +19,41 @@ const Form = () => {
   return (
     <Formik
       initialValues={{
-        name:'',
-        barcode:'',
+        name: '',
+        barcode: '',
         serial: '',
-        model:'',
+        model: '',
         supplier: '',
         purchaseCost: '',
         warranty: '',
-        note:'',
+        note: ''
       }}
-      validationSchema={Yup.object().shape({  
+      validationSchema={Yup.object().shape({
         barcode: Yup.string()
-        .max(255)
-        .required('Barcode is required'),
+          .max(255)
+          .required('Barcode is required'),
         serial: Yup.string()
-        .max(255)
-        .required('Serial is required'),
+          .max(255)
+          .required('Serial is required'),
         model: Yup.string()
-        .max(255)
-        .required('Model is required'),
+          .max(255)
+          .required('Model is required'),
         supplier: Yup.string()
-        .max(255)
-        .required('Supplier is required'),
+          .max(255)
+          .required('Supplier is required'),
         purchaseCost: Yup.string()
-        .max(255)
-        .required('Purchase Cost is required'),
+          .max(255)
+          .required('Purchase Cost is required')
       })}
       onSubmit={values => {
         setOpen(true);
-        AssetService.add(
-          values.barcode,
-          values.name,
-          values.serial,
-          values.model,
-          values.supplier,
-          values.purchaseCost,
-          values.warranty,
-          values.note,
-          values.image
-        )
+        AssetService.create(values)
           .then(response => {
-            console.log(response.data.message);
+            setMessage(response.data);
+            console.log(response.data);
           })
           .catch(err => {
-            console.log(err)
+            console.log(err);
           });
       }}
     >
@@ -115,6 +107,7 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            value={values.model}
             InputLabelProps={{
               shrink: true
             }}
@@ -129,6 +122,7 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            value={values.serial}
             InputLabelProps={{
               shrink: true
             }}
@@ -158,6 +152,7 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            value={values.supplier}
             InputLabelProps={{
               shrink: true
             }}
@@ -172,6 +167,7 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            value={values.purchaseCost}
             InputProps={{
               endAdornment: <InputAdornment position="end">VND</InputAdornment>
             }}
@@ -189,6 +185,7 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            value={values.warranty}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">Month</InputAdornment>
@@ -208,6 +205,7 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
+            values={values.note}
             rows={4}
             multiline
             InputLabelProps={{

@@ -14,10 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //require("./app/routes/user.js")(app);
 require("./routes/user")(app);
 require("./routes/auth")(app);
+require('./routes/asset')(app);
 
-let asset = require('./routes/asset');
 
-app.use("/assets", asset);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);

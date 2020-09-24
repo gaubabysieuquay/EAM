@@ -11,14 +11,12 @@ import {
   SvgIcon,
   Dialog,
   DialogTitle,
-  DialogActions,
   DialogContent,
   DialogContentText,
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import Form from './Form';
-import add from 'src/services/asset';
 
 const useStyles = makeStyles(theme => ({
   root: {},

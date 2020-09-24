@@ -8,6 +8,7 @@ import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
 import axios from 'axios';
+import AssetService from 'src/services/asset'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ const AssetListView = () => {
   const [asset, setAsset] = useState([]);
 
   const getAsset = () => {
-    axios.get("/assets/display").then((res) => setAsset(res.data));
+    AssetService.getAll().then((res) => setAsset(res.data));
   };
 
   useEffect(() => {
