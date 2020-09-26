@@ -8,7 +8,12 @@ const get = id => {
   return http.get(`/assets/${id}`);
 };
 
+const getAllByName = name => {
+  return http.get(`/assets?name=${name}`)
+};
+
 const create = data => {
+  console.log(data)
   return http.post('/assets', data);
 };
 
@@ -27,6 +32,7 @@ const removeAll = () => {
 export default {
   getAll,
   get,
+  getAllByName,
   create,
   update,
   remove,

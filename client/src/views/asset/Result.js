@@ -67,6 +67,7 @@ const Results = ({ className, assets, ...rest }) => {
 
   const handleLimitChange = event => {
     setLimit(event.target.value);
+    setPage(0);
   };
 
   const handlePageChange = (event, newPage) => {
@@ -110,6 +111,7 @@ const Results = ({ className, assets, ...rest }) => {
                 <TableCell>Danh mục</TableCell>
                 <TableCell>Người sở hữu</TableCell>
                 <TableCell>Địa điểm</TableCell>
+                <TableCell>Ngày mua</TableCell>
                 <TableCell>Giá mua</TableCell>
                 <TableCell>Xuất/Nhập</TableCell>
                 <TableCell>Ngày nhập</TableCell>
@@ -117,7 +119,7 @@ const Results = ({ className, assets, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {assets.slice(0, limit).map(asset => (
+              {assets.slice(page * limit, page * limit + limit).map(asset => (
                 <TableRow
                   hover
                   key={asset.id}
@@ -146,10 +148,13 @@ const Results = ({ className, assets, ...rest }) => {
                   <TableCell>{asset.image}</TableCell>
                   <TableCell>{asset.barcode}</TableCell>
                   <TableCell>{asset.serial}</TableCell>
-                  <TableCell>Model</TableCell>
+                  <TableCell>{asset.model}</TableCell>
                   <TableCell>Danh mục</TableCell>
-                  <TableCell>{asset.origin}</TableCell>
+                  <TableCell>{asset.supplier}</TableCell>
                   <TableCell>Địa điểm</TableCell>
+                  <TableCell>
+                    {moment(asset.purchaseDate).format('DD/MM/YYYY')}
+                  </TableCell>
                   <TableCell>{asset.purchaseCost}</TableCell>
                   <TableCell>Xuất/Nhập</TableCell>
                   <TableCell>

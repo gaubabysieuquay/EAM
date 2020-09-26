@@ -25,6 +25,7 @@ const Form = () => {
         serial: '',
         model: '',
         supplier: '',
+        purchaseDate:'',
         purchaseCost: '',
         warranty: '',
         note: ''
@@ -138,7 +139,8 @@ const Form = () => {
             onBlur={handleBlur}
             onChange={handleChange}
             variant="outlined"
-            type="datetime-local"
+            value={values.purchaseDate}
+            type="date"
             InputLabelProps={{
               shrink: true
             }}

@@ -17,11 +17,14 @@ module.exports = {
       serial: {
         type: Sequelize.STRING,
       },
-      unit: {
+      model: {
         type: Sequelize.STRING,
       },
       supplier: {
         type: Sequelize.STRING,
+      },
+      purchaseDate: {
+        type: Sequelize.DATE,
       },
       purchaseCost: {
         type: Sequelize.INTEGER,

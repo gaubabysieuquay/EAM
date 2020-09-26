@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import Form from './Form';
+import AssetService from 'src/services/asset'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className, search, handleKeypress, onChangeSearch, ...rest }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -39,6 +40,7 @@ const Toolbar = ({ className, ...rest }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box display="flex" justifyContent="flex-end">
@@ -77,7 +79,11 @@ const Toolbar = ({ className, ...rest }) => {
                   )
                 }}
                 placeholder="Search asset"
-                variant="outlined"
+                variant="outlined"         
+                type="search"
+                value={search}
+                onChange={onChangeSearch}
+                onKeyUp={handleKeypress}
               />
             </Box>
           </CardContent>

@@ -10,6 +10,8 @@ module.exports = (app) => {
 
   router.get("/:id", assets.findOne);
 
+  router.get("/name", assets.findAllByName);
+
   router.put("/:id", assets.update);
 
   router.delete("/:id", assets.delete);
