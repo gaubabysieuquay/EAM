@@ -17,29 +17,27 @@ const useStyles = makeStyles(theme => ({
 const AssetListView = () => {
   const classes = useStyles();
   const [asset, setAsset] = useState([]);
+  const [assetSearch, setAssetSearch] = useState([]);
   const [search, setSearch] = useState('');
 
   const getAssetAll = () => {
-    AssetService.getAll().then(res => setAsset(res.data));
-  };
-
-  const handleKeypress = e => {
-    //it triggers by pressing the enter key
-    if (e.keyCode === 13) {
-      AssetService.getAllByName(search)
-        .then(response => {
-          setAsset(response.data);
-          console.log(response.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+    AssetService.getAll().then(res => {
+      setAsset(res.data);
+      setAssetSearch(res.data);
+    });
   };
 
   const onChangeSearch = e => {
     const search = e.target.value;
     setSearch(search);
+    AssetService.getAllByName(search)
+      .then(response => {
+        setAsset(response.data);
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -49,11 +47,7 @@ const AssetListView = () => {
   return (
     <Page className={classes.root} title="Quản lý cơ sở vật chất">
       <Container maxWidth={false}>
-        <Toolbar
-          search={search}
-          onChangeSearch={onChangeSearch}
-          handleKeypress={handleKeypress}
-        />
+        <Toolbar search={search} onChangeSearch={onChangeSearch} />
         <Box mt={3}>
           <Results assets={asset} />
         </Box>

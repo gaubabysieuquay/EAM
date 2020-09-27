@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Toolbar = ({ className, search, handleKeypress, onChangeSearch, ...rest }) => {
+const Toolbar = ({ className, search, onChangeSearch, ...rest }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -83,7 +83,6 @@ const Toolbar = ({ className, search, handleKeypress, onChangeSearch, ...rest })
                 type="search"
                 value={search}
                 onChange={onChangeSearch}
-                onKeyUp={handleKeypress}
               />
             </Box>
           </CardContent>
