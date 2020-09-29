@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -11,14 +10,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TablePagination,
   TableRow,
-  Typography,
+  FormControlLabel,
+  Switch,
   makeStyles
 } from '@material-ui/core';
+
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import moment from 'moment';
+import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 
 function descendingComparator(a, b, orderBy) {
@@ -30,6 +31,7 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
+
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -47,25 +49,55 @@ function stableSort(array, comparator) {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {},
-  avatar: {
-    marginRight: theme.spacing(2)
+  root: {
+    width: '100%'
+  },
+  paper: {
+    width: '100%',
+    marginBottom: theme.spacing(2)
+  },
+  table: {
+    minWidth: 750
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1
   }
 }));
 
-const Results = ({ className, assets, ...rest }) => {
+const Results = ({
+  className,
+  assets,
+  deleteAllAsset,
+  deleteAsset,
+  ...rest
+}) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('barcode');
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
-  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleSelectAll = event => {
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = event => {
     let newSelected;
 
     if (event.target.checked) {
-      newSelected = assets.map(asset => asset.id);
+      newSelected = assets.map(asset => asset.name);
     } else {
       newSelected = [];
     }
@@ -73,12 +105,12 @@ const Results = ({ className, assets, ...rest }) => {
     setSelected(newSelected);
   };
 
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -93,125 +125,128 @@ const Results = ({ className, assets, ...rest }) => {
     setSelected(newSelected);
   };
 
-  const handleLimitChange = event => {
-    setLimit(event.target.value);
-    setPage(0);
-  };
-
-  const handlePageChange = (event, newPage) => {
+  const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const deleteIcon = (
-    <IconButton aria-label="delete">
-      <DeleteIcon />
-    </IconButton>
-  );
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-  const editIcon = (
-    <IconButton aria-label="edit">
-      <EditIcon />
-    </IconButton>
-  );
+  const handleChangeDense = event => {
+    setDense(event.target.checked);
+  };
+
+  const isSelected = name => selected.indexOf(name) !== -1;
+
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          deleteAllAsset={deleteAllAsset}
+        />
         <Box minWidth={1050}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selected.length === assets.length}
-                    color="primary"
-                    indeterminate={
-                      selected.length > 0 && selected.length < assets.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
-                <TableCell>Tên tài sản</TableCell>
-                <TableCell>Hình minh họa</TableCell>
-                <TableCell>Tag tài sản</TableCell>
-                <TableCell>Serial</TableCell>
-                <TableCell>Model</TableCell>
-                <TableCell>Danh mục</TableCell>
-                <TableCell>Người sở hữu</TableCell>
-                <TableCell>Địa điểm</TableCell>
-                <TableCell>Ngày mua</TableCell>
-                <TableCell>Giá mua</TableCell>
-                <TableCell>Xuất/Nhập</TableCell>
-                <TableCell>Ngày nhập</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
+          <Table
+            className={classes.table}
+            aria-labelledby="tableTitle"
+            size={dense ? 'small' : 'medium'}
+            aria-label="enhanced table"
+          >
+            <EnhancedTableHead
+              classes={classes}
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={assets.length}
+            />
             <TableBody>
-              {assets.slice(page * limit, page * limit + limit).map(asset => (
-                <TableRow
-                  hover
-                  key={asset.id}
-                  selected={selected.indexOf(asset.id) !== -1}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selected.indexOf(asset.id) !== -1}
-                      onChange={event => handleSelectOne(event, asset.id)}
-                      value="true"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Box alignItems="center" display="flex">
-                      {/*<Avatar
-                        className={classes.avatar}
-                        src={asset.avatarUrl}
+              {stableSort(assets, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((asset, index) => {
+                  const isItemSelected = isSelected(asset.name);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <TableRow
+                      hover
+                      onClick={event => handleClick(event, asset.name)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={asset.name}
+                      selected={isItemSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{ 'aria-labelledby': labelId }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
                       >
-                        {getInitials(asset.name)}
-                    </Avatar>*/}
-                      <Typography color="textPrimary" variant="body1">
                         {asset.name}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>{asset.image}</TableCell>
-                  <TableCell>{asset.barcode}</TableCell>
-                  <TableCell>{asset.serial}</TableCell>
-                  <TableCell>{asset.model}</TableCell>
-                  <TableCell>Danh mục</TableCell>
-                  <TableCell>{asset.supplier}</TableCell>
-                  <TableCell>Địa điểm</TableCell>
-                  <TableCell>
-                    {moment(asset.purchaseDate).format('DD/MM/YYYY')}
-                  </TableCell>
-                  <TableCell>{asset.purchaseCost}</TableCell>
-                  <TableCell>Xuất/Nhập</TableCell>
-                  <TableCell>
-                    {moment(asset.createdAt).format('DD/MM/YYYY')}
-                  </TableCell>
-                  <TableCell>
-                    {deleteIcon}
-                    {editIcon}
-                  </TableCell>
+                      </TableCell>
+                      <TableCell align="right">{asset.image}</TableCell>
+                      <TableCell align="right">{asset.barcode}</TableCell>
+                      <TableCell align="right">{asset.serial}</TableCell>
+                      <TableCell align="right">{asset.model}</TableCell>
+                      <TableCell align="right">Danh mục</TableCell>
+                      <TableCell align="right">{asset.supplier}</TableCell>
+                      <TableCell align="right">
+                        {moment(asset.purchaseDate).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell align="right">{asset.purchaseCost}</TableCell>
+                      <TableCell align="right">Xuất/Nhập</TableCell>
+                      <TableCell align="right">
+                        {moment(asset.createdAt).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => deleteAsset(asset.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableCell colSpan={6} />
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
       <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={assets.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleLimitChange}
+        rowsPerPage={rowsPerPage}
         page={page}
-        rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+      <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Dense padding"
       />
     </Card>
   );
 };
-
 Results.propTypes = {
   className: PropTypes.string,
   assets: PropTypes.array.isRequired

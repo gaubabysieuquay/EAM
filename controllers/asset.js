@@ -114,7 +114,7 @@ exports.delete = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Asset with id=" + id,
+         message: err.message || "Could not delete Asset with id=" + id,
       });
     });
 };

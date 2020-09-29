@@ -108,7 +108,7 @@ const LoginView = () => {
                   name="username"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="username"
+                  type="text"
                   value={values.username}
                   variant="outlined"
                 />

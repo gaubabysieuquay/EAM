@@ -31,9 +31,10 @@ const useToolbarStyles = makeStyles(theme => ({
     flex: '1 1 100%'
   }
 }));
+
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, deleteAllAsset } = props;
 
   return (
     <Toolbar
@@ -48,7 +49,7 @@ const EnhancedTableToolbar = props => {
           variant="subtitle1"
           component="div"
         >
-          Đã chọn {numSelected} tài sản
+          {numSelected} Tài sản đã chọn
         </Typography>
       ) : (
         <Typography
@@ -63,7 +64,7 @@ const EnhancedTableToolbar = props => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={deleteAllAsset}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

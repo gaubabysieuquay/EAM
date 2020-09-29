@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import Form from './Form';
-import AssetService from 'src/services/asset'
 
 const useStyles = makeStyles(theme => ({
   root: {},

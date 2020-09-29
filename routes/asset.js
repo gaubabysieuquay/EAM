@@ -16,7 +16,7 @@ module.exports = (app) => {
 
   router.delete("/:id", assets.delete);
 
-  router.delete("/:id", assets.deleteAll);
+  router.delete("/", assets.deleteAll);
 
   app.use("/assets", router);
 };
