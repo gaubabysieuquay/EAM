@@ -16,7 +16,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
-import Form from './Form';
+import FormAdd from './FormAdd';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -58,7 +58,7 @@ const Toolbar = ({ className, search, onChangeSearch, ...rest }) => {
             <DialogContentText>
               Vui lòng điền các thông tin sau!
             </DialogContentText>
-            <Form />
+            <FormAdd />
           </DialogContent>
         </Dialog>
       </Box>

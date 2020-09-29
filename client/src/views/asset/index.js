@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Results from './Result'
+import Results from './Result';
 import Toolbar from './Toolbar';
 import AssetService from 'src/services/asset';
 
@@ -15,65 +15,80 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AssetListView = () => {
-    const classes = useStyles();
-    const [asset, setAsset] = useState([]);
-    const [assetSearch, setAssetSearch] = useState([]);
-    const [search, setSearch] = useState('');
-  
-    const getAssetAll = () => {
-      AssetService.getAll().then(response => {
-        setAsset(response.data);
-        setAssetSearch(response.data);
-      });
-    };
-  
-    const onChangeSearch = e => {
-      const search = e.target.value;
-      setSearch(search);
-      AssetService.getAllByName(search)
-        .then(response => {
-          setAsset(response.data);
-          console.log(response.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    };
-  
-    const deleteAsset = id => {
-      AssetService.remove(id)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    };
-  
-    const deleteAllAsset = () => {
-      AssetService.removeAll()
-        .then(response => {
-          console.log(response);
-        })
-        .catch(err => {
-          console.log(err)
-        });
-    };
-  
-    useEffect(() => {
-      getAssetAll();
-    }, []);
-  
-    return (
-      <Page className={classes.root} title="Quản lý cơ sở vật chất">
-        <Container maxWidth={false}>
-          <Toolbar search={search} onChangeSearch={onChangeSearch} />
-          <Box mt={3}>
-            <Results assets={asset} deleteAsset={deleteAsset} deleteAllAsset={deleteAllAsset} />
-          </Box>
-        </Container>
-      </Page>
-    );
+  const classes = useStyles();
+  const [asset, setAsset] = useState([]);
+  const [assetSearch, setAssetSearch] = useState([]);
+  const [search, setSearch] = useState('');
+
+  const getAssetAll = () => {
+    AssetService.getAll().then(response => {
+      setAsset(response.data);
+      setAssetSearch(response.data);
+    });
   };
-  
-  export default AssetListView;
+
+  const onChangeSearch = e => {
+    const search = e.target.value;
+    setSearch(search);
+    AssetService.getAllByName(search)
+      .then(response => {
+        setAsset(response.data);
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const deleteAsset = id => {
+    AssetService.remove(id)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const deleteAllAsset = () => {
+    AssetService.removeAll()
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const updateAsset = id => {
+    AssetService.update(id, asset)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      });
+  };
+
+  useEffect(() => {
+    getAssetAll();
+  }, []);
+
+  return (
+    <Page className={classes.root} title="Quản lý cơ sở vật chất">
+      <Container maxWidth={false}>
+        <Toolbar search={search} onChangeSearch={onChangeSearch} />
+        <Box mt={3}>
+          <Results
+            assets={asset}
+            deleteAsset={deleteAsset}
+            deleteAllAsset={deleteAllAsset}
+            updateAsset={updateAsset}
+          />
+        </Box>
+      </Container>
+    </Page>
+  );
+};
+
+export default AssetListView;

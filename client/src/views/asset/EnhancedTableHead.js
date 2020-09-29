@@ -25,7 +25,8 @@ const headCells = [
   { id: 'purchaseDate', disablePadding: false, label: 'Ngày mua' },
   { id: 'purchaseCost', disablePadding: false, label: 'Giá mua' },
   { id: 'status', disablePadding: false, label: 'Xuất/Nhập' },
-  { id: 'createAt', disablePadding: false, label: 'Ngày nhập' }
+  { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
+  { id: '', disablePadding: false, label: 'Actions' }
 ];
 
 const EnhancedTableHead = (props) => {

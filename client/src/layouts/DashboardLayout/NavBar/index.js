@@ -25,7 +25,7 @@ import AuthService from 'src/services/auth';
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
+  jobTitle: 'Junior Developer',
   name: 'Katarina Smith'
 };
 

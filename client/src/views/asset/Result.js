@@ -16,8 +16,9 @@ import {
   Switch,
   makeStyles
 } from '@material-ui/core';
-
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
@@ -77,6 +78,7 @@ const Results = ({
   assets,
   deleteAllAsset,
   deleteAsset,
+  updateAsset,
   ...rest
 }) => {
   const classes = useStyles();
@@ -197,26 +199,36 @@ const Results = ({
                       >
                         {asset.name}
                       </TableCell>
-                      <TableCell align="right">{asset.image}</TableCell>
-                      <TableCell align="right">{asset.barcode}</TableCell>
-                      <TableCell align="right">{asset.serial}</TableCell>
-                      <TableCell align="right">{asset.model}</TableCell>
-                      <TableCell align="right">Danh mục</TableCell>
-                      <TableCell align="right">{asset.supplier}</TableCell>
-                      <TableCell align="right">
+                      <TableCell>{asset.image}</TableCell>
+                      <TableCell>{asset.barcode}</TableCell>
+                      <TableCell>{asset.serial}</TableCell>
+                      <TableCell>{asset.model}</TableCell>
+                      <TableCell>Danh mục</TableCell>
+                      <TableCell>{asset.supplier}</TableCell>
+                      <TableCell>Địa điểm</TableCell>
+                      <TableCell>
                         {moment(asset.purchaseDate).format('DD/MM/YYYY')}
                       </TableCell>
-                      <TableCell align="right">{asset.purchaseCost}</TableCell>
-                      <TableCell align="right">Xuất/Nhập</TableCell>
-                      <TableCell align="right">
+                      <TableCell>{asset.purchaseCost}</TableCell>
+                      <TableCell>Xuất/Nhập</TableCell>
+                      <TableCell>
                         {moment(asset.createdAt).format('DD/MM/YYYY')}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell>
                         <IconButton
                           aria-label="delete"
+                          size="small"
+                          style={{ color: red[500] }}
                           onClick={() => deleteAsset(asset.id)}
                         >
                           <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() => updateAsset(asset.id)}
+                        >
+                          <EditIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>

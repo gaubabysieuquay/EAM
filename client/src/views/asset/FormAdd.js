@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import AssetService from 'src/services/asset';
 
-const Form = () => {
+const FormAdd = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -229,4 +229,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormAdd;

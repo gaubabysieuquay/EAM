@@ -52,7 +52,7 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: '',
+              username: '',
               password: ''
             }}
             validationSchema={Yup.object().shape({
