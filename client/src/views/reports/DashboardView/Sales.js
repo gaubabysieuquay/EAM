@@ -23,7 +23,6 @@ const useStyles = makeStyles(() => ({
 const Sales = ({ className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
-
   const data = {
     datasets: [
       {

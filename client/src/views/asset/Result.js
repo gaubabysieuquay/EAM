@@ -6,6 +6,13 @@ import {
   Box,
   Card,
   Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  TextField,
   IconButton,
   Table,
   TableBody,
@@ -22,6 +29,7 @@ import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
+import Form from './Form';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -78,7 +86,6 @@ const Results = ({
   assets,
   deleteAllAsset,
   deleteAsset,
-  updateAsset,
   ...rest
 }) => {
   const classes = useStyles();
@@ -88,6 +95,15 @@ const Results = ({
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -99,7 +115,7 @@ const Results = ({
     let newSelected;
 
     if (event.target.checked) {
-      newSelected = assets.map(asset => asset.name);
+      newSelected = assets.map(asset => asset.id);
     } else {
       newSelected = [];
     }
@@ -172,17 +188,17 @@ const Results = ({
               {stableSort(assets, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((asset, index) => {
-                  const isItemSelected = isSelected(asset.name);
+                  const isItemSelected = isSelected(asset.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, asset.name)}
+                      onClick={event => handleClick(event, asset.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={asset.name}
+                      key={asset.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -226,10 +242,42 @@ const Results = ({
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={() => updateAsset(asset.id)}
+                          onClick={handleClickOpen}
                         >
                           <EditIcon />
                         </IconButton>
+                        <Dialog
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby="form-dialog-title"
+                        >
+                          <DialogTitle id="form-dialog-title">
+                            Subscribe
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              To subscribe to this website, please enter your
+                              email address here. We will send updates
+                              occasionally.
+                            </DialogContentText>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="name"
+                              label="Email Address"
+                              type="email"
+                              fullWidth
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                              Cancel
+                            </Button>
+                            <Button onClick={handleClose} color="primary">
+                              Subscribe
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
                       </TableCell>
                     </TableRow>
                   );

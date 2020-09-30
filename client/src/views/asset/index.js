@@ -14,17 +14,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AssetListView = () => {
+const AssetListView = (props) => {
   const classes = useStyles();
   const [asset, setAsset] = useState([]);
   const [assetSearch, setAssetSearch] = useState([]);
   const [search, setSearch] = useState('');
 
   const getAssetAll = () => {
-    AssetService.getAll().then(response => {
-      setAsset(response.data);
-      setAssetSearch(response.data);
-    });
+    AssetService.getAll()
+      .then(response => {
+        setAsset(response.data);
+        setAssetSearch(response.data);
+      })
+      .catch(err => console.log(err));
   };
 
   const onChangeSearch = e => {
@@ -43,6 +45,7 @@ const AssetListView = () => {
   const deleteAsset = id => {
     AssetService.remove(id)
       .then(response => {
+        getAssetAll();
         console.log(response.data);
       })
       .catch(err => {
@@ -53,20 +56,31 @@ const AssetListView = () => {
   const deleteAllAsset = () => {
     AssetService.removeAll()
       .then(response => {
+        getAssetAll();
         console.log(response);
       })
       .catch(err => {
         console.log(err);
       });
   };
+  
+  const addAsset = (values) => {
+    AssetService.create(values)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  };
 
   const updateAsset = id => {
     AssetService.update(id, asset)
       .then(response => {
-        console.log(response)
+        console.log(response);
       })
       .catch(err => {
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -83,7 +97,6 @@ const AssetListView = () => {
             assets={asset}
             deleteAsset={deleteAsset}
             deleteAllAsset={deleteAllAsset}
-            updateAsset={updateAsset}
           />
         </Box>
       </Container>

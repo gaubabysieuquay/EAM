@@ -47,7 +47,7 @@ const FormAdd = () => {
           .max(255)
           .required('Purchase Cost is required')
       })}
-      onSubmit={values => {
+      onSubmit={(values) => {
         setOpen(true);
         AssetService.create(values)
           .then(response => {

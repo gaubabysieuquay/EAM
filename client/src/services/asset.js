@@ -9,15 +9,16 @@ const get = id => {
 };
 
 const getAllByName = name => {
-  return http.get(`/assets?name=${name}`)
+  return http.get(`/assets?name=${name}`);
 };
 
 const create = data => {
-  console.log(data)
+  console.log(data);
   return http.post('/assets', data);
 };
 
 const update = (id, data) => {
+  console.log(data);
   return http.put(`/assets/${id}`, data);
 };
 
