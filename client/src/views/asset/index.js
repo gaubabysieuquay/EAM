@@ -67,6 +67,7 @@ const AssetListView = (props) => {
   const addAsset = (values) => {
     AssetService.create(values)
     .then(response => {
+      getAssetAll();
       console.log(response.data);
     })
     .catch(err => {
@@ -86,12 +87,12 @@ const AssetListView = (props) => {
 
   useEffect(() => {
     getAssetAll();
-  }, []);
+  }, []); 
 
   return (
     <Page className={classes.root} title="Quản lý cơ sở vật chất">
       <Container maxWidth={false}>
-        <Toolbar search={search} onChangeSearch={onChangeSearch} />
+        <Toolbar search={search} onChangeSearch={onChangeSearch} onAdd={addAsset} />
         <Box mt={3}>
           <Results
             assets={asset}

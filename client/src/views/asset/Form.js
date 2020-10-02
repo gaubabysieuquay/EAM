@@ -9,12 +9,24 @@ import {
 } from '@material-ui/core';
 import AssetService from 'src/services/asset';
 
-const FormAdd = () => {
+const Form = ({onAdd}) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSubmit = values => {
+    setOpen(true);
+    AssetService.create(values)
+      .then(response => {
+        setMessage(response.data);
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -25,7 +37,7 @@ const FormAdd = () => {
         serial: '',
         model: '',
         supplier: '',
-        purchaseDate:'',
+        purchaseDate: '',
         purchaseCost: '',
         warranty: '',
         note: ''
@@ -47,17 +59,7 @@ const FormAdd = () => {
           .max(255)
           .required('Purchase Cost is required')
       })}
-      onSubmit={(values) => {
-        setOpen(true);
-        AssetService.create(values)
-          .then(response => {
-            setMessage(response.data);
-            console.log(response.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }}
+      onSubmit={(values) => onAdd(values)}
     >
       {({
         errors,
@@ -229,4 +231,4 @@ const FormAdd = () => {
   );
 };
 
-export default FormAdd;
+export default Form;

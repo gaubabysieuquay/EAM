@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Toolbar = ({ className, search, onChangeSearch,  ...rest }) => {
+const Toolbar = ({ className, search, onChangeSearch, onAdd,  ...rest }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -58,7 +58,7 @@ const Toolbar = ({ className, search, onChangeSearch,  ...rest }) => {
             <DialogContentText>
               Vui lòng điền các thông tin sau!
             </DialogContentText>
-            <Form onClose={handleClose}/>
+            <Form onAdd={onAdd}/>
           </DialogContent>
         </Dialog>
       </Box>
