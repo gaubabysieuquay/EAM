@@ -7,9 +7,15 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import AssetService from 'src/services/asset';
 
-const Form = ({onAdd}) => {
+const Form = ({ onAdd, onUpdate }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -17,21 +23,10 @@ const Form = ({onAdd}) => {
     setOpen(false);
   };
 
-  const handleSubmit = values => {
-    setOpen(true);
-    AssetService.create(values)
-      .then(response => {
-        setMessage(response.data);
-        console.log(response.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   return (
     <Formik
       initialValues={{
+        id: '',
         name: '',
         barcode: '',
         serial: '',
@@ -59,7 +54,9 @@ const Form = ({onAdd}) => {
           .max(255)
           .required('Purchase Cost is required')
       })}
-      onSubmit={(values) => onAdd(values)}
+      onSubmit={values => {
+        onAdd(values);
+      }}
     >
       {({
         errors,
@@ -131,7 +128,25 @@ const Form = ({onAdd}) => {
               shrink: true
             }}
           />
-          <TextField
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              error={Boolean(touched.purchaseDate && errors.purchaseDate)}
+              fullWidth
+              helperText={touched.purchaseDate && errors.purchaseDate}
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Date picker inline"
+              value={values.purchaseDate}
+              onChange={handleChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          {/**<TextField
             error={Boolean(touched.purchaseDate && errors.purchaseDate)}
             fullWidth
             helperText={touched.purchaseDate && errors.purchaseDate}
@@ -146,7 +161,7 @@ const Form = ({onAdd}) => {
             InputLabelProps={{
               shrink: true
             }}
-          />
+          />**/}
           <TextField
             error={Boolean(touched.supplier && errors.supplier)}
             fullWidth

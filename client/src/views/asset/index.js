@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AssetListView = (props) => {
+const AssetListView = props => {
   const classes = useStyles();
   const [asset, setAsset] = useState([]);
   const [assetSearch, setAssetSearch] = useState([]);
@@ -27,6 +27,17 @@ const AssetListView = (props) => {
         setAssetSearch(response.data);
       })
       .catch(err => console.log(err));
+  };
+
+  const getAsset = id => {
+    AssetService.get(id)
+      .then(response => {
+        setAsset(response.data);
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const onChangeSearch = e => {
@@ -63,20 +74,20 @@ const AssetListView = (props) => {
         console.log(err);
       });
   };
-  
-  const addAsset = (values) => {
+
+  const addAsset = values => {
     AssetService.create(values)
-    .then(response => {
-      getAssetAll();
-      console.log(response.data);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(response => {
+        getAssetAll();
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
-  const updateAsset = id => {
-    AssetService.update(id, asset)
+  const updateAsset = (id, data) => {
+    AssetService.update(id, data)
       .then(response => {
         console.log(response);
       })
@@ -87,17 +98,22 @@ const AssetListView = (props) => {
 
   useEffect(() => {
     getAssetAll();
-  }, []); 
+  }, []);
 
   return (
     <Page className={classes.root} title="Quản lý cơ sở vật chất">
       <Container maxWidth={false}>
-        <Toolbar search={search} onChangeSearch={onChangeSearch} onAdd={addAsset} />
+        <Toolbar
+          search={search}
+          onChangeSearch={onChangeSearch}
+          onAdd={addAsset}
+        />
         <Box mt={3}>
           <Results
             assets={asset}
             deleteAsset={deleteAsset}
             deleteAllAsset={deleteAllAsset}
+            onUpdate={updateAsset}
           />
         </Box>
       </Container>

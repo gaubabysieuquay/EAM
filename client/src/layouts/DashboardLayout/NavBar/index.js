@@ -51,6 +51,11 @@ const items = [
     title: 'Quản lý cơ sở vật chất'
   },
   {
+    href: '/app/test',
+    icon: UserIcon,
+    title: 'Test'
+  },
+  {
     href: '/app/account',
     icon: UserIcon,
     title: 'Account'

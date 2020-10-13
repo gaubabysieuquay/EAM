@@ -29,7 +29,9 @@ import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
-import Form from './Form';
+import { useParams } from 'react-router-dom';
+import FormEdit from './FormEdit';
+import AssetService from 'src/services/asset';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -86,6 +88,7 @@ const Results = ({
   assets,
   deleteAllAsset,
   deleteAsset,
+  onUpdate,
   ...rest
 }) => {
   const classes = useStyles();
@@ -96,9 +99,22 @@ const Results = ({
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
+  const [assetid, setAsset] = useState([]);
 
-  const handleClickOpen = () => {
+  const getAsset = id => {
+    AssetService.get(id)
+      .then(response => {
+        setAsset(response.data);
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const handleClickOpen = id => {
     setOpen(true);
+    getAsset(id);
   };
 
   const handleClose = () => {
@@ -242,7 +258,7 @@ const Results = ({
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={handleClickOpen}
+                          onClick={() => handleClickOpen(asset.id)}
                         >
                           <EditIcon />
                         </IconButton>
@@ -252,31 +268,14 @@ const Results = ({
                           aria-labelledby="form-dialog-title"
                         >
                           <DialogTitle id="form-dialog-title">
-                            Subscribe
+                            Chỉnh sửa tài sản
                           </DialogTitle>
                           <DialogContent>
                             <DialogContentText>
-                              To subscribe to this website, please enter your
-                              email address here. We will send updates
-                              occasionally.
+                              Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              id="name"
-                              label="Email Address"
-                              type="email"
-                              fullWidth
-                            />
+                            <FormEdit getAsset={assetid}/>
                           </DialogContent>
-                          <DialogActions>
-                            <Button onClick={handleClose} color="primary">
-                              Cancel
-                            </Button>
-                            <Button onClick={handleClose} color="primary">
-                              Subscribe
-                            </Button>
-                          </DialogActions>
                         </Dialog>
                       </TableCell>
                     </TableRow>
