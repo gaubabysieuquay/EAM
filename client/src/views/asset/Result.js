@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -99,12 +99,12 @@ const Results = ({
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
-  const [assetid, setAsset] = useState([]);
+  const [assetId, setAssetId] = useState({});
 
   const getAsset = id => {
     AssetService.get(id)
       .then(response => {
-        setAsset(response.data);
+        setAssetId(response.data);
         console.log(response.data);
       })
       .catch(err => {
@@ -112,9 +112,13 @@ const Results = ({
       });
   };
 
+  useEffect(() => {
+    getAsset();
+  }, []);
+
   const handleClickOpen = id => {
     setOpen(true);
-    getAsset(id);
+    setAssetId(id);
   };
 
   const handleClose = () => {
@@ -274,7 +278,7 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <FormEdit getAsset={assetid}/>
+                            <FormEdit id={assetId} />
                           </DialogContent>
                         </Dialog>
                       </TableCell>
