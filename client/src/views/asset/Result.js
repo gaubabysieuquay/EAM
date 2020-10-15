@@ -99,7 +99,7 @@ const Results = ({
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
-  const [assetId, setAssetId] = useState({});
+  const [assetId, setAssetId] = useState();
 
   const getAsset = id => {
     AssetService.get(id)

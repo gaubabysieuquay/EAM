@@ -26,6 +26,16 @@ const FormEdit = ({ id }) => {
   const [asset, setAsset] = useState([]);
   const { control, handleSubmit, watch, errors, register } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      name: '',
+      barcode: '',
+      model: '',
+      supplier: '',
+      purchaseDate: '',
+      purchaseCost: '',
+      warranty: '',
+      note: ''
+    }
   });
 
   const handleClose = () => {
@@ -44,26 +54,28 @@ const FormEdit = ({ id }) => {
   };
 
   useEffect(() => {
-    getAsset();
-  }, []);
-
-  console.log(asset.name);
+    getAsset(id);
+  }, [id]);
 
   return (
-    <form onSubmit={handleSubmit(getAsset)}>
+    <form onSubmit={handleSubmit()}>
       <Controller
-        as={TextField}
         control={control}
         error={Boolean(errors.name)}
-        fullWidth
         helperText={errors.name?.message}
-        label="Tên tài sản"
-        margin="normal"
         name="name"
-        variant="outlined"
-        InputLabelProps={{
-          shrink: true
-        }}
+        render={() => (
+          <TextField
+            fullWidth
+            value={asset.name}
+            variant="outlined"
+            label="Tên tài sản"
+            margin="normal"
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        )}
       />
       <Controller
         as={TextField}
