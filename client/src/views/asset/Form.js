@@ -134,7 +134,7 @@ const Form = ({ onAdd, onUpdate }) => {
               error={Boolean(touched.purchaseDate && errors.purchaseDate)}
               fullWidth
               helperText={touched.purchaseDate && errors.purchaseDate}
-              variant="inline"
+              variant="outlined"
               format="dd/MM/yyyy"
               margin="normal"
               id="date-picker-inline"

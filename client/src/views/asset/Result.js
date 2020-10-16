@@ -29,7 +29,6 @@ import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
-import { useParams } from 'react-router-dom';
 import FormEdit from './FormEdit';
 import AssetService from 'src/services/asset';
 

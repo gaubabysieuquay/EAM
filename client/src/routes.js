@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
@@ -10,8 +10,7 @@ import ProductListView from 'src/views/product/ProductListView';
 import SettingsView from 'src/views/settings/SettingsView';
 import AssetView from 'src/views/asset';
 import Login from 'src/views/auth/Login';
-import Register from "src/views/auth/Register";
-
+import Register from 'src/views/auth/Register';
 
 const routes = [
   {
@@ -35,7 +34,7 @@ const routes = [
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/app/dashboard" /> },
+      { path: '/', element: <Login /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   }
