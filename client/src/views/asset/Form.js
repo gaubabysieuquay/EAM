@@ -9,11 +9,10 @@ import {
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker
 } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import AssetService from 'src/services/asset';
+import MomentUtils from '@date-io/moment';
 
 const Form = ({ onAdd, onUpdate }) => {
   const [open, setOpen] = useState(false);
@@ -32,7 +31,7 @@ const Form = ({ onAdd, onUpdate }) => {
         serial: '',
         model: '',
         supplier: '',
-        purchaseDate: '',
+        purchaseDate: null,
         purchaseCost: '',
         warranty: '',
         note: ''
@@ -65,7 +64,8 @@ const Form = ({ onAdd, onUpdate }) => {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
+        setFieldValue
       }) => (
         <form onSubmit={handleSubmit}>
           <TextField
@@ -128,21 +128,26 @@ const Form = ({ onAdd, onUpdate }) => {
               shrink: true
             }}
           />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
             <KeyboardDatePicker
               disableToolbar
               error={Boolean(touched.purchaseDate && errors.purchaseDate)}
               fullWidth
               helperText={touched.purchaseDate && errors.purchaseDate}
-              variant="outlined"
-              format="dd/MM/yyyy"
+              name="purchaseDate"
+              inputVariant="outlined"
+              variant="inline"
+              format="DD/MM/yyyy"
               margin="normal"
               id="date-picker-inline"
-              label="Date picker inline"
+              label="Ngày mua"
               value={values.purchaseDate}
-              onChange={handleChange}
+              onChange={e => setFieldValue('purchaseDate', e)}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
+              }}
+              InputLabelProps={{
+                shrink: true
               }}
             />
           </MuiPickersUtilsProvider>

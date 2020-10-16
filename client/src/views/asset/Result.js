@@ -100,11 +100,11 @@ const Results = ({
   const [open, setOpen] = useState(false);
   const [assetId, setAssetId] = useState();
 
+  /** 
   const getAsset = id => {
     AssetService.get(id)
       .then(response => {
         setAssetId(response.data);
-        console.log(response.data);
       })
       .catch(err => {
         console.log(err);
@@ -114,6 +114,7 @@ const Results = ({
   useEffect(() => {
     getAsset();
   }, []);
+  */
 
   const handleClickOpen = id => {
     setOpen(true);
