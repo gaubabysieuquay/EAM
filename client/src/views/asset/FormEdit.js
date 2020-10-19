@@ -9,6 +9,11 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 import AssetService from 'src/services/asset';
 
 const schema = Yup.object().shape({
@@ -30,12 +35,12 @@ const FormEdit = ({ id }) => {
     model: '',
     serial: '',
     supplier: '',
-    purchaseDate: '',
+    purchaseDate: null,
     purchaseCost: '',
     warranty: '',
     note: ''
   });
-  const { control, handleSubmit, errors } = useForm({
+  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
@@ -70,7 +75,7 @@ const FormEdit = ({ id }) => {
   }, [id]);
 
   return (
-    <form onSubmit={handleSubmit()}>
+    <form onSubmit={handleSubmit()} onReset={reset}>
       <Controller
         control={control}
         error={Boolean(errors.name)}
@@ -144,19 +149,31 @@ const FormEdit = ({ id }) => {
         )}
       />
       <Controller
-        as={TextField}
         control={control}
         error={Boolean(errors.purchaseDate)}
-        fullWidth
         helperText={errors.purchaseDate?.message}
-        label="Ngày mua"
-        margin="normal"
         name="purchaseDate"
-        variant="outlined"
-        type="date"
-        InputLabelProps={{
-          shrink: true
-        }}
+        render={() => (
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              inputVariant="outlined"
+              variant="inline"
+              format="DD/MM/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Ngày mua"
+              value={asset.purchaseDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        )}
       />
       <Controller
         control={control}

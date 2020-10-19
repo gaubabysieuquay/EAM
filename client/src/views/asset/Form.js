@@ -151,22 +151,6 @@ const Form = ({ onAdd, onUpdate }) => {
               }}
             />
           </MuiPickersUtilsProvider>
-          {/**<TextField
-            error={Boolean(touched.purchaseDate && errors.purchaseDate)}
-            fullWidth
-            helperText={touched.purchaseDate && errors.purchaseDate}
-            label="Ngày mua"
-            margin="normal"
-            name="purchaseDate"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            variant="outlined"
-            value={values.purchaseDate}
-            type="date"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />**/}
           <TextField
             error={Boolean(touched.supplier && errors.supplier)}
             fullWidth
