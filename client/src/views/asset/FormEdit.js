@@ -26,9 +26,7 @@ const schema = Yup.object().shape({
 });
 
 const FormEdit = ({ id }) => {
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [asset, setAsset] = useState({
+  const initialFormState = {
     id: '',
     name: '',
     barcode: '',
@@ -39,24 +37,34 @@ const FormEdit = ({ id }) => {
     purchaseCost: '',
     warranty: '',
     note: ''
-  });
-  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      name: '',
-      barcode: '',
-      model: '',
-      serial: '',
-      supplier: '',
-      purchaseDate: '',
-      purchaseCost: '',
-      warranty: '',
-      note: ''
+  };
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [asset, setAsset] = useState(initialFormState);
+  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm(
+    {
+      resolver: yupResolver(schema),
+      defaultValues: {
+        name: '',
+        barcode: '',
+        model: '',
+        serial: '',
+        supplier: '',
+        purchaseDate: '',
+        purchaseCost: '',
+        warranty: '',
+        note: ''
+      }
     }
-  });
+  );
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+    setAsset({...asset, [name]: value});
   };
 
   const getAsset = id => {
@@ -85,6 +93,7 @@ const FormEdit = ({ id }) => {
           <TextField
             fullWidth
             value={asset.name}
+            onChange={handleChange}
             label="Tên tài sản"
             margin="normal"
             variant="outlined"
