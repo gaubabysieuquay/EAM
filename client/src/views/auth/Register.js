@@ -46,7 +46,7 @@ const RegisterView = () => {
   const [message, setMessage] = useState('');
   const [successful, setSuccessful] = useState(false);
   const [open, setOpen] = useState(false);
-  const { control, handleSubmit, watch, errors } = useForm({
+  const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   });
 

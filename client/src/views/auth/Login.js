@@ -39,7 +39,7 @@ const schema = Yup.object().shape({
 const Login = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { control, handleSubmit, watch, errors } = useForm({
+  const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   });
 

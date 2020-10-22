@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -10,9 +10,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Button,
-  TextField,
   IconButton,
   Table,
   TableBody,
@@ -29,8 +26,7 @@ import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
-import FormEdit from './FormEdit';
-import AssetService from 'src/services/asset';
+import Form from './Form';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -99,22 +95,6 @@ const Results = ({
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [assetId, setAssetId] = useState();
-
-  /** 
-  const getAsset = id => {
-    AssetService.get(id)
-      .then(response => {
-        setAssetId(response.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getAsset();
-  }, []);
-  */
 
   const handleClickOpen = id => {
     setOpen(true);
@@ -278,7 +258,7 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <FormEdit id={assetId} />
+                            <Form id={assetId} />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

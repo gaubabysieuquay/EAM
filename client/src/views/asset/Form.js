@@ -14,7 +14,7 @@ import {
 import AssetService from 'src/services/asset';
 import MomentUtils from '@date-io/moment';
 
-const Form = ({ onAdd, onUpdate }) => {
+const Form = ({ onAdd, id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 

@@ -29,17 +29,6 @@ const AssetListView = props => {
       .catch(err => console.log(err));
   };
 
-  const getAsset = id => {
-    AssetService.get(id)
-      .then(response => {
-        setAsset(response.data);
-        console.log(response.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   const onChangeSearch = e => {
     const search = e.target.value;
     setSearch(search);

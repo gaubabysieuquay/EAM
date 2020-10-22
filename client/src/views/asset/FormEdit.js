@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -17,12 +16,21 @@ import MomentUtils from '@date-io/moment';
 import AssetService from 'src/services/asset';
 
 const schema = Yup.object().shape({
-  username: Yup.string()
+  barcode: Yup.string()
     .max(255)
-    .required('Username is required'),
-  password: Yup.string()
+    .required('Barcode is required'),
+  serial: Yup.string()
     .max(255)
-    .required('Password is required')
+    .required('Serial is required'),
+  model: Yup.string()
+    .max(255)
+    .required('Model is required'),
+  supplier: Yup.string()
+    .max(255)
+    .required('Supplier is required'),
+  purchaseCost: Yup.string()
+    .max(255)
+    .required('Purchase Cost is required')
 });
 
 const FormEdit = ({ id }) => {
@@ -41,22 +49,10 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
-  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm(
-    {
-      resolver: yupResolver(schema),
-      defaultValues: {
-        name: '',
-        barcode: '',
-        model: '',
-        serial: '',
-        supplier: '',
-        purchaseDate: '',
-        purchaseCost: '',
-        warranty: '',
-        note: ''
-      }
-    }
-  );
+  const { control, handleSubmit, errors, reset } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: initialFormState
+  });
 
   const handleClose = () => {
     setOpen(false);
@@ -64,10 +60,16 @@ const FormEdit = ({ id }) => {
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setAsset({...asset, [name]: value});
+    setAsset({ ...asset, [name]: value });
+    console.log('name: ' + name, 'value: ' + value);
   };
 
-  const getAsset = id => {
+  const handleChangeDate = date => {
+    setAsset({ ...asset, purchaseDate: date });
+    console.log(date);
+  };
+
+  useEffect(() => {
     AssetService.get(id)
       .then(response => {
         setAsset(response.data);
@@ -76,11 +78,7 @@ const FormEdit = ({ id }) => {
       .catch(err => {
         console.log(err);
       });
-  };
-
-  useEffect(() => {
-    getAsset(id);
-  }, [id]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit()} onReset={reset}>
@@ -92,6 +90,7 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="name"
             value={asset.name}
             onChange={handleChange}
             label="Tên tài sản"
@@ -111,7 +110,9 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="barcode"
             value={asset.barcode}
+            onChange={handleChange}
             label="Barcode"
             margin="normal"
             variant="outlined"
@@ -129,9 +130,11 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="model"
             label="Model"
             margin="normal"
             value={asset.model}
+            onChange={handleChange}
             variant="outlined"
             InputLabelProps={{
               shrink: true
@@ -147,9 +150,11 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="serial"
             label="Serial"
             margin="normal"
             value={asset.serial}
+            onChange={handleChange}
             variant="outlined"
             InputLabelProps={{
               shrink: true
@@ -162,7 +167,7 @@ const FormEdit = ({ id }) => {
         error={Boolean(errors.purchaseDate)}
         helperText={errors.purchaseDate?.message}
         name="purchaseDate"
-        render={() => (
+        render={props => (
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <KeyboardDatePicker
               disableToolbar
@@ -173,6 +178,7 @@ const FormEdit = ({ id }) => {
               margin="normal"
               id="date-picker-inline"
               label="Ngày mua"
+              onChange={handleChangeDate}
               value={asset.purchaseDate}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
@@ -192,9 +198,11 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="supplier"
             label="Nhà cung cấp"
             margin="normal"
             value={asset.supplier}
+            onChange={handleChange}
             variant="outlined"
             InputLabelProps={{
               shrink: true
@@ -210,9 +218,11 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="purchaseCost"
             label="Giá mua"
             margin="normal"
             value={asset.purchaseCost}
+            onChange={handleChange}
             variant="outlined"
             InputProps={{
               endAdornment: <InputAdornment position="end">VND</InputAdornment>
@@ -231,9 +241,11 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="warranty"
             label="Bảo hành"
             margin="normal"
             value={asset.warranty}
+            onChange={handleChange}
             variant="outlined"
             InputProps={{
               endAdornment: (
@@ -254,9 +266,11 @@ const FormEdit = ({ id }) => {
         render={() => (
           <TextField
             fullWidth
+            name="note"
             label="Ghi chú"
             margin="normal"
             value={asset.note}
+            onChange={handleChange}
             variant="outlined"
             rows={4}
             multiline
