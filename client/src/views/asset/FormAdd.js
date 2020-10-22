@@ -49,7 +49,7 @@ const FormAdd = ({ onAdd }) => {
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const { control, handleSubmit, errors, reset, register } = useForm({
+  const { control, handleSubmit, errors, reset, register, setValue, getValues } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -59,8 +59,13 @@ const FormAdd = ({ onAdd }) => {
   };
 
   const onSubmit = value => {
-    console.log(value);
+    onAdd(value);
   };
+
+  const onChange = value => {
+    setValue('purchaseDate', value);
+    console.log(value);
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
@@ -131,6 +136,7 @@ const FormAdd = ({ onAdd }) => {
             <KeyboardDatePicker
               disableToolbar
               fullWidth
+              name="purchaseDate"
               inputVariant="outlined"
               variant="inline"
               format="DD/MM/yyyy"
@@ -143,6 +149,8 @@ const FormAdd = ({ onAdd }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              value={getValues('purchaseDate')}
+              onChange={onChange}
             />
           </MuiPickersUtilsProvider>
         )}
@@ -202,7 +210,6 @@ const FormAdd = ({ onAdd }) => {
         helperText={errors.note?.message}
         name="note"
         fullWidth
-        name="note"
         label="Ghi chú"
         margin="normal"
         variant="outlined"

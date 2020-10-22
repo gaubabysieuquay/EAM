@@ -46,6 +46,7 @@ const FormEdit = ({ id }) => {
     warranty: '',
     note: ''
   };
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
@@ -78,7 +79,7 @@ const FormEdit = ({ id }) => {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   return (
     <form onSubmit={handleSubmit()} onReset={reset}>
