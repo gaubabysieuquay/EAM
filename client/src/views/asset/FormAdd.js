@@ -49,7 +49,15 @@ const FormAdd = ({ onAdd }) => {
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const { control, handleSubmit, errors, reset, register, setValue, getValues } = useForm({
+  const {
+    control,
+    handleSubmit,
+    errors,
+    reset,
+    register,
+    setValue,
+    getValues
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -65,7 +73,7 @@ const FormAdd = ({ onAdd }) => {
   const onChange = value => {
     setValue('purchaseDate', value);
     console.log(value);
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>

@@ -35,7 +35,6 @@ const schema = Yup.object().shape({
 
 const FormEdit = ({ id }) => {
   const initialFormState = {
-    id: '',
     name: '',
     barcode: '',
     model: '',
@@ -50,7 +49,7 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
-  const { control, handleSubmit, errors, reset } = useForm({
+  const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -70,6 +69,20 @@ const FormEdit = ({ id }) => {
     console.log(date);
   };
 
+  const updateAsset = () => {
+    AssetService.update(id, asset)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const onSubmit = value => {
+    console.log(value);
+  };
+
   useEffect(() => {
     AssetService.get(id)
       .then(response => {
@@ -82,7 +95,7 @@ const FormEdit = ({ id }) => {
   }, [id]);
 
   return (
-    <form onSubmit={handleSubmit()} onReset={reset}>
+    <form onReset={reset}>
       <Controller
         control={control}
         error={Boolean(errors.name)}
@@ -281,9 +294,11 @@ const FormEdit = ({ id }) => {
           />
         )}
       />
-      <Button type="submit" color="primary">
-        Xác nhận
-      </Button>
+      <DialogActions>
+        <Button type="submit" color="primary" onClick={() => updateAsset()}>
+          Xác nhận
+        </Button>
+      </DialogActions>
     </form>
   );
 };
