@@ -53,7 +53,7 @@ const items = [
   {
     href: '/app/test',
     icon: UserIcon,
-    title: 'Test'
+    title: 'Nhà cung cấp'
   },
   {
     href: '/app/account',
