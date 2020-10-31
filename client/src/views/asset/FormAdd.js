@@ -12,6 +12,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import AssetService from 'src/services/asset';
 
@@ -33,6 +34,15 @@ const schema = Yup.object().shape({
     .required('Purchase Cost is required')
 });
 
+const status = [
+  { name: 'Sẵn sàng sử dụng', type: 1 },
+  { name: 'Chờ duyệt', type: 2 },
+  { name: 'Đang sửa chữa', type: 3 },
+  { name: 'Thất lạc', type: 3 },
+  { name: 'Không thể sửa chữa', type: 3 },
+  { name: 'Lưu trữ', type: 4 }
+];
+
 const FormAdd = ({ onAdd }) => {
   const initialFormState = {
     id: '',
@@ -43,6 +53,7 @@ const FormAdd = ({ onAdd }) => {
     supplier: '',
     purchaseDate: null,
     purchaseCost: '',
+    status: { name: 'Sẵn sàng sử dụng', type: 1 },
     warranty: '',
     note: ''
   };
@@ -193,6 +204,22 @@ const FormAdd = ({ onAdd }) => {
         InputLabelProps={{
           shrink: true
         }}
+      />
+      <Controller
+        as={
+          <Autocomplete
+            id="combo-box"
+            options={status}
+            getOptionSelected={(option, value) => option.name}
+            getOptionLabel={option => option.title}
+            fullWidth
+            renderInput={params => (
+              <TextField {...params} label="Tình trạng" variant="outlined" />
+            )}
+          />
+        }
+        name="status"
+        control={control}
       />
       <Controller
         control={control}

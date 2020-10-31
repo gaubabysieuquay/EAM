@@ -29,6 +29,9 @@ module.exports = {
       purchaseCost: {
         type: Sequelize.INTEGER,
       },
+      status: {
+        type: Sequelize.INTEGER,
+      },
       warranty: {
         type: Sequelize.INTEGER,
       },

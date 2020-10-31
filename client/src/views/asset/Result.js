@@ -20,6 +20,7 @@ import {
   Switch,
   makeStyles
 } from '@material-ui/core';
+import Alert from "@material-ui/lab/Alert";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { red } from '@material-ui/core/colors';
@@ -161,6 +162,21 @@ const Results = ({
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage);
 
+  const statusInfo = value => {
+    switch (value) {
+      case 1:
+        return <Alert severity="success">Sẵn sàng</Alert>;
+      case 2:
+        return <Alert severity="warning">Chờ duyệt</Alert>;
+      case 3:
+        return <Alert severity="error">Không sẵn sàng</Alert>;
+      case 4:
+        return <Alert severity="info">Lưu trữ</Alert>;
+      default:
+        break;
+    }
+  };
+
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
@@ -226,7 +242,7 @@ const Results = ({
                         {moment(asset.purchaseDate).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell>{asset.purchaseCost}</TableCell>
-                      <TableCell>Xuất/Nhập</TableCell>
+                      <TableCell>{statusInfo(asset.status)}</TableCell>
                       <TableCell>
                         {moment(asset.createdAt).format('DD/MM/YYYY')}
                       </TableCell>

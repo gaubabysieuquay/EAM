@@ -133,8 +133,7 @@ const Login = () => {
                   onClose={handleClose}
                 >
                   <Alert
-                    elevation={6}
-                    variant="filled"
+                    elevation={6}                 
                     onClose={handleClose}
                     severity="error"
                   >
