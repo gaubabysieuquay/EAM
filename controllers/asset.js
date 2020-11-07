@@ -16,6 +16,7 @@ exports.create = (req, res) => {
     warranty: req.body.warranty,
     note: req.body.note,
     image: req.body.image,
+    status: req.body.status,
     createdAt: today,
   };
 

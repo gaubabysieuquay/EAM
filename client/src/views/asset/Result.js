@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
   Card,
@@ -12,6 +11,7 @@ import {
   DialogContentText,
   IconButton,
   Table,
+  TableContainer,
   TableBody,
   TableCell,
   TablePagination,
@@ -20,7 +20,7 @@ import {
   Switch,
   makeStyles
 } from '@material-ui/core';
-import Alert from "@material-ui/lab/Alert";
+import Alert from '@material-ui/lab/Alert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { red } from '@material-ui/core/colors';
@@ -173,17 +173,17 @@ const Results = ({
       case 4:
         return <Alert severity="info">Lưu trữ</Alert>;
       default:
-        break;
+        return <Alert severity="info">Chưa cập nhật</Alert>;
     }
   };
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <PerfectScrollbar>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          deleteAllAsset={deleteAllAsset}
-        />
+      <EnhancedTableToolbar
+        numSelected={selected.length}
+        deleteAllAsset={deleteAllAsset}
+      />
+      <TableContainer>
         <Box minWidth={1050}>
           <Table
             className={classes.table}
@@ -289,7 +289,7 @@ const Results = ({
             </TableBody>
           </Table>
         </Box>
-      </PerfectScrollbar>
+      </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"

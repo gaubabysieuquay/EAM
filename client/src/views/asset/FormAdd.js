@@ -53,13 +53,17 @@ const FormAdd = ({ onAdd }) => {
     supplier: '',
     purchaseDate: null,
     purchaseCost: '',
-    status: { name: 'Sẵn sàng sử dụng', type: 1 },
+    status: status[0],
     warranty: '',
     note: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [data, setData] = useState(null);
+
+  const valueKey = 'Value';
+
   const {
     control,
     handleSubmit,
@@ -84,6 +88,11 @@ const FormAdd = ({ onAdd }) => {
   const onChange = value => {
     setValue('purchaseDate', value);
     console.log(value);
+  };
+
+  const handleChangeStatus = (_, value) => {
+    setValue('status', value.type);
+    console.log(value.type);
   };
 
   return (
@@ -206,18 +215,26 @@ const FormAdd = ({ onAdd }) => {
         }}
       />
       <Controller
-        as={
+        as={() => (
           <Autocomplete
-            id="combo-box"
             options={status}
-            getOptionSelected={(option, value) => option.name}
-            getOptionLabel={option => option.title}
-            fullWidth
+            onChange={handleChangeStatus}
+            getOptionLabel={option => option.name}
             renderInput={params => (
-              <TextField {...params} label="Tình trạng" variant="outlined" />
+              <TextField
+                {...params}
+                label="Tình trạng"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="status"
+                fullWidth
+              />
             )}
           />
-        }
+        )}
         name="status"
         control={control}
       />
