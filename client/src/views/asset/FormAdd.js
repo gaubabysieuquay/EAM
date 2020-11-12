@@ -14,7 +14,6 @@ import {
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
-import AssetService from 'src/services/asset';
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -34,7 +33,7 @@ const schema = Yup.object().shape({
     .required('Purchase Cost is required')
 });
 
-const status = [
+const statusList = [
   { name: 'Sẵn sàng sử dụng', type: 1 },
   { name: 'Chờ duyệt', type: 2 },
   { name: 'Đang sửa chữa', type: 3 },
@@ -53,16 +52,13 @@ const FormAdd = ({ onAdd }) => {
     supplier: '',
     purchaseDate: null,
     purchaseCost: '',
-    status: status[0],
+    status: '',
     warranty: '',
     note: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [data, setData] = useState(null);
-
-  const valueKey = 'Value';
 
   const {
     control,
@@ -215,9 +211,9 @@ const FormAdd = ({ onAdd }) => {
         }}
       />
       <Controller
-        as={() => (
+        render={() => (
           <Autocomplete
-            options={status}
+            options={statusList}
             onChange={handleChangeStatus}
             getOptionLabel={option => option.name}
             renderInput={params => (

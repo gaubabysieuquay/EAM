@@ -12,6 +12,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import AssetService from 'src/services/asset';
 
@@ -33,6 +34,17 @@ const schema = Yup.object().shape({
     .required('Purchase Cost is required')
 });
 
+const statusList = [
+  { name: 'Sẵn sàng sử dụng', type: 1 },
+  { name: 'Chờ duyệt', type: 2 },
+  { name: 'Đang sửa chữa', type: 3 },
+  { name: 'Thất lạc', type: 3 },
+  { name: 'Không thể sửa chữa', type: 3 },
+  { name: 'Lưu trữ', type: 4 }
+];
+
+const objIndex = (typeNum) => {statusList.findIndex((value) => value.type === typeNum)};
+
 const FormEdit = ({ id }) => {
   const initialFormState = {
     name: '',
@@ -42,6 +54,7 @@ const FormEdit = ({ id }) => {
     supplier: '',
     purchaseDate: null,
     purchaseCost: '',
+    status: 0,
     warranty: '',
     note: ''
   };
@@ -49,7 +62,7 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
-  const { control, errors, reset } = useForm({
+  const { control, errors, reset, setValue, getValues } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -67,6 +80,11 @@ const FormEdit = ({ id }) => {
   const handleChangeDate = date => {
     setAsset({ ...asset, purchaseDate: date });
     console.log(date);
+  };
+
+  const handleChangeStatus = (_, value) => {
+    setAsset({ ...asset, status: value.type });
+    console.log(value.type);
   };
 
   const updateAsset = () => {
@@ -246,6 +264,32 @@ const FormEdit = ({ id }) => {
             }}
           />
         )}
+      />
+      <Controller
+        render={({value}) => (
+          <Autocomplete
+            options={statusList}
+            onChange={handleChangeStatus}
+            value={statusList[0]}
+            getOptionLabel={option => option.name}
+            getOptionSelected={(option, value) => option.type === value.type}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Tình trạng"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="status"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="status"
+        control={control}
       />
       <Controller
         control={control}

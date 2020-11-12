@@ -24,7 +24,7 @@ const headCells = [
   { id: 'location', disablePadding: false, label: 'Địa điểm' },
   { id: 'purchaseDate', disablePadding: false, label: 'Ngày mua' },
   { id: 'purchaseCost', disablePadding: false, label: 'Giá mua' },
-  { id: 'status', disablePadding: false, label: 'Xuất/Nhập' },
+  { id: 'status', disablePadding: false, label: 'Tình trạng' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
   { id: '', disablePadding: false, label: 'Actions' }
 ];
