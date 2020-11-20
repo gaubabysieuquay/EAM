@@ -43,8 +43,6 @@ const statusList = [
   { name: 'Lưu trữ', type: 4 }
 ];
 
-const objIndex = (typeNum) => {statusList.findIndex((value) => value.type === typeNum)};
-
 const FormEdit = ({ id }) => {
   const initialFormState = {
     name: '',
@@ -62,6 +60,7 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
+  const [data, setData] = useState('');
   const { control, errors, reset, setValue, getValues } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
@@ -79,12 +78,10 @@ const FormEdit = ({ id }) => {
 
   const handleChangeDate = date => {
     setAsset({ ...asset, purchaseDate: date });
-    console.log(date);
   };
 
   const handleChangeStatus = (_, value) => {
     setAsset({ ...asset, status: value.type });
-    console.log(value.type);
   };
 
   const updateAsset = () => {
@@ -101,15 +98,21 @@ const FormEdit = ({ id }) => {
     console.log(value);
   };
 
-  useEffect(() => {
+  const objIndex =
+    statusList[statusList.findIndex(value => value.type == asset.status)];
+
+  const getAsset = id => {
     AssetService.get(id)
       .then(response => {
         setAsset(response.data);
-        console.log(response.data);
       })
       .catch(err => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    getAsset(id);
   }, [id]);
 
   return (
@@ -199,16 +202,17 @@ const FormEdit = ({ id }) => {
         error={Boolean(errors.purchaseDate)}
         helperText={errors.purchaseDate?.message}
         name="purchaseDate"
-        render={props => (
+        render={() => (
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <KeyboardDatePicker
               disableToolbar
               fullWidth
+              name="purchaseDate"
               inputVariant="outlined"
               variant="inline"
               format="DD/MM/yyyy"
               margin="normal"
-              id="date-picker-inline"
+              id="date-picker"
               label="Ngày mua"
               onChange={handleChangeDate}
               value={asset.purchaseDate}
@@ -266,11 +270,11 @@ const FormEdit = ({ id }) => {
         )}
       />
       <Controller
-        render={({value}) => (
+        render={({ value }) => (
           <Autocomplete
             options={statusList}
             onChange={handleChangeStatus}
-            value={statusList[0]}
+            value={objIndex || statusList[1]}
             getOptionLabel={option => option.name}
             getOptionSelected={(option, value) => option.type === value.type}
             renderInput={params => (
