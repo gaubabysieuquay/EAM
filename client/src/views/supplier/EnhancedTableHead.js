@@ -22,6 +22,7 @@ const headCells = [
   { id: 'assets', disablePadding: false, label: 'Tài sản' },
   { id: 'accessories', disablePadding: false, label: 'Linh kiện' },
   { id: 'licenses', disablePadding: false, label: 'Bản quyền' },
+  { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
   { id: '', disablePadding: false, label: 'Actions' }
 ];
 

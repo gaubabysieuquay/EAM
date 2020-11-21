@@ -221,7 +221,7 @@ const Results = ({
                       <TableCell>{supplier.fax}</TableCell>
                       <TableCell>Tài sản</TableCell>
                       <TableCell>Linh kiện</TableCell>
-                      <TableCell>Bản quyền</TableCell>\
+                      <TableCell>Bản quyền</TableCell>
                       <TableCell>
                         {moment(supplier.createdAt).format('DD/MM/YYYY')}
                       </TableCell>

@@ -213,11 +213,26 @@ const FormEdit = ({ id }) => {
             value={supplier.fax}
             onChange={handleChange}
             variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">Month</InputAdornment>
-              )
+            InputLabelProps={{
+              shrink: true
             }}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        error={Boolean(errors.email)}
+        helperText={errors.email?.message}
+        name="fax"
+        render={() => (
+          <TextField
+            fullWidth
+            name="email"
+            label="Email"
+            margin="normal"
+            value={supplier.email}
+            onChange={handleChange}
+            variant="outlined"
             InputLabelProps={{
               shrink: true
             }}

@@ -5,16 +5,16 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   const today = new Date();
   const supplierData = {
-    name: DataTypes.STRING,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    zip: DataTypes.INTEGER,
-    phone: DataTypes.STRING,
-    fax: DataTypes.STRING,
-    email: DataTypes.STRING,
-    note: DataTypes.STRING,
+    name: req.body.name,
+    address: req.body.address,
+    city: req.body.city,
+    state: req.body.state,
+    country: req.body.country,
+    zip: req.body.zip,
+    phone: req.body.phone,
+    fax: req.body.fax,
+    email: req.body.email,
+    note: req.body.note,
     createdAt: today,
   };
 
@@ -25,7 +25,8 @@ exports.create = (req, res) => {
   })
     .then((supplier) => {
       if (!supplier) {
-        supplier.create(supplierData)
+        Supplier
+          .create(supplierData)
           .then((supplier) => {
             res.send({ message: supplier.name + " Added" });
           })
@@ -36,7 +37,8 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.send({
-        message: err.message || "Some error occurred while creating the Supplier.",
+        message:
+          err.message || "Some error occurred while creating the Supplier.",
       });
     });
 };
@@ -45,7 +47,8 @@ exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-  supplier.findAll({ where: condition })
+  Supplier
+    .findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
@@ -113,7 +116,7 @@ exports.delete = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-         message: err.message || "Could not delete Supplier with id=" + id,
+        message: err.message || "Could not delete Supplier with id=" + id,
       });
     });
 };
@@ -142,8 +145,7 @@ exports.findAllByName = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving.",
+        message: err.message || "Some error occurred while retrieving.",
       });
     });
 };
