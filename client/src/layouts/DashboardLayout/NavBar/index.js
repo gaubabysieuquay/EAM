@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Drawer,
   Hidden,
@@ -51,7 +50,7 @@ const items = [
     title: 'Quản lý cơ sở vật chất'
   },
   {
-    href: '/app/test',
+    href: '/app/suppliers',
     icon: UserIcon,
     title: 'Nhà cung cấp'
   },

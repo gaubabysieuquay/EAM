@@ -15,7 +15,7 @@ import {
   DialogContentText,
   makeStyles
 } from '@material-ui/core';
-import { Search as SearchIcon, Smartphone } from 'react-feather';
+import { Search as SearchIcon} from 'react-feather';
 import Form from './FormAdd';
 
 const useStyles = makeStyles(theme => ({

@@ -16,7 +16,7 @@ const headCells = [
     label: 'Tên'
   },
   { id: 'image', disablePadding: false, label: 'Hình minh họa' },
-  { id: 'barcode', numeric: true, disablePadding: false, label: 'Barcode' },
+  { id: 'barcode', disablePadding: false, label: 'Barcode' },
   { id: 'serial', disablePadding: false, label: 'Serial' },
   { id: 'model', disablePadding: false, label: 'Model' },
   { id: 'category', disablePadding: false, label: 'Danh mục' },

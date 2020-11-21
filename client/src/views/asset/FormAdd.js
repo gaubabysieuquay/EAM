@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -65,7 +65,6 @@ const FormAdd = ({ onAdd }) => {
     handleSubmit,
     errors,
     reset,
-    register,
     setValue,
     getValues
   } = useForm({

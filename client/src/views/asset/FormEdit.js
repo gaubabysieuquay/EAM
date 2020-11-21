@@ -60,8 +60,7 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
-  const [data, setData] = useState('');
-  const { control, errors, reset, setValue, getValues } = useForm({
+  const { control, errors, reset} = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -94,12 +93,8 @@ const FormEdit = ({ id }) => {
       });
   };
 
-  const onSubmit = value => {
-    console.log(value);
-  };
-
   const objIndex =
-    statusList[statusList.findIndex(value => value.type == asset.status)];
+    statusList[statusList.findIndex(value => value.type === asset.status)];
 
   const getAsset = id => {
     AssetService.get(id)
@@ -350,9 +345,5 @@ const FormEdit = ({ id }) => {
     </form>
   );
 };
-
-/**FormEdit.propTypes = {
-  getAsset: PropTypes.object.isRequired
-};**/
 
 export default FormEdit;
