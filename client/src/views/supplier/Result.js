@@ -217,8 +217,8 @@ const Results = ({
                       </TableCell>
                       <TableCell>{supplier.address}</TableCell>
                       <TableCell>{supplier.email}</TableCell>
-                      <TableCell>{supplier.phone}</TableCell>
                       <TableCell>{supplier.fax}</TableCell>
+                      <TableCell>{supplier.phone}</TableCell>
                       <TableCell>Tài sản</TableCell>
                       <TableCell>Linh kiện</TableCell>
                       <TableCell>Bản quyền</TableCell>

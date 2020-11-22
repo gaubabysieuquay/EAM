@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -14,6 +14,7 @@ import {
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
+import moment from 'moment';
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -43,6 +44,8 @@ const statusList = [
 ];
 
 const FormAdd = ({ onAdd }) => {
+  const date = moment();
+
   const initialFormState = {
     id: '',
     name: '',
@@ -50,7 +53,7 @@ const FormAdd = ({ onAdd }) => {
     model: '',
     serial: '',
     supplier: '',
-    purchaseDate: null,
+    purchaseDate: date,
     purchaseCost: '',
     status: '',
     warranty: '',
@@ -59,18 +62,12 @@ const FormAdd = ({ onAdd }) => {
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-
-  const {
-    control,
-    handleSubmit,
-    errors,
-    reset,
-    setValue,
-    getValues
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: initialFormState
-  });
+  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm(
+    {
+      resolver: yupResolver(schema),
+      defaultValues: initialFormState
+    }
+  );
 
   const handleClose = () => {
     setOpen(false);

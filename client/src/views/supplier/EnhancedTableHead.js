@@ -16,9 +16,9 @@ const headCells = [
     label: 'Tên'
   },
   { id: 'address', disablePadding: false, label: 'Địa chỉ' },
-  { id: 'phone', disablePadding: false, label: 'SDT' },
-  { id: 'fax', disablePadding: false, label: 'Fax' },
   { id: 'email', disablePadding: false, label: 'Email' },
+  { id: 'fax', disablePadding: false, label: 'Fax' },
+  { id: 'phone', disablePadding: false, label: 'SDT' },
   { id: 'assets', disablePadding: false, label: 'Tài sản' },
   { id: 'accessories', disablePadding: false, label: 'Linh kiện' },
   { id: 'licenses', disablePadding: false, label: 'Bản quyền' },
@@ -26,7 +26,7 @@ const headCells = [
   { id: '', disablePadding: false, label: 'Actions' }
 ];
 
-const EnhancedTableHead = (props) => {
+const EnhancedTableHead = props => {
   const {
     classes,
     onSelectAllClick,
@@ -75,7 +75,7 @@ const EnhancedTableHead = (props) => {
       </TableRow>
     </TableHead>
   );
-}
+};
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
