@@ -20,9 +20,6 @@ module.exports = {
       model: {
         type: Sequelize.STRING,
       },
-      supplier: {
-        type: Sequelize.STRING,
-      },
       purchaseDate: {
         type: Sequelize.DATE,
       },
@@ -40,6 +37,17 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
+      },
+      supplierId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Suppliers",
+          key: "id",
+          as: "suppliers"
+        },
       },
       createdAt: {
         allowNull: false,

@@ -9,8 +9,6 @@ exports.create = (req, res) => {
     name: req.body.name,
     serial: req.body.serial,
     model: req.body.model,
-    unit: req.body.unit,
-    supplier: req.body.supplier,
     purchaseDate: req.body.purchaseDate,
     purchaseCost: req.body.purchaseCost,
     warranty: req.body.warranty,
@@ -149,3 +147,4 @@ exports.findAllByName = (req, res) => {
       });
     });
 };
+

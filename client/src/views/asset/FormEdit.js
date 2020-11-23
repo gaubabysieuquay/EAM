@@ -221,7 +221,8 @@ const FormEdit = ({ id }) => {
           </MuiPickersUtilsProvider>
         )}
       />
-      <Controller
+      {/**
+        <Controller
         control={control}
         error={Boolean(errors.supplier)}
         helperText={errors.supplier?.message}
@@ -241,6 +242,7 @@ const FormEdit = ({ id }) => {
           />
         )}
       />
+       */}
       <Controller
         control={control}
         error={Boolean(errors.purchaseCost)}

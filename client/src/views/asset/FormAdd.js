@@ -74,6 +74,7 @@ const FormAdd = ({ onAdd }) => {
   };
 
   const onSubmit = value => {
+    console.log(value);
     onAdd(value);
   };
 
@@ -175,6 +176,7 @@ const FormAdd = ({ onAdd }) => {
           </MuiPickersUtilsProvider>
         )}
       />
+      {/** 
       <Controller
         control={control}
         as={TextField}
@@ -189,6 +191,7 @@ const FormAdd = ({ onAdd }) => {
           shrink: true
         }}
       />
+      */}    
       <Controller
         control={control}
         as={TextField}
