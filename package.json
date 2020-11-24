@@ -7,7 +7,7 @@
     "client": "cd client && yarn start",
     "server": "nodemon --experimental-modules server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "db-migrate": "npx sequelize db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "db-migrate": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "db-undo": "npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [

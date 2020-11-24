@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import {
   TextField,
-  InputAdornment,
   DialogActions,
+  InputAdornment,
   Button
 } from '@material-ui/core';
 import {
@@ -14,7 +14,6 @@ import {
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
-import moment from 'moment';
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -26,9 +25,6 @@ const schema = Yup.object().shape({
   model: Yup.string()
     .max(255)
     .required('Model is required'),
-  supplier: Yup.string()
-    .max(255)
-    .required('Supplier is required'),
   purchaseCost: Yup.string()
     .max(255)
     .required('Purchase Cost is required')
@@ -44,16 +40,13 @@ const statusList = [
 ];
 
 const FormAdd = ({ onAdd }) => {
-  const date = moment();
-
   const initialFormState = {
     id: '',
     name: '',
     barcode: '',
     model: '',
     serial: '',
-    supplier: '',
-    purchaseDate: date,
+    purchaseDate: null,
     purchaseCost: '',
     status: '',
     warranty: '',
@@ -62,19 +55,24 @@ const FormAdd = ({ onAdd }) => {
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm(
-    {
-      resolver: yupResolver(schema),
-      defaultValues: initialFormState
-    }
-  );
+
+  const {
+    control,
+    handleSubmit,
+    errors,
+    reset,
+    getValues,
+    setValue
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: initialFormState
+  });
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const onSubmit = value => {
-    console.log(value);
     onAdd(value);
   };
 
@@ -90,7 +88,7 @@ const FormAdd = ({ onAdd }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-      <Controller
+    <Controller
         control={control}
         as={TextField}
         name="name"
@@ -176,22 +174,6 @@ const FormAdd = ({ onAdd }) => {
           </MuiPickersUtilsProvider>
         )}
       />
-      {/** 
-      <Controller
-        control={control}
-        as={TextField}
-        error={Boolean(errors.supplier)}
-        helperText={errors.supplier?.message}
-        name="supplier"
-        fullWidth
-        label="Nhà cung cấp"
-        margin="normal"
-        variant="outlined"
-        InputLabelProps={{
-          shrink: true
-        }}
-      />
-      */}    
       <Controller
         control={control}
         as={TextField}

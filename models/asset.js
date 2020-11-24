@@ -23,7 +23,13 @@ module.exports = (sequelize, DataTypes) => {
       warranty: DataTypes.INTEGER,
       note: DataTypes.STRING,
       image: DataTypes.STRING,
-      //supplierId: DataTypes.INTEGER,
+      supplierId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Supplier",
+          key: "id",
+        },
+      },
     },
     {
       sequelize,

@@ -100,6 +100,7 @@ const FormEdit = ({ id }) => {
     AssetService.get(id)
       .then(response => {
         setAsset(response.data);
+        console.log(response.data);
       })
       .catch(err => {
         console.log(err);
