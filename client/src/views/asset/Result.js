@@ -236,7 +236,7 @@ const Results = ({
                       <TableCell>{asset.serial}</TableCell>
                       <TableCell>{asset.model}</TableCell>
                       <TableCell>Danh mục</TableCell>
-                      <TableCell>Supplier</TableCell>
+                      <TableCell>{asset.Supplier.name}</TableCell>
                       <TableCell>Địa điểm</TableCell>
                       <TableCell>
                         {moment(asset.purchaseDate).format('DD/MM/YYYY')}

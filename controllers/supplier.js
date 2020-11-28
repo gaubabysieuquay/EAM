@@ -25,8 +25,7 @@ exports.create = (req, res) => {
   })
     .then((supplier) => {
       if (!supplier) {
-        Supplier
-          .create(supplierData)
+        Supplier.create(supplierData)
           .then((supplier) => {
             res.send({ message: supplier.name + " Added" });
           })
@@ -47,8 +46,7 @@ exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-  Supplier
-    .findAll({ where: condition })
+  Supplier.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
@@ -149,3 +147,4 @@ exports.findAllByName = (req, res) => {
       });
     });
 };
+

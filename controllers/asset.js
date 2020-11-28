@@ -15,6 +15,7 @@ exports.create = (req, res) => {
     note: req.body.note,
     image: req.body.image,
     status: req.body.status,
+    supplierId: req.body.supplierId,
     createdAt: today,
   };
 
@@ -45,7 +46,7 @@ exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-  Asset.findAll({ where: condition })
+  Asset.findAll({ where: condition, include: db.Supplier })
     .then((data) => {
       res.send(data);
     })
@@ -113,7 +114,7 @@ exports.delete = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-         message: err.message || "Could not delete Asset with id=" + id,
+        message: err.message || "Could not delete Asset with id=" + id,
       });
     });
 };
@@ -142,9 +143,41 @@ exports.findAllByName = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving.",
+        message: err.message || "Some error occurred while retrieving.",
       });
     });
 };
 
+//Get the assets for the given supplier
+exports.getSupplier = (req, res) => {
+  const supplierId = req.params.supplierId;
+  Asset.findAll({
+    where: { supplierId: supplierId },
+    attributes: ["name"],
+    include: [
+      {
+        model: db.Supplier,
+        attributes: ["id", "name"],
+        as: "supplier",
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving.",
+      });
+    });
+};
+
+exports.getSupplierAll = (req, res) => {
+  Asset.findAll({ include: db.Supplier })
+    .then((data) => res.send(data))
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving.",
+      });
+    });
+};

@@ -61,9 +61,11 @@ db.Supplier.hasMany(db.Asset, {onDelete: 'cascade', foreignKey: 'supplierId', ta
 
 db.ROLES = ["user", "admin", "moderator"];
 
+/*
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Db');
 });
+*/
 
 sequelize
   .authenticate()

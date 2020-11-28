@@ -1,61 +1,62 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Assets', {
+    await queryInterface.createTable("Assets", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       barcode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       serial: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       model: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       purchaseDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       purchaseCost: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       warranty: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       note: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       supplierId: {
         type: Sequelize.INTEGER,
-        references:{
-          model:'Suppliers',
-          key:'id'
-        }
+        references: {
+          model: "Suppliers",
+          key: "id",
+          as: "suppliers",
+        },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Assets');
-  }
+    await queryInterface.dropTable("Assets");
+  },
 };

@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -14,6 +14,7 @@ import {
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
+import SupplierService from 'src/services/supplier'
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -50,11 +51,13 @@ const FormAdd = ({ onAdd }) => {
     purchaseCost: '',
     status: '',
     warranty: '',
-    note: ''
+    note: '',
+    supplierId: '',
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [supplier, setSupplier] = useState([]);
 
   const {
     control,
@@ -76,7 +79,7 @@ const FormAdd = ({ onAdd }) => {
     onAdd(value);
   };
 
-  const onChange = value => {
+  const handleChangeDate = value => {
     setValue('purchaseDate', value);
     console.log(value);
   };
@@ -85,6 +88,24 @@ const FormAdd = ({ onAdd }) => {
     setValue('status', value.type);
     console.log(value.type);
   };
+
+  const handleChangeSupplier = (_, value) => {
+    setValue('supplierId', value.id);
+    console.log(value);
+  };
+
+  const getSupplierAll = () => {
+    SupplierService.getAll()
+      .then(response => {
+        setSupplier(response.data);
+        console.log(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getSupplierAll();
+  }, [])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
@@ -169,7 +190,7 @@ const FormAdd = ({ onAdd }) => {
                 shrink: true
               }}
               value={getValues('purchaseDate')}
-              onChange={onChange}
+              onChange={handleChangeDate}
             />
           </MuiPickersUtilsProvider>
         )}
@@ -190,6 +211,30 @@ const FormAdd = ({ onAdd }) => {
         InputLabelProps={{
           shrink: true
         }}
+      />
+      <Controller
+        render={() => (
+          <Autocomplete
+            options={supplier}
+            onChange={handleChangeSupplier}
+            getOptionLabel={option => option.name}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Nhà cung cấp"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="supplierId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="supplierId"
+        control={control}
       />
       <Controller
         render={() => (
