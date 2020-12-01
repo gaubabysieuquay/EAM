@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -22,7 +22,7 @@ import NavItem from './NavItem';
 
 import AuthService from 'src/services/auth';
 
-const user = {
+const users = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Junior Developer',
   name: 'Katarina Smith'
@@ -63,7 +63,7 @@ const items = [
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
-  },
+  }
 ];
 
 const useStyles = makeStyles(() => ({
@@ -85,7 +85,9 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
-  const currentUser = AuthService.getCurrentUser();
+  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -94,20 +96,38 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes('ROLE_MODERATOR'));
+      setShowAdminBoard(user.roles.includes('ROLE_ADMIN'));
+    }
+
+    console.log();
+  }, []);
+
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
+          src={users.avatar}
           to="/app/account"
         />
-        <Typography className={classes.name} color="textPrimary" variant="h5">
-          {currentUser.username}
-        </Typography>
+        {currentUser && (
+          <Typography
+            className={classes.name}
+            color="textPrimary"
+            variant="h5"
+          >
+            {currentUser.username}
+          </Typography>
+        )}
         <Typography color="textSecondary" variant="body2">
-          {user.jobTitle}
+          {users.jobTitle}
         </Typography>
       </Box>
       <Divider />

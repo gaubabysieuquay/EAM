@@ -56,8 +56,16 @@ db.User.belongsToMany(db.Role, {
   onDelete: "cascade",
 });
 
-db.Asset.belongsTo(db.Supplier, {onDelete: 'cascade', foreignKey: 'supplierId', targetKey:'id'});
-db.Supplier.hasMany(db.Asset, {onDelete: 'cascade', foreignKey: 'supplierId', targetKey:'id'});
+db.Asset.belongsTo(db.Supplier, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Supplier.hasMany(db.Asset, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
 
 db.ROLES = ["user", "admin", "moderator"];
 
@@ -75,6 +83,5 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
-
 
 module.exports = db;
