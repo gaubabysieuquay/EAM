@@ -45,16 +45,6 @@ const items = [
     title: 'Products'
   },
   {
-    href: '/app/assets',
-    icon: ShoppingBagIcon,
-    title: 'Quản lý cơ sở vật chất'
-  },
-  {
-    href: '/app/suppliers',
-    icon: UserIcon,
-    title: 'Nhà cung cấp'
-  },
-  {
     href: '/app/account',
     icon: UserIcon,
     title: 'Account'
@@ -63,6 +53,18 @@ const items = [
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
+  },
+  {
+    href: '/app/assets',
+    icon: ShoppingBagIcon,
+    title: 'Quản lý cơ sở vật chất',
+    role: 'moderator'
+  },
+  {
+    href: '/app/suppliers',
+    icon: UserIcon,
+    title: 'Nhà cung cấp',
+    role: 'moderator'
   }
 ];
 
@@ -118,11 +120,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           to="/app/account"
         />
         {currentUser && (
-          <Typography
-            className={classes.name}
-            color="textPrimary"
-            variant="h5"
-          >
+          <Typography className={classes.name} color="textPrimary" variant="h5">
             {currentUser.username}
           </Typography>
         )}
@@ -133,14 +131,27 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       <Divider />
       <Box p={2}>
         <List>
-          {items.map(item => (
-            <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
-          ))}
+          {items
+            .filter(item => item.role !== 'moderator')
+            .map(item => (
+              <NavItem
+                href={item.href}
+                key={item.title}
+                title={item.title}
+                icon={item.icon}
+              />
+            ))}
+          {showModeratorBoard &&
+            items
+              .filter(item => item.role === 'moderator')
+              .map(item => (
+                <NavItem
+                  href={item.href}
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                />
+              ))}
         </List>
       </Box>
     </Box>
