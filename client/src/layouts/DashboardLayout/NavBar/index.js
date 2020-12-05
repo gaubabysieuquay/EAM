@@ -12,12 +12,15 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  Users as UsersIcon
-} from 'react-feather';
+  Room,
+  Person,
+  People,
+  Settings,
+  WebAsset,
+  AssignmentReturned,
+  BarChart,
+  LocalMall
+} from '@material-ui/icons';
 import NavItem from './NavItem';
 
 import AuthService from 'src/services/auth';
@@ -31,39 +34,50 @@ const users = {
 const items = [
   {
     href: '/app/dashboard',
-    icon: BarChartIcon,
-    title: 'Dashboard'
+    icon: BarChart,
+    title: 'Dashboard',
+    role: ''
   },
   {
     href: '/app/customers',
-    icon: UsersIcon,
-    title: 'Customers'
+    icon: People,
+    title: 'Customers',
+    role: ''
   },
   {
     href: '/app/products',
-    icon: ShoppingBagIcon,
-    title: 'Products'
+    icon: LocalMall,
+    title: 'Products',
+    role: ''
   },
   {
     href: '/app/account',
-    icon: UserIcon,
-    title: 'Account'
+    icon: Person,
+    title: 'Account',
+    role: ''
   },
   {
     href: '/app/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
+    icon: Settings,
+    title: 'Cài đặt',
+    role: ''
   },
   {
     href: '/app/assets',
-    icon: ShoppingBagIcon,
+    icon: WebAsset,
     title: 'Quản lý cơ sở vật chất',
     role: 'moderator'
   },
   {
     href: '/app/suppliers',
-    icon: UserIcon,
+    icon: AssignmentReturned,
     title: 'Nhà cung cấp',
+    role: 'moderator'
+  },
+  {
+    href: '/app/locations',
+    icon: Room,
+    title: 'Địa điểm',
     role: 'moderator'
   }
 ];

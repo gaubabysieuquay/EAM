@@ -11,13 +11,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
-//require("./app/routes/user.js")(app);
 require("./routes/user")(app);
 require("./routes/auth")(app);
 require('./routes/asset')(app);
 require('./routes/supplier')(app);
-
-
+require('./routes/location')(app);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);

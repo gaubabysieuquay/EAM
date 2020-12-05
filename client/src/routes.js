@@ -12,6 +12,7 @@ import AssetView from 'src/views/asset';
 import Login from 'src/views/auth/Login';
 import Register from 'src/views/auth/Register';
 import Supplier from 'src/views/supplier';
+import Location from "src/views/location";
 
 const routes = isLoggedIn => [
   {
@@ -25,6 +26,7 @@ const routes = isLoggedIn => [
       { path: 'settings', element: <SettingsView /> },
       { path: 'assets', element: <AssetView /> },
       { path: 'suppliers', element: <Supplier /> },
+      { path: 'locations', element: <Location />},
       { path: '*', element: <Navigate to="/404" /> },
       { path: '/', element: <Navigate to="/app/dashboard" /> }
     ]

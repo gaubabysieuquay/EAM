@@ -43,7 +43,6 @@ module.exports = {
         references: {
           model: "Suppliers",
           key: "id",
-          as: "suppliers",
         },
       },
       locationId: {
@@ -51,7 +50,6 @@ module.exports = {
         references: {
           model: "Locations",
           key: "id",
-          as: "locations",
         },
       },
       createdAt: {

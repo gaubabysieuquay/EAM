@@ -15,6 +15,7 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import AssetService from 'src/services/asset';
+import SupplierService from 'src/services/supplier'
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -49,7 +50,7 @@ const FormEdit = ({ id }) => {
     barcode: '',
     model: '',
     serial: '',
-    supplier: '',
+    supplierId: '',
     purchaseDate: null,
     purchaseCost: '',
     status: 0,
@@ -60,7 +61,8 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
-  const { control, errors, reset} = useForm({
+  const [supplier, setSupplier] = useState([]);
+  const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -81,6 +83,11 @@ const FormEdit = ({ id }) => {
 
   const handleChangeStatus = (_, value) => {
     setAsset({ ...asset, status: value.type });
+  };
+
+  const handleChangeSupplier = (_, value) => {
+    setAsset({...asset, supplierId: value.id});
+    console.log(value);
   };
 
   const updateAsset = () => {
@@ -110,6 +117,19 @@ const FormEdit = ({ id }) => {
   useEffect(() => {
     getAsset(id);
   }, [id]);
+
+  const getSupplierAll = () => {
+    SupplierService.getAll()
+      .then(response => {
+        setSupplier(response.data);
+        console.log(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getSupplierAll();
+  }, [])
 
   return (
     <form onReset={reset}>
@@ -222,28 +242,30 @@ const FormEdit = ({ id }) => {
           </MuiPickersUtilsProvider>
         )}
       />
-      {/**
-        <Controller
-        control={control}
-        error={Boolean(errors.supplier)}
-        helperText={errors.supplier?.message}
-        name="supplier"
+      <Controller
         render={() => (
-          <TextField
-            fullWidth
-            name="supplier"
-            label="Nhà cung cấp"
-            margin="normal"
-            value={asset.supplier}
-            onChange={handleChange}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true
-            }}
+          <Autocomplete
+            options={supplier}
+            onChange={handleChangeSupplier}
+            getOptionLabel={option => option.name}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Nhà cung cấp"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="supplierId"
+                fullWidth
+              />
+            )}
           />
         )}
+        name="supplierId"
+        control={control}
       />
-       */}
       <Controller
         control={control}
         error={Boolean(errors.purchaseCost)}
