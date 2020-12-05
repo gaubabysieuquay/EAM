@@ -10,7 +10,6 @@ import routes from 'src/routes';
 import AuthService from "./services/auth";
 
 const App = () => {
-  const routing = useRoutes(routes);
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
@@ -20,6 +19,8 @@ const App = () => {
       setCurrentUser(user);
     }
   }, []);
+
+  const routing = useRoutes(routes(currentUser));
 
   return (
     <ThemeProvider theme={theme}>

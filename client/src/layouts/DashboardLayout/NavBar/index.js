@@ -106,8 +106,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       setShowModeratorBoard(user.roles.includes('ROLE_MODERATOR'));
       setShowAdminBoard(user.roles.includes('ROLE_ADMIN'));
     }
-
-    console.log();
   }, []);
 
   const content = (

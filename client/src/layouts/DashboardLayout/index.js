@@ -38,19 +38,9 @@ const useStyles = makeStyles(theme => ({
 const DashboardLayout = () => {
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(undefined);
-
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, []);
 
   return (
     <div>
-      {currentUser && (
         <div className={classes.root}>
           <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
           <NavBar
@@ -65,7 +55,6 @@ const DashboardLayout = () => {
             </div>
           </div>
         </div>
-      )}
     </div>
   );
 };

@@ -34,6 +34,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const logOut = () => {
     AuthService.logout();
     navigate('/login');
+    window.location.reload();
   };
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>

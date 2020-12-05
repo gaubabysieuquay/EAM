@@ -11,12 +11,12 @@ import SettingsView from 'src/views/settings/SettingsView';
 import AssetView from 'src/views/asset';
 import Login from 'src/views/auth/Login';
 import Register from 'src/views/auth/Register';
-import Supplier from 'src/views/supplier'
+import Supplier from 'src/views/supplier';
 
-const routes = [
+const routes = isLoggedIn => [
   {
     path: 'app',
-    element: <DashboardLayout />,
+    element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'customers', element: <CustomerListView /> },
@@ -25,17 +25,18 @@ const routes = [
       { path: 'settings', element: <SettingsView /> },
       { path: 'assets', element: <AssetView /> },
       { path: 'suppliers', element: <Supplier /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
+      { path: '/', element: <Navigate to="/app/dashboard" /> }
     ]
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: !isLoggedIn ? <MainLayout /> : <Navigate to="/app/dashboard" />,
     children: [
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Login /> },
+      { path: '/', element: <Navigate to="/login" /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   }

@@ -60,6 +60,7 @@ const Login = () => {
     AuthService.login(values.username, values.password).then(
       () => {
         navigate('/app/dashboard', { replace: true });
+        window.location.reload();
       },
       error => {
         const resMessage =

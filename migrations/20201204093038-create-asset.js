@@ -46,6 +46,14 @@ module.exports = {
           as: "suppliers",
         },
       },
+      locationId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Locations",
+          key: "id",
+          as: "locations",
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
