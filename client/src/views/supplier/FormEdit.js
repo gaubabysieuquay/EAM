@@ -21,7 +21,7 @@ const schema = Yup.object().shape({
     .max(255)
 });
 
-const FormEdit = ({ id }) => {
+const FormEdit = ({ id, onUpdate }) => {
   const initialFormState = {
     name: '',
     address: '',
@@ -38,7 +38,7 @@ const FormEdit = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [supplier, setSupplier] = useState(initialFormState);
-  const { control, errors, reset} = useForm({
+  const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
@@ -51,16 +51,6 @@ const FormEdit = ({ id }) => {
     const { name, value } = event.target;
     setSupplier({ ...supplier, [name]: value });
     console.log('name: ' + name, 'value: ' + value);
-  };
-
-  const updateSupplier = () => {
-    SupplierService.update(id, supplier)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
   };
 
   const getSupplier = id => {
@@ -262,7 +252,7 @@ const FormEdit = ({ id }) => {
         )}
       />
       <DialogActions>
-        <Button type="submit" color="primary" onClick={() => updateSupplier()}>
+        <Button color="primary" onClick={() => onUpdate(id, supplier)}>
           Xác nhận
         </Button>
       </DialogActions>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
@@ -19,6 +20,7 @@ const SupplierListView = props => {
   const [supplier, setSupplier] = useState([]);
   const [supplierSearch, setSupplierSearch] = useState([]);
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
   const getSupplierAll = () => {
     SupplierService.getAll()
@@ -78,6 +80,8 @@ const SupplierListView = props => {
   const updateSupplier = (id, data) => {
     SupplierService.update(id, data)
       .then(response => {
+        navigate('/app/suppliers', { replace: true });
+        getSupplierAll();
         console.log(response);
       })
       .catch(err => {

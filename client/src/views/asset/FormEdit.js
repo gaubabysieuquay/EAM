@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -15,7 +16,8 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import AssetService from 'src/services/asset';
-import SupplierService from 'src/services/supplier'
+import SupplierService from 'src/services/supplier';
+import LocationService from 'src/services/location';
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -44,7 +46,12 @@ const statusList = [
   { name: 'Lưu trữ', type: 4 }
 ];
 
-const FormEdit = ({ id }) => {
+const defaultData = [
+  { id: 1, name: 'TestSup00' },
+  { id: 1, name: 'TestLo00' }
+];
+
+const FormEdit = ({ id, onUpdate }) => {
   const initialFormState = {
     name: '',
     barcode: '',
@@ -55,13 +62,16 @@ const FormEdit = ({ id }) => {
     purchaseCost: '',
     status: 0,
     warranty: '',
-    note: ''
+    note: '',
+    locationId: ''
   };
 
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
   const [supplier, setSupplier] = useState([]);
+  const [location, setLocation] = useState([]);
   const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
@@ -74,7 +84,6 @@ const FormEdit = ({ id }) => {
   const handleChange = event => {
     const { name, value } = event.target;
     setAsset({ ...asset, [name]: value });
-    console.log('name: ' + name, 'value: ' + value);
   };
 
   const handleChangeDate = date => {
@@ -86,18 +95,11 @@ const FormEdit = ({ id }) => {
   };
 
   const handleChangeSupplier = (_, value) => {
-    setAsset({...asset, supplierId: value.id});
-    console.log(value);
+    setAsset({ ...asset, supplierId: value.id });
   };
 
-  const updateAsset = () => {
-    AssetService.update(id, asset)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  const handleChangeLocation = (_, value) => {
+    setAsset({ ...asset, locationId: value.id });
   };
 
   const objIndex =
@@ -107,7 +109,6 @@ const FormEdit = ({ id }) => {
     AssetService.get(id)
       .then(response => {
         setAsset(response.data);
-        console.log(response.data);
       })
       .catch(err => {
         console.log(err);
@@ -122,14 +123,21 @@ const FormEdit = ({ id }) => {
     SupplierService.getAll()
       .then(response => {
         setSupplier(response.data);
-        console.log(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+  const getLocationAll = () => {
+    LocationService.getAll()
+      .then(response => {
+        setLocation(response.data);
       })
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
     getSupplierAll();
-  }, [])
+    getLocationAll();
+  }, []);
 
   return (
     <form onReset={reset}>
@@ -247,7 +255,9 @@ const FormEdit = ({ id }) => {
           <Autocomplete
             options={supplier}
             onChange={handleChangeSupplier}
+            value={asset.Supplier || supplier[0] || defaultData[0]}
             getOptionLabel={option => option.name}
+            getOptionSelected={(option, value) => option.id === value.id}
             renderInput={params => (
               <TextField
                 {...params}
@@ -264,6 +274,32 @@ const FormEdit = ({ id }) => {
           />
         )}
         name="supplierId"
+        control={control}
+      />
+      <Controller
+        render={() => (
+          <Autocomplete
+            options={location}
+            onChange={handleChangeLocation}
+            value={asset.Location || supplier[0] || defaultData[1]}
+            getOptionLabel={option => option.name}
+            getOptionSelected={(option, value) => option.id === value.id}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Địa điểm"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="locationId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="locationId"
         control={control}
       />
       <Controller
@@ -290,7 +326,7 @@ const FormEdit = ({ id }) => {
         )}
       />
       <Controller
-        render={({ value }) => (
+        render={() => (
           <Autocomplete
             options={statusList}
             onChange={handleChangeStatus}
@@ -363,7 +399,7 @@ const FormEdit = ({ id }) => {
         )}
       />
       <DialogActions>
-        <Button type="submit" color="primary" onClick={() => updateAsset()}>
+        <Button color="primary" onClick={() => onUpdate(id, asset)}>
           Xác nhận
         </Button>
       </DialogActions>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
@@ -19,6 +20,7 @@ const LocationListView = props => {
   const [location, setLocation] = useState([]);
   const [locationSearch, setLocationSearch] = useState([]);
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
   const getLocationAll = () => {
     LocationService.getAll()
@@ -78,6 +80,8 @@ const LocationListView = props => {
   const updateLocation = (id, data) => {
     LocationService.update(id, data)
       .then(response => {
+        navigate('/app/locations', { replace: true });
+        getLocationAll();
         console.log(response);
       })
       .catch(err => {

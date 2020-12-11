@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
@@ -19,6 +20,7 @@ const AssetListView = props => {
   const [asset, setAsset] = useState([]);
   const [assetSearch, setAssetSearch] = useState([]);
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
   const getAssetAll = () => {
     AssetService.getAll()
@@ -78,6 +80,8 @@ const AssetListView = props => {
   const updateAsset = (id, data) => {
     AssetService.update(id, data)
       .then(response => {
+        navigate('/app/assets', { replace: true });
+        getAssetAll();
         console.log(response);
       })
       .catch(err => {

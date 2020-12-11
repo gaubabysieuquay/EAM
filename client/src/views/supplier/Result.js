@@ -253,7 +253,7 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={supplierId} />
+                            <Form id={supplierId} onUpdate={onUpdate} />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

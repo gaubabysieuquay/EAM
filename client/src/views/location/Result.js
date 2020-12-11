@@ -251,7 +251,7 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={locationId} />
+                            <Form id={locationId} onUpdate={onUpdate} />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

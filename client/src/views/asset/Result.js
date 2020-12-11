@@ -236,8 +236,8 @@ const Results = ({
                       <TableCell>{asset.serial}</TableCell>
                       <TableCell>{asset.model}</TableCell>
                       <TableCell>Danh mục</TableCell>
-                      <TableCell>{asset.Supplier.name}</TableCell>
-                      <TableCell>Địa điểm</TableCell>
+                      <TableCell>{asset.Supplier.name || ""}</TableCell>
+                      <TableCell>{asset.Location.name || ""}</TableCell>
                       <TableCell>
                         {moment(asset.purchaseDate).format('DD/MM/YYYY')}
                       </TableCell>
@@ -274,7 +274,7 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={assetId} />
+                            <Form id={assetId} onUpdate={onUpdate} />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

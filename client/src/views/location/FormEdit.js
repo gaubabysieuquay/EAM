@@ -21,7 +21,7 @@ const schema = Yup.object().shape({
     .max(255)
 });
 
-const FormEdit = ({ id }) => {
+const FormEdit = ({ id, onUpdate }) => {
   const initialFormState = {
     id: '',
     name: '',
@@ -50,16 +50,6 @@ const FormEdit = ({ id }) => {
     const { name, value } = event.target;
     setLocation({ ...location, [name]: value });
     console.log('name: ' + name, 'value: ' + value);
-  };
-
-  const updateLocation = () => {
-    LocationService.update(id, location)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
   };
 
   const getLocation = id => {
@@ -201,7 +191,7 @@ const FormEdit = ({ id }) => {
         )}
       />
       <DialogActions>
-        <Button type="submit" color="primary" onClick={() => updateLocation()}>
+        <Button color="primary" onClick={() => onUpdate(id, location)}>
           Xác nhận
         </Button>
       </DialogActions>

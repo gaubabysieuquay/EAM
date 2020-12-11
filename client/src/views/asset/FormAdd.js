@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -14,7 +14,8 @@ import {
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
-import SupplierService from 'src/services/supplier'
+import SupplierService from 'src/services/supplier';
+import LocationService from 'src/services/location';
 
 const schema = Yup.object().shape({
   barcode: Yup.string()
@@ -53,23 +54,20 @@ const FormAdd = ({ onAdd }) => {
     warranty: '',
     note: '',
     supplierId: '',
+    locationId: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [supplier, setSupplier] = useState([]);
+  const [location, setLocation] = useState([]);
 
-  const {
-    control,
-    handleSubmit,
-    errors,
-    reset,
-    getValues,
-    setValue
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: initialFormState
-  });
+  const { control, handleSubmit, errors, reset, getValues, setValue } = useForm(
+    {
+      resolver: yupResolver(schema),
+      defaultValues: initialFormState
+    }
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -81,23 +79,32 @@ const FormAdd = ({ onAdd }) => {
 
   const handleChangeDate = value => {
     setValue('purchaseDate', value);
-    console.log(value);
   };
 
   const handleChangeStatus = (_, value) => {
     setValue('status', value.type);
-    console.log(value.type);
   };
 
   const handleChangeSupplier = (_, value) => {
     setValue('supplierId', value.id);
-    console.log(value);
+  };
+
+  const handleChangeLocation = (_, value) => {
+    setValue('locationId', value.id);
   };
 
   const getSupplierAll = () => {
     SupplierService.getAll()
       .then(response => {
         setSupplier(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getLocationAll = () => {
+    LocationService.getAll()
+      .then(response => {
+        setLocation(response.data);
         console.log(response.data);
       })
       .catch(err => console.log(err));
@@ -105,11 +112,12 @@ const FormAdd = ({ onAdd }) => {
 
   useEffect(() => {
     getSupplierAll();
-  }, [])
+    getLocationAll();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-    <Controller
+      <Controller
         control={control}
         as={TextField}
         name="name"
@@ -234,6 +242,30 @@ const FormAdd = ({ onAdd }) => {
           />
         )}
         name="supplierId"
+        control={control}
+      />
+      <Controller
+        render={() => (
+          <Autocomplete
+            options={location}
+            onChange={handleChangeLocation}
+            getOptionLabel={option => option.name}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Địa điểm"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="locationId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="locationId"
         control={control}
       />
       <Controller
