@@ -40,6 +40,8 @@ module.exports = {
       },
       supplierId: {
         type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
         references: {
           model: "Suppliers",
           key: "id",
@@ -47,6 +49,8 @@ module.exports = {
       },
       locationId: {
         type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
         references: {
           model: "Locations",
           key: "id",
