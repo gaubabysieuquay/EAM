@@ -16,6 +16,7 @@ exports.create = (req, res) => {
     image: req.body.image,
     status: req.body.status,
     supplierId: req.body.supplierId,
+    locationId: req.body.locationId,
     createdAt: today,
   };
 
@@ -46,7 +47,10 @@ exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-  Asset.findAll({ where: condition, include: db.Supplier })
+  Asset.findAll({
+    where: condition,
+    include: [{ model: db.Supplier }, { model: db.Location }],
+  })
     .then((data) => {
       res.send(data);
     })
@@ -61,14 +65,20 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-
-  Asset.findByPk(id)
+  Asset.findOne({
+    where: { id: id },
+    include: [
+      {
+        model: db.Supplier,
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Asset with id=" + id,
+        message: err.message || "Some error occurred while retrieving.",
       });
     });
 };
@@ -158,7 +168,6 @@ exports.getSupplier = (req, res) => {
       {
         model: db.Supplier,
         attributes: ["id", "name"],
-        as: "supplier",
       },
     ],
   })
@@ -173,7 +182,7 @@ exports.getSupplier = (req, res) => {
 };
 
 exports.getSupplierAll = (req, res) => {
-  Asset.findAll({ include: db.Supplier })
+  Asset.findAll({ include: [{ model: db.Supplier }, { model: db.Location }] })
     .then((data) => res.send(data))
     .catch((err) => {
       res.status(500).send({
