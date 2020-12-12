@@ -8,6 +8,7 @@ import DashboardView from 'src/views/reports/DashboardView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import SettingsView from 'src/views/settings/SettingsView';
+import UserView from 'src/views/user';
 import AssetView from 'src/views/asset';
 import Login from 'src/views/auth/Login';
 import Register from 'src/views/auth/Register';
@@ -24,6 +25,7 @@ const routes = isLoggedIn => [
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
+      { path: 'users', element: <UserView /> },
       { path: 'assets', element: <AssetView /> },
       { path: 'suppliers', element: <Supplier /> },
       { path: 'locations', element: <Location />},

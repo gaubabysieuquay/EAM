@@ -63,6 +63,12 @@ const items = [
     role: ''
   },
   {
+    href: '/app/users',
+    icon: People,
+    title: 'Người dùng',
+    role: ''
+  },
+  {
     href: '/app/assets',
     icon: WebAsset,
     title: 'Quản lý cơ sở vật chất',
