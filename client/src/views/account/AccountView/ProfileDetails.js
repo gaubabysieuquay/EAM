@@ -13,7 +13,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-import AuthService from "src/services/auth";
+import AuthService from 'src/services/auth';
 
 const states = [
   {
@@ -37,17 +37,10 @@ const useStyles = makeStyles(() => ({
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
   const currentUser = AuthService.getCurrentUser();
-  
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
 
-  const handleChange = (event) => {
+  const [values, setValues] = useState({});
+
+  const handleChange = event => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -62,21 +55,11 @@ const ProfileDetails = ({ className, ...rest }) => {
       {...rest}
     >
       <Card>
-        <CardHeader
-          subheader="Thông tin có thể chỉnh sửa"
-          title="Profile"
-        />
+        <CardHeader subheader="Thông tin có thể chỉnh sửa" title="Profile" />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 helperText="Vui lòng điền đầy đủ họ tên"
@@ -84,30 +67,22 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={currentUser.firstName}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Tên"
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={currentUser.lastName}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Địa chỉ Email"
@@ -118,41 +93,29 @@ const ProfileDetails = ({ className, ...rest }) => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Số điện thoại"
                 name="phone"
                 onChange={handleChange}
                 type="number"
-                value={values.phone}
+                value={currentUser.phone}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Quốc gia"
                 name="country"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={currentUser.country}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Tỉnh"
@@ -161,14 +124,11 @@ const ProfileDetails = ({ className, ...rest }) => {
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={currentUser.state}
                 variant="outlined"
               >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
+                {states.map(option => (
+                  <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
@@ -177,15 +137,8 @@ const ProfileDetails = ({ className, ...rest }) => {
           </Grid>
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-          >
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button color="primary" variant="contained">
             Lưu thông tin
           </Button>
         </Box>
