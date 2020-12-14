@@ -1,9 +1,12 @@
 //Authentication
-const { verifySignUp } = require("../middlewares");
-const controller = require("../controllers/auth");
+module.exports = (app) => {
+  const { verifySignUp } = require("../middlewares");
+  const controller = require("../controllers/auth");
+  const cors = require("cors");
+  const router = require("express").Router();
+  router.use(cors());
 
-module.exports = function (app) {
-  app.use(function (req, res, next) {
+  app.use((req, res, next) => {
     res.header(
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
@@ -21,4 +24,20 @@ module.exports = function (app) {
   );
 
   app.post("/api/auth/signin", controller.signin);
+
+  router.post("/", controller.signup, [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted]);
+
+  router.get("/", controller.findAll);
+
+  router.get("/:id", controller.findOne);
+
+  router.get("/username", controller.findAllByName);
+
+  router.put("/:id", controller.update);
+
+  router.delete("/:id", controller.delete);
+
+  router.delete("/", controller.deleteAll);
+
+  app.use("/users", router);
 };

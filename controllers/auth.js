@@ -11,13 +11,24 @@ const bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   //Save User to database.
-  User.create({
-    email: req.body.email,
+  const userData = {
     username: req.body.username,
+    email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
-  })
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    address: req.body.address,
+    city: req.body.city,
+    state: req.body.state,
+    country: req.body.country,
+    phone: req.body.phone,
+    image: req.body.image,
+    roles: req.body.roles
+  };
+  User.create(userData)
     .then((user) => {
       if (req.body.roles) {
+        console.log("req:" + req.body.roles)
         Role.findAll({
           where: {
             name: {
@@ -39,6 +50,7 @@ exports.signup = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -47,7 +59,7 @@ exports.signin = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not Found." });
+        return res.status(404).send({ message: "Không tìm thấy tài khoản." });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -58,7 +70,7 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password",
+          message: "Nhập sai mật khẩu",
         });
       }
 
@@ -83,5 +95,109 @@ exports.signin = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
+    });
+};
+
+exports.findAll = (req, res) => {
+  var condition = { username: { [Op.not]: "mod" } };
+
+  User.findAll({ where: condition, include: [{ model: db.Role }] })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error Some error occurred while retrieving the User.",
+      });
+    });
+};
+
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+  User.findOne({
+    where: { id: id },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving.",
+      });
+    });
+};
+
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  User.update(req.body, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "User was updated successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot update User with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating User with id=" + id,
+      });
+    });
+};
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  User.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({ message: "User was deleted successfully!" });
+      } else {
+        res.send({
+          message: `Cannot delete User with id=${id}`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Could not delete User with id=" + id,
+      });
+    });
+};
+
+exports.deleteAll = (req, res) => {
+  User.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      res.send({ message: `${nums} Users were deleted successfully` });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while removing all users.",
+      });
+    });
+};
+
+exports.findAllByName = (req, res) => {
+  User.findAll({ where: req.body.username })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving.",
+      });
     });
 };

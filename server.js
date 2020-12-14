@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
 require("./routes/user")(app);
+require("./routes/role")(app);
 require("./routes/auth")(app);
 require('./routes/asset')(app);
 require('./routes/supplier')(app);
