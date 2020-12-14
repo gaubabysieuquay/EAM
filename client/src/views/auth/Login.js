@@ -87,7 +87,7 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={3}>
               <Typography color="textPrimary" variant="h2">
-                Sign in
+                Đăng nhập
               </Typography>
             </Box>
             <Controller
@@ -108,7 +108,7 @@ const Login = () => {
               name="password"
               control={control}
               fullWidth
-              label="Password"
+              label="Mật khẩu"
               margin="normal"
               type="password"
               variant="outlined"
@@ -125,7 +125,7 @@ const Login = () => {
                 type="submit"
                 variant="contained"
               >
-                Sign in now
+                Đăng nhập
               </Button>
               {message && (
                 <Snackbar
@@ -144,9 +144,9 @@ const Login = () => {
               )}
             </Box>
             <Typography color="textSecondary" variant="body1">
-              Don&apos;t have an account?{' '}
+              Không có tài khoản?{' '}
               <Link component={RouterLink} to="/register" variant="h6">
-                Sign up
+                Đăng ký ngay
               </Link>
             </Typography>
           </form>

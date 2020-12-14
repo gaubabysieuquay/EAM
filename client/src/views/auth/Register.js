@@ -42,12 +42,26 @@ const schema = Yup.object().shape({
 
 const RegisterView = () => {
   const classes = useStyles();
+  const initialFormState = {
+    id: '',
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    state: '',
+    country: '',
+    phone: '',
+    email: ''
+  };
 
   const [message, setMessage] = useState('');
   const [successful, setSuccessful] = useState(false);
   const [open, setOpen] = useState(false);
   const { control, handleSubmit, errors } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: initialFormState
   });
 
   const handleClose = (event, reason) => {
@@ -63,7 +77,7 @@ const RegisterView = () => {
     setMessage('');
     setSuccessful(false);
 
-    AuthService.register(values.username, values.email, values.password).then(
+    AuthService.register(values).then(
       response => {
         setMessage(response.data.message);
         console.log(response.data.message);
@@ -95,10 +109,10 @@ const RegisterView = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={3}>
               <Typography color="textPrimary" variant="h2">
-                Create new account
+                Tạo tài khoản mới
               </Typography>
               <Typography color="textSecondary" gutterBottom variant="body2">
-                Use your email to create new account
+                Vui lòng cung cấp các thông tin sau
               </Typography>
             </Box>
             <Controller
@@ -106,7 +120,7 @@ const RegisterView = () => {
               name="username"
               control={control}
               fullWidth
-              label="Username"
+              label="Username (*)"
               margin="normal"
               type="text"
               variant="outlined"
@@ -119,7 +133,7 @@ const RegisterView = () => {
               name="email"
               control={control}
               fullWidth
-              label="Email Address"
+              label="Email (*)"
               margin="normal"
               type="email"
               variant="outlined"
@@ -132,13 +146,104 @@ const RegisterView = () => {
               name="password"
               control={control}
               fullWidth
-              label="Password"
+              label="Mật khẩu (*)"
               margin="normal"
               type="password"
               variant="outlined"
               defaultValue=""
               error={Boolean(errors.password)}
               helperText={errors.password?.message}
+            />
+            <Controller
+              as={TextField}
+              name="firstName"
+              control={control}
+              fullWidth
+              label="Tên"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.firstName)}
+              helperText={errors.firstName?.message}
+            />
+            <Controller
+              as={TextField}
+              name="lastName"
+              control={control}
+              fullWidth
+              label="Họ"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.lastName)}
+              helperText={errors.lastName?.message}
+            />
+            <Controller
+              as={TextField}
+              name="address"
+              control={control}
+              fullWidth
+              label="Địa chỉ"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.address)}
+              helperText={errors.address?.message}
+            />
+            <Controller
+              as={TextField}
+              name="city"
+              control={control}
+              fullWidth
+              label="Thành phố"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.city)}
+              helperText={errors.city?.message}
+            />
+            <Controller
+              as={TextField}
+              name="state"
+              control={control}
+              fullWidth
+              label="Tỉnh"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.state)}
+              helperText={errors.state?.message}
+            />
+            <Controller
+              as={TextField}
+              name="country"
+              control={control}
+              fullWidth
+              label="Quốc gia"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.country)}
+              helperText={errors.country?.message}
+            />
+            <Controller
+              as={TextField}
+              name="phone"
+              control={control}
+              fullWidth
+              label="SDT"
+              margin="normal"
+              type="text"
+              variant="outlined"
+              defaultValue=""
+              error={Boolean(errors.phone)}
+              helperText={errors.phone?.message}
             />
             <Box my={2}>
               <Button
@@ -148,7 +253,7 @@ const RegisterView = () => {
                 type="submit"
                 variant="contained"
               >
-                Sign up now
+                Đăng ký
               </Button>
               {message && (
                 <Snackbar
@@ -166,9 +271,9 @@ const RegisterView = () => {
               )}
             </Box>
             <Typography color="textSecondary" variant="body1">
-              Have an account?{' '}
+              Đã có tài khoản?{' '}
               <Link component={RouterLink} to="/login" variant="h6">
-                Sign in
+                Đăng nhập
               </Link>
             </Typography>
           </form>
