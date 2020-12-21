@@ -5,6 +5,8 @@ import {
   Box,
   Card,
   Checkbox,
+  Chip,
+  colors,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -20,10 +22,8 @@ import {
   Switch,
   makeStyles
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
@@ -165,15 +165,15 @@ const Results = ({
   const statusInfo = value => {
     switch (value) {
       case 1:
-        return <Alert severity="success">Sẵn sàng</Alert>;
+        return <Chip style={{backgroundColor: colors.lightGreen[400]}} label='Sẵn sàng'/>;
       case 2:
-        return <Alert severity="warning">Chờ duyệt</Alert>;
+        return <Chip style={{backgroundColor: colors.yellow[300]}} label='Chờ duyệt'/>;
       case 3:
-        return <Alert severity="error">Không sẵn sàng</Alert>;
+        return <Chip style={{backgroundColor: colors.red[400]}} label='Không sẵn sàng'/>;
       case 4:
-        return <Alert severity="info">Lưu trữ</Alert>;
+        return <Chip style={{backgroundColor: colors.lightBlue[400]}} label='Lưu trữ'/>;
       default:
-        return <Alert severity="info">Chưa cập nhật</Alert>;
+        return <Chip style={{backgroundColor: colors.purple[200]}} label='Chưa cập nhật'/>;
     }
   };
 
@@ -250,7 +250,7 @@ const Results = ({
                         <IconButton
                           aria-label="delete"
                           size="small"
-                          style={{ color: red[500] }}
+                          style={{ color: colors.red[500] }}
                           onClick={() => deleteAsset(asset.id)}
                         >
                           <DeleteIcon />
