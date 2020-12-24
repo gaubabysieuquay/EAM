@@ -14,6 +14,8 @@ module.exports = (app) => {
 
   router.get("/:supplierId/asset", assets.getSupplier);
 
+  router.get("/asset/expireDate", assets.findAllByExpire)
+
   router.put("/:id", assets.update);
 
   router.delete("/:id", assets.delete);

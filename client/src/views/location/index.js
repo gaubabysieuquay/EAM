@@ -94,7 +94,7 @@ const LocationListView = props => {
   }, []);
 
   return (
-    <Page className={classes.root} title="Nhà cung cấp">
+    <Page className={classes.root} title="Địa điểm">
       <Container maxWidth={false}>
         <Toolbar
           search={search}

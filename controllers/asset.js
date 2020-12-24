@@ -1,3 +1,4 @@
+const sequelize = require("sequelize");
 const db = require("../models");
 const Asset = db.Asset;
 const Op = db.Sequelize.Op;
@@ -141,6 +142,27 @@ exports.deleteAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all assets.",
+      });
+    });
+};
+
+//Find all expire day
+exports.findAllByExpire = (req, res) => {
+  Asset.findAll({
+    where: sequelize.where(
+      sequelize.fn("date", sequelize.col("purchaseDate")),
+      "=",
+      sequelize.fn("date", sequelize.fn("now"))
+    ),
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error Some error occurred while retrieving the Asset.",
       });
     });
 };

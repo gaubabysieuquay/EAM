@@ -16,7 +16,8 @@ const sequelize = new Sequelize(
   {
     host: config.host,
     dialect: config.dialect,
-  }
+    timezone: config.timezone,
+  },
 );
 
 fs.readdirSync(__dirname)
@@ -67,7 +68,6 @@ db.Supplier.hasMany(db.Asset, {
   targetKey: "id",
 });
 
-
 db.Asset.belongsTo(db.Location, {
   onDelete: "cascade",
   foreignKey: "locationId",
@@ -78,7 +78,6 @@ db.Location.hasMany(db.Asset, {
   foreignKey: "locationId",
   targetKey: "id",
 });
-
 
 db.ROLES = ["user", "admin", "moderator"];
 

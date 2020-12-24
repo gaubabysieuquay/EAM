@@ -6,6 +6,7 @@ const database = process.env.DATABASE;
 const host = process.env.HOST;
 const node_env = process.env.NODE_ENV;
 const dialect = process.env.DIALECT;
+const timezone = process.env.TIMEZONE;
 
 const config = {
   dev: {
@@ -14,6 +15,7 @@ const config = {
     database,
     host,
     dialect,
+    timezone,
   },
   test: {},
   prod: {},
