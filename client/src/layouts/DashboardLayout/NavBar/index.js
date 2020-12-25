@@ -66,13 +66,13 @@ const items = [
     href: '/app/users',
     icon: People,
     title: 'Người dùng',
-    role: ''
+    role: 'moderator'
   },
   {
     href: '/app/assets',
     icon: WebAsset,
     title: 'Quản lý cơ sở vật chất',
-    role: 'moderator'
+    role: ''
   },
   {
     href: '/app/suppliers',

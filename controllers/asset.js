@@ -150,7 +150,7 @@ exports.deleteAll = (req, res) => {
 exports.findAllByExpire = (req, res) => {
   Asset.findAll({
     where: sequelize.where(
-      sequelize.fn("date", sequelize.col("purchaseDate")),
+      sequelize.fn("date", sequelize.col("warranty")),
       "=",
       sequelize.fn("date", sequelize.fn("now"))
     ),

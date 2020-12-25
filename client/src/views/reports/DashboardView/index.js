@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Asset from './Asset';
-import LatestOrders from './LatestOrders';
+import Warranty from './Warranty';
 import LatestProducts from './LatestProducts';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
@@ -106,7 +106,7 @@ const Dashboard = () => {
             xl={9}
             xs={12}
           >
-            <LatestOrders />
+            <Warranty />
           </Grid>
         </Grid>
       </Container>

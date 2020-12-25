@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -12,47 +12,83 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-
 import AuthService from 'src/services/auth';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+const schema = Yup.object().shape({
+  email: Yup.string()
+    .email('Email không hợp lệ')
+    .max(255)
+    .required('Xin hãy điền email!'),
+  firstName: Yup.string()
+    .max(255)
+    .required('Xin hãy điền họ của bạn!'),
+  lastName: Yup.string()
+    .max(255)
+    .required('Xin hãy điền tên của bạn!'),
+  address: Yup.string()
+    .max(255)
+    .required('Xin hãy điền địa chỉ của bạn!'),
+  city: Yup.string()
+    .max(255)
+    .required('Xin hãy điền thành phố của bạn!'),
+  country: Yup.string()
+    .max(255)
+    .required('Xin hãy điền quốc gia!'),
+  phone: Yup.string()
+    .max(255)
+    .required('Xin hãy điền SDT!')
+});
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
 const ProfileDetails = ({ className, ...rest }) => {
+  const initialFormState = {
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    state: '',
+    country: '',
+    phone: '',
+    image: ''
+  };
   const classes = useStyles();
-  const currentUser = AuthService.getCurrentUser();
-
-  const [values, setValues] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const { control, errors, reset } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: initialFormState
+  });
 
   const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
+    const { name, value } = event.target;
+    setCurrentUser({ ...currentUser, [name]: value });
+    console.log('name: ' + name, 'value: ' + value);
   };
+
+  const getCurrentUser = () => {
+    AuthService.getCurrentUser()
+      .then(response => {
+        setCurrentUser(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   return (
     <form
-      autoComplete="off"
-      noValidate
       className={clsx(classes.root, className)}
-      {...rest}
     >
       <Card>
         <CardHeader subheader="Thông tin có thể chỉnh sửa" title="Profile" />
@@ -60,26 +96,47 @@ const ProfileDetails = ({ className, ...rest }) => {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Vui lòng điền đầy đủ họ tên"
-                label="Họ"
+              <Controller
+                control={control}
+                error={Boolean(errors.firstName)}
+                helperText={errors.firstName?.message}
                 name="firstName"
-                onChange={handleChange}
-                required
-                value={currentUser.firstName}
-                variant="outlined"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="firstName"
+                    value={currentUser.firstName}
+                    onChange={handleChange}
+                    label="Họ"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Tên"
+            <Controller
+                control={control}
+                error={Boolean(errors.lastName)}
+                helperText={errors.lastName?.message}
                 name="lastName"
-                onChange={handleChange}
-                required
-                value={currentUser.lastName}
-                variant="outlined"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="lastName"
+                    value={currentUser.lastName}
+                    onChange={handleChange}
+                    label="Tên"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item md={6} xs={12}>
@@ -99,7 +156,6 @@ const ProfileDetails = ({ className, ...rest }) => {
                 label="Số điện thoại"
                 name="phone"
                 onChange={handleChange}
-                type="number"
                 value={currentUser.phone}
                 variant="outlined"
               />
@@ -122,17 +178,9 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="state"
                 onChange={handleChange}
                 required
-                select
-                SelectProps={{ native: true }}
                 value={currentUser.state}
                 variant="outlined"
-              >
-                {states.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              ></TextField>
             </Grid>
           </Grid>
         </CardContent>

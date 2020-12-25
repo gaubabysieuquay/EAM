@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       warranty: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATE,
       },
       note: {
         type: Sequelize.STRING,

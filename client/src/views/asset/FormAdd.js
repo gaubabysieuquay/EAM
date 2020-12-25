@@ -81,6 +81,10 @@ const FormAdd = ({ onAdd }) => {
     setValue('purchaseDate', value);
   };
 
+  const handleChangeWarranty = value => {
+    setValue('warranty', value);
+  };
+
   const handleChangeStatus = (_, value) => {
     setValue('status', value.type);
   };
@@ -294,20 +298,32 @@ const FormAdd = ({ onAdd }) => {
       />
       <Controller
         control={control}
-        as={TextField}
         error={Boolean(errors.warranty)}
         helperText={errors.warranty?.message}
         name="warranty"
-        fullWidth
-        label="Bảo hành"
-        margin="normal"
-        variant="outlined"
-        InputProps={{
-          endAdornment: <InputAdornment position="end">Month</InputAdornment>
-        }}
-        InputLabelProps={{
-          shrink: true
-        }}
+        render={() => (
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              name="warranty"
+              inputVariant="outlined"
+              variant="inline"
+              format="DD/MM/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Ngày bảo hành"
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+              InputLabelProps={{
+                shrink: true
+              }}
+              value={getValues('warranty')}
+              onChange={handleChangeWarranty}
+            />
+          </MuiPickersUtilsProvider>
+        )}
       />
       <Controller
         control={control}
