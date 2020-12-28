@@ -45,18 +45,19 @@ db.Sequelize = Sequelize;
 
 //Associations
 db.Role.belongsToMany(db.User, {
-  through: "UserRole",
+  through: "User_role",
   foreignKey: "roleId",
   otherKey: "userId",
   onDelete: "cascade",
 });
 db.User.belongsToMany(db.Role, {
-  through: "UserRole",
+  through: "User_role",
   foreignKey: "userId",
   otherKey: "roleId",
   onDelete: "cascade",
 });
 
+//1:M Asset-Supplier
 db.Asset.belongsTo(db.Supplier, {
   onDelete: "cascade",
   foreignKey: "supplierId",
@@ -67,6 +68,8 @@ db.Supplier.hasMany(db.Asset, {
   foreignKey: "supplierId",
   targetKey: "id",
 });
+
+//1:M Asset-Location
 db.Asset.belongsTo(db.Location, {
   onDelete: "cascade",
   foreignKey: "locationId",
@@ -78,6 +81,7 @@ db.Location.hasMany(db.Asset, {
   targetKey: "id",
 });
 
+//1:M Accessory-Supplier
 db.Accessory.belongsTo(db.Supplier, {
   onDelete: "cascade",
   foreignKey: "supplierId",
@@ -88,6 +92,8 @@ db.Supplier.hasMany(db.Accessory, {
   foreignKey: "supplierId",
   targetKey: "id",
 });
+
+//1:M Accessory-Location
 db.Accessory.belongsTo(db.Location, {
   onDelete: "cascade",
   foreignKey: "locationId",
@@ -98,6 +104,9 @@ db.Location.hasMany(db.Accessory, {
   foreignKey: "locationId",
   targetKey: "id",
 });
+
+//M:M Location-Asset
+
 
 db.ROLES = ["user", "admin", "moderator"];
 
