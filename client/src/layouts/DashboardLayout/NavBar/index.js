@@ -12,6 +12,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {
+  Keyboard,
   Room,
   Person,
   People,
@@ -28,7 +29,6 @@ import AuthService from 'src/services/auth';
 const users = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Junior Developer',
-  name: 'Katarina Smith'
 };
 
 const items = [
@@ -72,6 +72,12 @@ const items = [
     href: '/app/assets',
     icon: WebAsset,
     title: 'Quản lý cơ sở vật chất',
+    role: ''
+  },
+  {
+    href: '/app/accessories',
+    icon: Keyboard,
+    title: 'Quản lý linh kiện',
     role: ''
   },
   {

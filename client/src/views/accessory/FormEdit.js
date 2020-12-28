@@ -15,36 +15,24 @@ import {
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
-import AssetService from 'src/services/asset';
+import AccessoryService from 'src/services/accessory';
 import SupplierService from 'src/services/supplier';
 import LocationService from 'src/services/location';
 
 const schema = Yup.object().shape({
-  barcode: Yup.string()
+  name: Yup.string()
     .max(255)
-    .required('Barcode is required'),
-  serial: Yup.string()
-    .max(255)
-    .required('Serial is required'),
+    .required('Nhập tên linh kiện!'),
   model: Yup.string()
     .max(255)
-    .required('Model is required'),
-  supplier: Yup.string()
-    .max(255)
-    .required('Supplier is required'),
+    .required('Nhập số model!'),
   purchaseCost: Yup.string()
     .max(255)
-    .required('Purchase Cost is required')
+    .required('Nhập giá tiền!'),
+  quantity: Yup.string()
+    .max(255)
+    .required('Nhập số lượng!')
 });
-
-const statusList = [
-  { name: 'Sẵn sàng sử dụng', type: 1 },
-  { name: 'Chờ duyệt', type: 2 },
-  { name: 'Đang sửa chữa', type: 3 },
-  { name: 'Thất lạc', type: 3 },
-  { name: 'Không thể sửa chữa', type: 3 },
-  { name: 'Lưu trữ', type: 4 }
-];
 
 const defaultData = [
   { id: 1, name: 'TestSup00' },
@@ -53,23 +41,22 @@ const defaultData = [
 
 const FormEdit = ({ id, onUpdate }) => {
   const initialFormState = {
+    id: '',
     name: '',
-    barcode: '',
+    manufacturer: '',
     model: '',
-    serial: '',
-    supplierId: '',
     purchaseDate: null,
     purchaseCost: '',
-    status: 0,
-    warranty: null,
+    quantity: '',
     note: '',
+    supplierId: '',
     locationId: ''
   };
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [asset, setAsset] = useState(initialFormState);
+  const [accessory, setAccessory] = useState(initialFormState);
   const [supplier, setSupplier] = useState([]);
   const [location, setLocation] = useState([]);
   const { control, errors, reset } = useForm({
@@ -83,36 +70,25 @@ const FormEdit = ({ id, onUpdate }) => {
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setAsset({ ...asset, [name]: value });
+    setAccessory({ ...accessory, [name]: value });
   };
 
   const handleChangeDate = date => {
-    setAsset({ ...asset, purchaseDate: date });
-  };
-
-  const handleChangeWarranty = date => {
-    setAsset({ ...asset, warranty: date });
-  };
-
-  const handleChangeStatus = (_, value) => {
-    setAsset({ ...asset, status: value.type });
+    setAccessory({ ...accessory, purchaseDate: date });
   };
 
   const handleChangeSupplier = (_, value) => {
-    setAsset({ ...asset, supplierId: value.id });
+    setAccessory({ ...accessory, supplierId: value.id });
   };
 
   const handleChangeLocation = (_, value) => {
-    setAsset({ ...asset, locationId: value.id });
+    setAccessory({ ...accessory, locationId: value.id });
   };
 
-  const objIndex =
-    statusList[statusList.findIndex(value => value.type === asset.status)];
-
-  const getAsset = id => {
-    AssetService.get(id)
+  const getAccessory = id => {
+    AccessoryService.get(id)
       .then(response => {
-        setAsset(response.data);
+        setAccessory(response.data);
       })
       .catch(err => {
         console.log(err);
@@ -120,7 +96,7 @@ const FormEdit = ({ id, onUpdate }) => {
   };
 
   useEffect(() => {
-    getAsset(id);
+    getAccessory(id);
   }, [id]);
 
   const getSupplierAll = () => {
@@ -154,9 +130,9 @@ const FormEdit = ({ id, onUpdate }) => {
           <TextField
             fullWidth
             name="name"
-            value={asset.name}
+            value={accessory.name}
             onChange={handleChange}
-            label="Tên tài sản"
+            label="Tên linh kiện"
             margin="normal"
             variant="outlined"
             InputLabelProps={{
@@ -167,16 +143,16 @@ const FormEdit = ({ id, onUpdate }) => {
       />
       <Controller
         control={control}
-        error={Boolean(errors.barcode)}
-        helperText={errors.barcode?.message}
-        name="barcode"
+        error={Boolean(errors.manufacturer)}
+        helperText={errors.manufacturer?.message}
+        name="manufacturer"
         render={() => (
           <TextField
             fullWidth
-            name="barcode"
-            value={asset.barcode}
+            name="manufacturer"
+            value={accessory.manufacturer}
             onChange={handleChange}
-            label="Barcode"
+            label="Nhà sản xuất"
             margin="normal"
             variant="outlined"
             InputLabelProps={{
@@ -196,27 +172,7 @@ const FormEdit = ({ id, onUpdate }) => {
             name="model"
             label="Model"
             margin="normal"
-            value={asset.model}
-            onChange={handleChange}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        error={Boolean(errors.serial)}
-        helperText={errors.serial?.message}
-        name="serial"
-        render={() => (
-          <TextField
-            fullWidth
-            name="serial"
-            label="Serial"
-            margin="normal"
-            value={asset.serial}
+            value={accessory.model}
             onChange={handleChange}
             variant="outlined"
             InputLabelProps={{
@@ -243,7 +199,7 @@ const FormEdit = ({ id, onUpdate }) => {
               id="date-picker"
               label="Ngày mua"
               onChange={handleChangeDate}
-              value={asset.purchaseDate}
+              value={accessory.purchaseDate}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
@@ -259,7 +215,7 @@ const FormEdit = ({ id, onUpdate }) => {
           <Autocomplete
             options={supplier}
             onChange={handleChangeSupplier}
-            value={asset.Supplier || supplier[0] || defaultData[0]}
+            value={accessory.Supplier || supplier[0] || defaultData[0]}
             getOptionLabel={option => option.name}
             getOptionSelected={(option, value) => option.id === value.id}
             renderInput={params => (
@@ -285,7 +241,7 @@ const FormEdit = ({ id, onUpdate }) => {
           <Autocomplete
             options={location}
             onChange={handleChangeLocation}
-            value={asset.Location || supplier[0] || defaultData[1]}
+            value={accessory.Location || supplier[0] || defaultData[1]}
             getOptionLabel={option => option.name}
             getOptionSelected={(option, value) => option.id === value.id}
             renderInput={params => (
@@ -317,7 +273,7 @@ const FormEdit = ({ id, onUpdate }) => {
             name="purchaseCost"
             label="Giá mua"
             margin="normal"
-            value={asset.purchaseCost}
+            value={accessory.purchaseCost}
             onChange={handleChange}
             variant="outlined"
             InputProps={{
@@ -330,58 +286,25 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <Controller
+        control={control}
+        error={Boolean(errors.quantity)}
+        helperText={errors.quantity?.message}
+        name="quantity"
         render={() => (
-          <Autocomplete
-            options={statusList}
-            onChange={handleChangeStatus}
-            value={objIndex || statusList[1]}
-            getOptionLabel={option => option.name}
-            getOptionSelected={(option, value) => option.type === value.type}
-            renderInput={params => (
-              <TextField
-                {...params}
-                label="Tình trạng"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                variant="outlined"
-                margin="normal"
-                name="status"
-                fullWidth
-              />
-            )}
+          <TextField
+            fullWidth
+            name="quantity"
+            label="Ghi chú"
+            margin="normal"
+            value={accessory.quantity}
+            onChange={handleChange}
+            variant="outlined"
+            rows={4}
+            multiline
+            InputLabelProps={{
+              shrink: true
+            }}
           />
-        )}
-        name="status"
-        control={control}
-      />
-      <Controller
-        control={control}
-        error={Boolean(errors.warranty)}
-        helperText={errors.warranty?.message}
-        name="warranty"
-        render={() => (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              fullWidth
-              name="warranty"
-              inputVariant="outlined"
-              variant="inline"
-              format="DD/MM/yyyy"
-              margin="normal"
-              id="date-picker-warranty"
-              label="Ngày bảo hành"
-              onChange={handleChangeWarranty}
-              value={asset.warranty}
-              KeyboardButtonProps={{
-                'aria-label': 'change date'
-              }}
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-          </MuiPickersUtilsProvider>
         )}
       />
       <Controller
@@ -395,7 +318,7 @@ const FormEdit = ({ id, onUpdate }) => {
             name="note"
             label="Ghi chú"
             margin="normal"
-            value={asset.note}
+            value={accessory.note}
             onChange={handleChange}
             variant="outlined"
             rows={4}
@@ -407,7 +330,7 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <DialogActions>
-        <Button color="primary" onClick={() => onUpdate(id, asset)}>
+        <Button color="primary" onClick={() => onUpdate(id, accessory)}>
           Xác nhận
         </Button>
       </DialogActions>

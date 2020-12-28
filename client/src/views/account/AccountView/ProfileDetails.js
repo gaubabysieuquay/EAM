@@ -60,22 +60,36 @@ const ProfileDetails = ({ className, ...rest }) => {
     image: ''
   };
   const classes = useStyles();
-  const [currentUser, setCurrentUser] = useState({});
+  const currentUser = AuthService.getCurrentUser();
   const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
 
+  const [user, setUser] = useState(initialFormState);
+
   const handleChange = event => {
     const { name, value } = event.target;
-    setCurrentUser({ ...currentUser, [name]: value });
+    setUser({ ...user, [name]: value });
     console.log('name: ' + name, 'value: ' + value);
   };
 
-  const getCurrentUser = () => {
-    AuthService.getCurrentUser()
+  const getUser = () => {
+    AuthService.get(currentUser.id)
       .then(response => {
-        setCurrentUser(response.data);
+        setUser(response.data);
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const updateUser = (id, data) => {
+    AuthService.update(id, data)
+      .then(response => {
+        getUser();
+        console.log(response);
       })
       .catch(err => {
         console.log(err);
@@ -83,18 +97,16 @@ const ProfileDetails = ({ className, ...rest }) => {
   };
 
   useEffect(() => {
-    getCurrentUser();
+    getUser();
   }, []);
 
   return (
-    <form
-      className={clsx(classes.root, className)}
-    >
+    <form className={clsx(classes.root, className)}>
       <Card>
         <CardHeader subheader="Thông tin có thể chỉnh sửa" title="Profile" />
         <Divider />
         <CardContent>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid item md={6} xs={12}>
               <Controller
                 control={control}
@@ -105,7 +117,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="firstName"
-                    value={currentUser.firstName}
+                    value={user.firstName}
                     onChange={handleChange}
                     label="Họ"
                     margin="normal"
@@ -118,7 +130,7 @@ const ProfileDetails = ({ className, ...rest }) => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-            <Controller
+              <Controller
                 control={control}
                 error={Boolean(errors.lastName)}
                 helperText={errors.lastName?.message}
@@ -127,7 +139,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="lastName"
-                    value={currentUser.lastName}
+                    value={user.lastName}
                     onChange={handleChange}
                     label="Tên"
                     margin="normal"
@@ -140,53 +152,146 @@ const ProfileDetails = ({ className, ...rest }) => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Địa chỉ Email"
+              <Controller
+                control={control}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
                 name="email"
-                onChange={handleChange}
-                required
-                value={currentUser.email}
-                variant="outlined"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
+                    label="Email"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Số điện thoại"
+              <Controller
+                control={control}
+                error={Boolean(errors.phone)}
+                helperText={errors.phone?.message}
                 name="phone"
-                onChange={handleChange}
-                value={currentUser.phone}
-                variant="outlined"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="phone"
+                    value={user.phone}
+                    onChange={handleChange}
+                    label="SDT"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Quốc gia"
-                name="country"
-                onChange={handleChange}
-                required
-                value={currentUser.country}
-                variant="outlined"
+              <Controller
+                control={control}
+                error={Boolean(errors.city)}
+                helperText={errors.city?.message}
+                name="city"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="city"
+                    value={user.city}
+                    onChange={handleChange}
+                    label="Thành phố"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Tỉnh"
+              <Controller
+                control={control}
+                error={Boolean(errors.state)}
+                helperText={errors.state?.message}
                 name="state"
-                onChange={handleChange}
-                required
-                value={currentUser.state}
-                variant="outlined"
-              ></TextField>
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="state"
+                    value={user.state}
+                    onChange={handleChange}
+                    label="Tỉnh"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Controller
+                control={control}
+                error={Boolean(errors.address)}
+                helperText={errors.address?.message}
+                name="address"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="address"
+                    value={user.address}
+                    onChange={handleChange}
+                    label="Địa chỉ"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Controller
+                control={control}
+                error={Boolean(errors.city)}
+                helperText={errors.city?.message}
+                name="city"
+                render={() => (
+                  <TextField
+                    fullWidth
+                    name="city"
+                    value={user.city}
+                    onChange={handleChange}
+                    label="Thành phố"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
+              />
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
         <Box display="flex" justifyContent="flex-end" p={2}>
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => updateUser(currentUser.id, user)}
+          >
             Lưu thông tin
           </Button>
         </Box>

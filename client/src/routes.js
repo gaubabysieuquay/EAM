@@ -10,6 +10,7 @@ import ProductListView from 'src/views/product/ProductListView';
 import SettingsView from 'src/views/settings/SettingsView';
 import UserView from 'src/views/user';
 import AssetView from 'src/views/asset';
+import AccessoryView from 'src/views/accessory';
 import Login from 'src/views/auth/Login';
 import Register from 'src/views/auth/Register';
 import Supplier from 'src/views/supplier';
@@ -27,6 +28,7 @@ const routes = isLoggedIn => [
       { path: 'settings', element: <SettingsView /> },
       { path: 'users', element: <UserView /> },
       { path: 'assets', element: <AssetView /> },
+      { path: 'accessories', element: <AccessoryView /> },
       { path: 'suppliers', element: <Supplier /> },
       { path: 'locations', element: <Location />},
       { path: '*', element: <Navigate to="/404" /> },

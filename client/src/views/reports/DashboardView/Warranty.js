@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Button,
+  colors,
   Card,
   CardHeader,
   Chip,
@@ -36,6 +37,32 @@ const Warranty = ({ className, ...rest }) => {
   const [warranty, setWarranty] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const statusInfo = value => {
+    switch (value) {
+      case 1:
+        return <Chip style={{backgroundColor: colors.lightGreen[400]}} label='Sẵn sàng'/>;
+      case 2:
+        return <Chip style={{backgroundColor: colors.yellow[300]}} label='Chờ duyệt'/>;
+      case 3:
+        return <Chip style={{backgroundColor: colors.red[400]}} label='Không sẵn sàng'/>;
+      case 4:
+        return <Chip style={{backgroundColor: colors.lightBlue[400]}} label='Lưu trữ'/>;
+      default:
+        return <Chip style={{backgroundColor: colors.purple[200]}} label='Chưa cập nhật'/>;
+    }
+  };
+
+  const updateAsset = (id, data) => {
+    AssetService.update(id, data)
+      .then(response => {
+        getWarranty();
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   const getWarranty = () => {
     AssetService.getExpireDate()
@@ -80,6 +107,7 @@ const Warranty = ({ className, ...rest }) => {
                 <TableCell>Barcode</TableCell>
                 <TableCell>Serial</TableCell>
                 <TableCell>Model</TableCell>
+                <TableCell>Tình trạng</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -96,6 +124,7 @@ const Warranty = ({ className, ...rest }) => {
                   <TableCell>{warranties.barcode}</TableCell>
                   <TableCell>{warranties.serial}</TableCell>
                   <TableCell>{warranties.model}</TableCell>
+                  <TableCell>{statusInfo(warranties.status)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

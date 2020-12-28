@@ -67,13 +67,33 @@ db.Supplier.hasMany(db.Asset, {
   foreignKey: "supplierId",
   targetKey: "id",
 });
-
 db.Asset.belongsTo(db.Location, {
   onDelete: "cascade",
   foreignKey: "locationId",
   targetKey: "id",
 });
 db.Location.hasMany(db.Asset, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+
+db.Accessory.belongsTo(db.Supplier, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Supplier.hasMany(db.Accessory, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Accessory.belongsTo(db.Location, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+db.Location.hasMany(db.Accessory, {
   onDelete: "cascade",
   foreignKey: "locationId",
   targetKey: "id",

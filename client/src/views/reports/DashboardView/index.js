@@ -5,12 +5,12 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Asset from './Asset';
+import TotalAssets from './TotalAssets';
 import Warranty from './Warranty';
 import LatestProducts from './LatestProducts';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
-import TotalCustomers from './TotalCustomers';
+import TotalAccessories from './TotalAccessories';
 import TotalProfit from './TotalProfit';
 import AssetByStatus from './AssetByStatus';
 
@@ -43,7 +43,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <Asset />
+            <TotalAssets />
           </Grid>
           <Grid
             item
@@ -52,7 +52,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TotalCustomers />
+            <TotalAccessories />
           </Grid>
           <Grid
             item

@@ -11,42 +11,42 @@ import {
   colors,
   makeStyles
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import WebAssetIcon from '@material-ui/icons/WebAsset';
-import AssetService from 'src/services/asset';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import KeyBoardIcon from '@material-ui/icons/Keyboard';
+import AccessoryService from 'src/services/accessory'
 
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%'
   },
   avatar: {
-    backgroundColor: colors.red[600],
+    backgroundColor: colors.green[600],
     height: 56,
     width: 56
   },
   differenceIcon: {
-    color: colors.red[900]
+    color: colors.green[900]
   },
   differenceValue: {
-    color: colors.red[900],
+    color: colors.green[900],
     marginRight: theme.spacing(1)
   }
 }));
 
-const Asset = ({ className, ...rest }) => {
+const TotalAccessories = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [asset, setAsset] = useState([]);
+  const [accessory, setAccessory] = useState([]);
 
-  const getAssetAll = () => {
-    AssetService.getAll()
+  const getAccessoryAll = () => {
+    AccessoryService.getAll()
       .then(response => {
-        setAsset(response.data);
+        setAccessory(response.data);
       })
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
-    getAssetAll();
+    getAccessoryAll();
   }, []);
 
   return (
@@ -55,22 +55,22 @@ const Asset = ({ className, ...rest }) => {
         <Grid container justify="space-between" spacing={3}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="h6">
-              TÀI SẢN
+              TỔNG LINH KIỆN
             </Typography>
             <Typography color="textPrimary" variant="h3">
-              {asset.length}
+              {accessory.length}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <WebAssetIcon />
+              <KeyBoardIcon />
             </Avatar>
           </Grid>
         </Grid>
         <Box mt={2} display="flex" alignItems="center">
-          <ArrowDownwardIcon className={classes.differenceIcon} />
+          <ArrowUpwardIcon className={classes.differenceIcon} />
           <Typography className={classes.differenceValue} variant="body2">
-            12%
+            16%
           </Typography>
           <Typography color="textSecondary" variant="caption">
             Since last month
@@ -81,8 +81,8 @@ const Asset = ({ className, ...rest }) => {
   );
 };
 
-Asset.propTypes = {
+TotalAccessories.propTypes = {
   className: PropTypes.string
 };
 
-export default Asset;
+export default TotalAccessories;
