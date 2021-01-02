@@ -105,7 +105,17 @@ db.Location.hasMany(db.Accessory, {
   targetKey: "id",
 });
 
-//M:M Location-Asset
+//1:M Asset-Asset_history
+db.Asset_history.belongsTo(db.Asset, {
+  onDelete: "cascade",
+  foreignKey: "assetId",
+  targetKey: "id",
+});
+db.Asset.hasMany(db.Asset_history, {
+  onDelete: "cascade",
+  foreignKey: "assetId",
+  targetKey: "id",
+});
 
 
 db.ROLES = ["user", "admin", "moderator"];

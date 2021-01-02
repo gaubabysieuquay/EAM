@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  UserRole.init(
+  User_role.init(
     {
       userId: DataTypes.INTEGER,
       roleId: DataTypes.INTEGER,
@@ -21,5 +21,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User_role",
     }
   );
-  return UserRole;
+  return User_role;
 };

@@ -41,7 +41,7 @@ const statusList = [
   { name: 'Lưu trữ', type: 4 }
 ];
 
-const FormAdd = ({ onAdd }) => {
+const FormAdd = ({ onAdd, handleClose }) => {
   const initialFormState = {
     id: '',
     name: '',
@@ -68,10 +68,6 @@ const FormAdd = ({ onAdd }) => {
       defaultValues: initialFormState
     }
   );
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const onSubmit = value => {
     onAdd(value);

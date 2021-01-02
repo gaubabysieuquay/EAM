@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -51,7 +50,7 @@ const defaultData = [
   { id: 1, name: 'TestLo00' }
 ];
 
-const FormEdit = ({ id, onUpdate }) => {
+const FormEdit = ({ id, onUpdate, handleClose }) => {
   const initialFormState = {
     name: '',
     barcode: '',
@@ -66,8 +65,6 @@ const FormEdit = ({ id, onUpdate }) => {
     locationId: ''
   };
 
-  const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [asset, setAsset] = useState(initialFormState);
   const [supplier, setSupplier] = useState([]);
@@ -76,10 +73,6 @@ const FormEdit = ({ id, onUpdate }) => {
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -407,6 +400,9 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Hủy
+        </Button>
         <Button color="primary" onClick={() => onUpdate(id, asset)}>
           Xác nhận
         </Button>

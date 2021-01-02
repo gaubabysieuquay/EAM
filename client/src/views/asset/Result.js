@@ -28,8 +28,10 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import TabDialog from 'src/components/Tab';
+import HistoryListView from './asset_history'
 
-function descendingComparator(a, b, orderBy) {
+const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -39,13 +41,13 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-function getComparator(order, orderBy) {
+const getComparator = (order, orderBy) => {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort(array, comparator) {
+const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -165,15 +167,40 @@ const Results = ({
   const statusInfo = value => {
     switch (value) {
       case 1:
-        return <Chip style={{backgroundColor: colors.lightGreen[400]}} label='Sẵn sàng'/>;
+        return (
+          <Chip
+            style={{ backgroundColor: colors.lightGreen[400] }}
+            label="Sẵn sàng"
+          />
+        );
       case 2:
-        return <Chip style={{backgroundColor: colors.yellow[300]}} label='Chờ duyệt'/>;
+        return (
+          <Chip
+            style={{ backgroundColor: colors.yellow[300] }}
+            label="Chờ duyệt"
+          />
+        );
       case 3:
-        return <Chip style={{backgroundColor: colors.red[400]}} label='Không sẵn sàng'/>;
+        return (
+          <Chip
+            style={{ backgroundColor: colors.red[400] }}
+            label="Không sẵn sàng"
+          />
+        );
       case 4:
-        return <Chip style={{backgroundColor: colors.lightBlue[400]}} label='Lưu trữ'/>;
+        return (
+          <Chip
+            style={{ backgroundColor: colors.lightBlue[400] }}
+            label="Lưu trữ"
+          />
+        );
       default:
-        return <Chip style={{backgroundColor: colors.purple[200]}} label='Chưa cập nhật'/>;
+        return (
+          <Chip
+            style={{ backgroundColor: colors.purple[200] }}
+            label="Chưa cập nhật"
+          />
+        );
     }
   };
 
@@ -236,8 +263,8 @@ const Results = ({
                       <TableCell>{asset.serial}</TableCell>
                       <TableCell>{asset.model}</TableCell>
                       <TableCell>Danh mục</TableCell>
-                      <TableCell>{asset.Supplier.name || ""}</TableCell>
-                      <TableCell>{asset.Location.name || ""}</TableCell>
+                      <TableCell>{asset.Supplier.name || ''}</TableCell>
+                      <TableCell>{asset.Location.name || ''}</TableCell>
                       <TableCell>
                         {moment(asset.purchaseDate).format('DD/MM/YYYY')}
                       </TableCell>
@@ -265,6 +292,7 @@ const Results = ({
                         <Dialog
                           open={open}
                           onClose={handleClose}
+                          maxWidth="md"
                           aria-labelledby="form-dialog-title"
                         >
                           <DialogTitle id="form-dialog-title">
@@ -274,7 +302,16 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={assetId} onUpdate={onUpdate} />
+                            <TabDialog
+                              itemOne={
+                                <Form
+                                  id={assetId}
+                                  onUpdate={onUpdate}
+                                  handleClose={handleClose}
+                                />
+                              }
+                              itemTwo={<HistoryListView/>}
+                            />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

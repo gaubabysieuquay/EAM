@@ -1,6 +1,7 @@
 const sequelize = require("sequelize");
 const db = require("../models");
 const Asset = db.Asset;
+const Asset_history = db.Asset_history;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -30,6 +31,11 @@ exports.create = (req, res) => {
       if (!asset) {
         Asset.create(assetData)
           .then((asset) => {
+            asset.createAsset_history({
+              assetId: req.body.id,
+              status: req.body.status,
+              warranty: req.body.warranty,
+            });
             res.send({ message: asset.name + " Added" });
           })
           .catch((err) => {
@@ -86,7 +92,6 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-
   Asset.update(req.body, {
     where: { id: id },
   })
@@ -106,6 +111,11 @@ exports.update = (req, res) => {
         message: "Error updating Asset with id=" + id,
       });
     });
+  Asset_history.create({
+    assetId: id,
+    status: req.body.status,
+    warranty: req.body.warranty,
+  });
 };
 
 exports.delete = (req, res) => {

@@ -4,12 +4,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import {
   TextField,
-  InputAdornment,
   DialogActions,
   Button
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import MomentUtils from '@date-io/moment';
 import SupplierService from 'src/services/supplier';
 
 const schema = Yup.object().shape({

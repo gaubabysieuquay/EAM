@@ -18,6 +18,7 @@ require("./routes/asset")(app);
 require("./routes/supplier")(app);
 require("./routes/location")(app);
 require("./routes/accessory")(app);
+require("./routes/asset_history")(app);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
