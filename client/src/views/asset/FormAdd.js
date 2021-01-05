@@ -51,7 +51,7 @@ const FormAdd = ({ onAdd, handleClose }) => {
     purchaseDate: null,
     purchaseCost: '',
     status: '',
-    warranty: '',
+    expireDate: '',
     note: '',
     supplierId: '',
     locationId: ''
@@ -77,8 +77,8 @@ const FormAdd = ({ onAdd, handleClose }) => {
     setValue('purchaseDate', value);
   };
 
-  const handleChangeWarranty = value => {
-    setValue('warranty', value);
+  const handleChangeExpireDate = value => {
+    setValue('expireDate', value);
   };
 
   const handleChangeStatus = (_, value) => {
@@ -294,15 +294,15 @@ const FormAdd = ({ onAdd, handleClose }) => {
       />
       <Controller
         control={control}
-        error={Boolean(errors.warranty)}
-        helperText={errors.warranty?.message}
-        name="warranty"
+        error={Boolean(errors.expireDate)}
+        helperText={errors.expireDate?.message}
+        name="expireDate"
         render={() => (
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <KeyboardDatePicker
               disableToolbar
               fullWidth
-              name="warranty"
+              name="expireDate"
               inputVariant="outlined"
               variant="inline"
               format="DD/MM/yyyy"
@@ -315,8 +315,8 @@ const FormAdd = ({ onAdd, handleClose }) => {
               InputLabelProps={{
                 shrink: true
               }}
-              value={getValues('warranty')}
-              onChange={handleChangeWarranty}
+              value={getValues('expireDate')}
+              onChange={handleChangeExpireDate}
             />
           </MuiPickersUtilsProvider>
         )}

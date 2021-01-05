@@ -28,6 +28,16 @@ const HistoryListView = props => {
       .catch(err => console.log(err));
   };
 
+  const getHistory = id => {
+    HistoryService.get(id)
+      .then(response => {
+        setHistory(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const onChangeSearch = e => {
     const search = e.target.value;
     setSearch(search);
@@ -64,7 +74,7 @@ const HistoryListView = props => {
   };
 
   useEffect(() => {
-    getHistoryAll();
+    getHistory();
   }, []);
 
   return (

@@ -13,9 +13,17 @@ module.exports = (sequelize, DataTypes) => {
   }
   Asset_history.init(
     {
-      assetId: DataTypes.INTEGER,
+      assetId: {
+        type: DataTypes.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Asset",
+          key: "id",
+        },
+      },
       status: DataTypes.INTEGER,
-      warranty: DataTypes.DATE,
+      expireDate: DataTypes.DATE,
     },
     {
       sequelize,

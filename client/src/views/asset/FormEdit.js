@@ -60,7 +60,7 @@ const FormEdit = ({ id, onUpdate, handleClose }) => {
     purchaseDate: null,
     purchaseCost: '',
     status: 0,
-    warranty: null,
+    expireDate: null,
     note: '',
     locationId: ''
   };
@@ -83,8 +83,8 @@ const FormEdit = ({ id, onUpdate, handleClose }) => {
     setAsset({ ...asset, purchaseDate: date });
   };
 
-  const handleChangeWarranty = date => {
-    setAsset({ ...asset, warranty: date });
+  const handleChangeExpireDate = date => {
+    setAsset({ ...asset, expireDate: date });
   };
 
   const handleChangeStatus = (_, value) => {
@@ -350,15 +350,15 @@ const FormEdit = ({ id, onUpdate, handleClose }) => {
       />
       <Controller
         control={control}
-        error={Boolean(errors.warranty)}
-        helperText={errors.warranty?.message}
-        name="warranty"
+        error={Boolean(errors.expireDate)}
+        helperText={errors.expireDate?.message}
+        name="expireDate"
         render={() => (
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <KeyboardDatePicker
               disableToolbar
               fullWidth
-              name="warranty"
+              name="expireDate"
               inputVariant="outlined"
               variant="inline"
               format="DD/MM/yyyy"
@@ -366,7 +366,7 @@ const FormEdit = ({ id, onUpdate, handleClose }) => {
               id="date-picker-warranty"
               label="Ngày bảo hành"
               onChange={handleChangeWarranty}
-              value={asset.warranty}
+              value={asset.expireDate}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}

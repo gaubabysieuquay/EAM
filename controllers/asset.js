@@ -13,7 +13,7 @@ exports.create = (req, res) => {
     model: req.body.model,
     purchaseDate: req.body.purchaseDate,
     purchaseCost: req.body.purchaseCost,
-    warranty: req.body.warranty,
+    expireDate: req.body.expireDate,
     note: req.body.note,
     image: req.body.image,
     status: req.body.status,
@@ -34,7 +34,7 @@ exports.create = (req, res) => {
             asset.createAsset_history({
               assetId: req.body.id,
               status: req.body.status,
-              warranty: req.body.warranty,
+              expireDate: req.body.expireDate,
             });
             res.send({ message: asset.name + " Added" });
           })

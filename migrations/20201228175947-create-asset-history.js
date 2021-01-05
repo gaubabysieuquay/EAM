@@ -10,11 +10,17 @@ module.exports = {
       },
       assetId: {
         type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Assets",
+          key: "id",
+        },
       },
       status: {
         type: Sequelize.INTEGER,
       },
-      warranty: { 
+      expireDate: { 
         type: Sequelize.DATE 
       },
       createdAt: {
