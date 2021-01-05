@@ -17,11 +17,29 @@ module.exports = {
           key: "id",
         },
       },
+      locationId: {
+        type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Locations",
+          key: "id",
+        },
+      },
+      supplierId: {
+        type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Suppliers",
+          key: "id",
+        },
+      },
       status: {
         type: Sequelize.INTEGER,
       },
-      expireDate: { 
-        type: Sequelize.DATE 
+      expireDate: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,

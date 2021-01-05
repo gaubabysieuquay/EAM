@@ -22,6 +22,24 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      locationId: {
+        type: DataTypes.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Location",
+          key: "id",
+        },
+      },
+      supplierId: {
+        type: DataTypes.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Supplier",
+          key: "id",
+        },
+      },
       status: DataTypes.INTEGER,
       expireDate: DataTypes.DATE,
     },

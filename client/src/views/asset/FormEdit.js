@@ -365,7 +365,7 @@ const FormEdit = ({ id, onUpdate, handleClose }) => {
               margin="normal"
               id="date-picker-warranty"
               label="Ngày bảo hành"
-              onChange={handleChangeWarranty}
+              onChange={handleChangeExpireDate}
               value={asset.expireDate}
               KeyboardButtonProps={{
                 'aria-label': 'change date'

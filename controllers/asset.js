@@ -33,6 +33,8 @@ exports.create = (req, res) => {
           .then((asset) => {
             asset.createAsset_history({
               assetId: req.body.id,
+              locationId: req.body.locationId,
+              supplierId: req.body.supplierId,
               status: req.body.status,
               expireDate: req.body.expireDate,
             });
@@ -78,6 +80,9 @@ exports.findOne = (req, res) => {
       {
         model: db.Supplier,
       },
+      {
+        model: db.Location,
+      },
     ],
   })
     .then((data) => {
@@ -97,6 +102,13 @@ exports.update = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
+        Asset_history.create({
+          assetId: id,
+          locationId: req.body.locationId,
+          supplierId: req.body.supplierId,
+          status: req.body.status,
+          expireDate: req.body.expireDate,
+        });
         res.send({
           message: "Asset was updated successfully.",
         });
@@ -111,11 +123,7 @@ exports.update = (req, res) => {
         message: "Error updating Asset with id=" + id,
       });
     });
-  Asset_history.create({
-    assetId: id,
-    status: req.body.status,
-    warranty: req.body.warranty,
-  });
+  
 };
 
 exports.delete = (req, res) => {
@@ -164,7 +172,7 @@ exports.findAllByExpire = (req, res) => {
       where: sequelize.where(
         sequelize.fn("date", sequelize.fn("now")),
         "<=",
-        sequelize.fn("date", sequelize.col("warranty")),
+        sequelize.fn("date", sequelize.col("expireDate")),
         "<=",
         sequelize.fn("date", sequelize.fn("now") + 10)
       ),
@@ -176,7 +184,7 @@ exports.findAllByExpire = (req, res) => {
       where: sequelize.where(
         sequelize.fn("date", sequelize.fn("now")),
         ">",
-        sequelize.fn("date", sequelize.col("warranty"))
+        sequelize.fn("date", sequelize.col("expireDate"))
       ),
     }
   );
@@ -184,7 +192,7 @@ exports.findAllByExpire = (req, res) => {
     where: sequelize.where(
       sequelize.fn("date", sequelize.fn("now")),
       "<=",
-      sequelize.fn("date", sequelize.col("warranty")),
+      sequelize.fn("date", sequelize.col("expireDate")),
       "<=",
       sequelize.fn("date", sequelize.fn("now") + 10)
     ),

@@ -117,6 +117,28 @@ db.Asset.hasMany(db.Asset_history, {
   targetKey: "id",
 });
 
+db.Asset_history.belongsTo(db.Asset, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+db.Location.hasMany(db.Asset_history, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+
+db.Asset_history.belongsTo(db.Asset, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Supplier.hasMany(db.Asset_history, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+
 
 db.ROLES = ["user", "admin", "moderator"];
 
