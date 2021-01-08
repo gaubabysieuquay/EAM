@@ -217,7 +217,7 @@ const Results = ({
                         {accessory.name}
                       </TableCell>
                       <TableCell>''</TableCell>
-                      <TableCell>{accessory.manufacturer}</TableCell>
+                      <TableCell>{accessory.Manufacturer.name || ''}</TableCell>
                       <TableCell>{accessory.model}</TableCell>
                       <TableCell>Danh mục</TableCell>
                       <TableCell>{accessory.Supplier.name || ''}</TableCell>
@@ -258,7 +258,11 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={accessoryId} onUpdate={onUpdate} />
+                            <Form
+                              id={accessoryId}
+                              onUpdate={onUpdate}
+                              handleClose={handleClose}
+                            />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

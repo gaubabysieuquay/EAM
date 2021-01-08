@@ -20,7 +20,16 @@ module.exports = (sequelize, DataTypes) => {
     state: DataTypes.STRING,
     country: DataTypes.STRING,
     zip: DataTypes.STRING,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    userId: {
+      type: DataTypes.INTEGER,
+      onDelete: "cascade",
+      onUpdate: "cascade",
+      references: {
+        model: "User",
+        key: "id",
+      },
+    },
   }, {
     sequelize,
     modelName: 'Location',

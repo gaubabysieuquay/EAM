@@ -1,21 +1,18 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
-import {
-  TextField,
-  DialogActions,
-  Button
-} from '@material-ui/core';
+import { TextField, DialogActions, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import UserService from 'src/services/auth';
 
 const schema = Yup.object().shape({
   name: Yup.string()
     .max(255)
-    .required('Name is required'),
+    .required('Name is required')
 });
 
-const FormAdd = ({ onAdd }) => {
+const FormAdd = ({ onAdd, handleClose }) => {
   const initialFormState = {
     id: '',
     name: '',
@@ -25,29 +22,38 @@ const FormAdd = ({ onAdd }) => {
     country: '',
     zip: '',
     phone: '',
-    note: ''
+    note: '',
+    userId: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [user, setUser] = useState([]);
 
-  const {
-    control,
-    handleSubmit,
-    errors,
-    reset,
-  } = useForm({
+  const { control, handleSubmit, errors, reset, setValue } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const onSubmit = value => {
     onAdd(value);
   };
+
+  const handleChangeUser = (_, value) => {
+    setValue('userId', value.id);
+  };
+
+  const getUserAll = () => {
+    UserService.getAll()
+      .then(response => {
+        setUser(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getUserAll();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
@@ -132,7 +138,6 @@ const FormAdd = ({ onAdd }) => {
         name="country"
         control={control}
       />*/}
-
       <Controller
         control={control}
         as={TextField}
@@ -146,6 +151,30 @@ const FormAdd = ({ onAdd }) => {
         InputLabelProps={{
           shrink: true
         }}
+      />
+      <Controller
+        render={() => (
+          <Autocomplete
+            options={user}
+            onChange={handleChangeUser}
+            getOptionLabel={option => option.username}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Người quản lý"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="userId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="userId"
+        control={control}
       />
       <Controller
         control={control}

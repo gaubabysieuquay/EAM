@@ -6,7 +6,7 @@ module.exports = (app) => {
   
     router.get("/", asset_histories.findAll);
   
-    router.get("/:id", asset_histories.findOne);
+    router.get("/:assetId", asset_histories.findOne);
   
     router.get("/name", asset_histories.findAllByName);
   

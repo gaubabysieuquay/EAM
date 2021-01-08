@@ -1,23 +1,23 @@
 import http from 'src/http-common';
 
 const getAll = () => {
-  return http.get('/assets');
+  return http.get('/asset_histories');
 };
 
-const get = id => {
-  return http.get(`/assets/${id}`);
+const get = assetId => {
+  return http.get(`/asset_histories/${assetId}`);
 };
 
 const getAllByName = name => {
-  return http.get(`/assets?name=${name}`);
+  return http.get(`/asset_histories?name=${name}`);
 };
 
 const remove = id => {
-  return http.delete(`/assets/${id}`);
+  return http.delete(`/asset_histories/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/assets`);
+  return http.delete(`/asset_histories`);
 };
 
 export default {

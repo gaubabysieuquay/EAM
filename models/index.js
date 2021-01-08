@@ -17,7 +17,7 @@ const sequelize = new Sequelize(
     host: config.host,
     dialect: config.dialect,
     timezone: config.timezone,
-  },
+  }
 );
 
 fs.readdirSync(__dirname)
@@ -105,6 +105,42 @@ db.Location.hasMany(db.Accessory, {
   targetKey: "id",
 });
 
+//1:M Accessory-Manufacturer
+db.Accessory.belongsTo(db.Manufacturer, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+db.Manufacturer.hasMany(db.Accessory, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+
+//1:M Supplier-Asset_history
+db.Asset_history.belongsTo(db.Supplier, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Supplier.hasMany(db.Asset_history, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+
+//1:M Location-Asset_history
+db.Asset_history.belongsTo(db.Location, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+db.Location.hasMany(db.Asset_history, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+
 //1:M Asset-Asset_history
 db.Asset_history.belongsTo(db.Asset, {
   onDelete: "cascade",
@@ -117,28 +153,41 @@ db.Asset.hasMany(db.Asset_history, {
   targetKey: "id",
 });
 
-db.Asset_history.belongsTo(db.Asset, {
+//1:M User-Location
+db.Location.belongsTo(db.User, {
   onDelete: "cascade",
-  foreignKey: "locationId",
+  foreignKey: "userId",
   targetKey: "id",
 });
-db.Location.hasMany(db.Asset_history, {
+db.User.hasMany(db.Location, {
   onDelete: "cascade",
-  foreignKey: "locationId",
+  foreignKey: "userId",
   targetKey: "id",
 });
 
-db.Asset_history.belongsTo(db.Asset, {
+//1:M License-Manufacturer
+db.License.belongsTo(db.Manufacturer, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+db.Manufacturer.hasMany(db.License, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+
+//1:M License-Supplier
+db.License.belongsTo(db.Supplier, {
   onDelete: "cascade",
   foreignKey: "supplierId",
   targetKey: "id",
 });
-db.Supplier.hasMany(db.Asset_history, {
+db.Supplier.hasMany(db.License, {
   onDelete: "cascade",
   foreignKey: "supplierId",
   targetKey: "id",
 });
-
 
 db.ROLES = ["user", "admin", "moderator"];
 

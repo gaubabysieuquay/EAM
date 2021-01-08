@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -27,6 +27,7 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import AssetService from 'src/services/asset';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -95,6 +96,22 @@ const Results = ({
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [locationId, setLocationId] = useState();
+  const [asset, setAsset] = useState([]);
+
+  const getAssetAll = () => {
+    AssetService.getAll()
+      .then(response => {
+        setAsset(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getAssetAll();
+  }, []);
+
+  const countAsset = locationId =>
+    asset.filter(item => item.locationId === locationId).length;
 
   const handleClickOpen = id => {
     setOpen(true);
@@ -217,9 +234,10 @@ const Results = ({
                       </TableCell>
                       <TableCell>Hình ảnh</TableCell>
                       <TableCell>{location.address}</TableCell>
-                      <TableCell>Tài sản</TableCell>
+                      <TableCell>{countAsset(location.id)}</TableCell>
                       <TableCell>{location.city}</TableCell>
                       <TableCell>{location.state}</TableCell>
+                      <TableCell>{location.User.username}</TableCell>
                       <TableCell>
                         {moment(location.createdAt).format('DD/MM/YYYY')}
                       </TableCell>
@@ -251,7 +269,11 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={locationId} onUpdate={onUpdate} />
+                            <Form
+                              id={locationId}
+                              onUpdate={onUpdate}
+                              handleClose={handleClose}
+                            />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

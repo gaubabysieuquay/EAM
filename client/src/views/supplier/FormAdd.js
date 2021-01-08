@@ -1,12 +1,8 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
-import {
-  TextField,
-  DialogActions,
-  Button
-} from '@material-ui/core';
+import { TextField, DialogActions, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 
@@ -19,7 +15,7 @@ const schema = Yup.object().shape({
     .max(255)
 });
 
-const FormAdd = ({ onAdd }) => {
+const FormAdd = ({ onAdd, handleClose }) => {
   const initialFormState = {
     id: '',
     name: '',
@@ -37,19 +33,10 @@ const FormAdd = ({ onAdd }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
-  const {
-    control,
-    handleSubmit,
-    errors,
-    reset,
-  } = useForm({
+  const { control, handleSubmit, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const onSubmit = value => {
     onAdd(value);

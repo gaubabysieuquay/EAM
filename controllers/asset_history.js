@@ -5,7 +5,17 @@ const Op = db.Sequelize.Op;
 
 exports.findAll = (req, res) => {
   Asset_history.findAll({
-    include: [{ model: db.Asset }],
+    include: [
+      {
+        model: db.Supplier,
+      },
+      {
+        model: db.Location,
+      },
+      {
+        model: db.Asset,
+      },
+    ],
   })
     .then((data) => {
       res.send(data);
@@ -20,10 +30,20 @@ exports.findAll = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
-  const id = req.params.id;
-  Asset_history.findOne({
-    where: { id: id },
-    include: [{ model: db.Asset }],
+  const assetId = req.params.assetId;
+  Asset_history.findAll({
+    where: { assetId: assetId },
+    include: [
+      {
+        model: db.Supplier,
+      },
+      {
+        model: db.Location,
+      },
+      {
+        model: db.Asset,
+      },
+    ],
   })
     .then((data) => {
       res.send(data);

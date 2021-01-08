@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -27,6 +27,9 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import AssetService from 'src/services/asset';
+import AccessoryService from 'src/services/accessory';
+import LicenseService from 'src/services/license';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -95,6 +98,42 @@ const Results = ({
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [supplierId, setSupplierId] = useState();
+  const [asset, setAsset] = useState([]);
+  const [accessory, setAccessory] = useState([]);
+  const [license, setLicense] = useState([]);
+
+  const getAssetAll = () => {
+    AssetService.getAll()
+      .then(response => {
+        setAsset(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getAccessoryAll = () => {
+    AccessoryService.getAll()
+      .then(response => {
+        setAccessory(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getLicenseAll = () => {
+    LicenseService.getAll()
+      .then(response => {
+        setLicense(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getAssetAll();
+    getAccessoryAll();
+    getLicenseAll();
+  }, []);
+
+  const count = (array, supplierId) =>
+    array.filter(item => item.supplierId === supplierId).length;
 
   const handleClickOpen = id => {
     setOpen(true);
@@ -219,9 +258,9 @@ const Results = ({
                       <TableCell>{supplier.email}</TableCell>
                       <TableCell>{supplier.fax}</TableCell>
                       <TableCell>{supplier.phone}</TableCell>
-                      <TableCell>Tài sản</TableCell>
-                      <TableCell>Linh kiện</TableCell>
-                      <TableCell>Bản quyền</TableCell>
+                      <TableCell>{count(asset, supplier.id)}</TableCell>
+                      <TableCell>{count(accessory, supplier.id)}</TableCell>
+                      <TableCell>{count(license, supplier.id)}</TableCell>
                       <TableCell>
                         {moment(supplier.createdAt).format('DD/MM/YYYY')}
                       </TableCell>
@@ -253,7 +292,11 @@ const Results = ({
                             <DialogContentText>
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
-                            <Form id={supplierId} onUpdate={onUpdate} />
+                            <Form
+                              id={supplierId}
+                              onUpdate={onUpdate}
+                              handleClose={handleClose}
+                            />
                           </DialogContent>
                         </Dialog>
                       </TableCell>

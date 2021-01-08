@@ -6,16 +6,14 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   const today = new Date();
   const accessoryData = {
-    barcode: req.body.barcode,
     name: req.body.name,
-    serial: req.body.serial,
     model: req.body.model,
     purchaseDate: req.body.purchaseDate,
     purchaseCost: req.body.purchaseCost,
-    warranty: req.body.warranty,
+    quantity: req.body.quantity,
     note: req.body.note,
     image: req.body.image,
-    status: req.body.status,
+    manufacturerId: req.body.manufacturerId,
     supplierId: req.body.supplierId,
     locationId: req.body.locationId,
     createdAt: today,
@@ -51,7 +49,17 @@ exports.findAll = (req, res) => {
 
   Accessory.findAll({
     where: condition,
-    include: [{ model: db.Supplier }, { model: db.Location }],
+    include: [
+      {
+        model: db.Supplier,
+      },
+      {
+        model: db.Location,
+      },
+      {
+        model: db.Manufacturer,
+      },
+    ],
   })
     .then((data) => {
       res.send(data);
@@ -184,7 +192,9 @@ exports.getSupplier = (req, res) => {
 };
 
 exports.getSupplierAll = (req, res) => {
-  Accessory.findAll({ include: [{ model: db.Supplier }, { model: db.Location }] })
+  Accessory.findAll({
+    include: [{ model: db.Supplier }, { model: db.Location }],
+  })
     .then((data) => res.send(data))
     .catch((err) => {
       res.status(500).send({

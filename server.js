@@ -17,7 +17,9 @@ require("./routes/auth")(app);
 require("./routes/asset")(app);
 require("./routes/supplier")(app);
 require("./routes/location")(app);
+require("./routes/manufacturer")(app);
 require("./routes/accessory")(app);
+require("./routes/license")(app);
 require("./routes/asset_history")(app);
 
 app.listen(port, () => {

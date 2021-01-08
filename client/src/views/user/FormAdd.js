@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, DialogActions, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import MomentUtils from '@date-io/moment';
 import RoleService from 'src/services/role';
 
 const schema = Yup.object().shape({
@@ -20,7 +19,7 @@ const schema = Yup.object().shape({
     .required('Password is required')
 });
 
-const FormAdd = ({ onAdd }) => {
+const FormAdd = ({ onAdd, handleClose }) => {
   const initialFormState = {
     id: '',
     username: '',
@@ -44,10 +43,6 @@ const FormAdd = ({ onAdd }) => {
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChangeRole = (_, value) => {
     setValue('roles', value.name);

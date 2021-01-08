@@ -16,6 +16,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import SupplierService from 'src/services/supplier';
 import LocationService from 'src/services/location';
+import ManufacturerService from 'src/services/manufacturer';
 
 const schema = Yup.object().shape({
   name: Yup.string()
@@ -32,24 +33,25 @@ const schema = Yup.object().shape({
     .required('Nhập số lượng!')
 });
 
-const FormAdd = ({ onAdd }) => {
+const FormAdd = ({ onAdd, handleClose }) => {
   const initialFormState = {
     id: '',
     name: '',
-    manufacturer: '',
     model: '',
     purchaseDate: null,
     purchaseCost: '',
     quantity: '',
     note: '',
     supplierId: '',
-    locationId: ''
+    locationId: '',
+    manufacturerId: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [supplier, setSupplier] = useState([]);
   const [location, setLocation] = useState([]);
+  const [manufacturer, setManufacturer] = useState([]);
 
   const { control, handleSubmit, errors, reset, getValues, setValue } = useForm(
     {
@@ -57,10 +59,6 @@ const FormAdd = ({ onAdd }) => {
       defaultValues: initialFormState
     }
   );
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const onSubmit = value => {
     onAdd(value);
@@ -76,6 +74,10 @@ const FormAdd = ({ onAdd }) => {
 
   const handleChangeLocation = (_, value) => {
     setValue('locationId', value.id);
+  };
+
+  const handleChangeManufacturer = (_, value) => {
+    setValue('manufacturerId', value.id);
   };
 
   const getSupplierAll = () => {
@@ -95,9 +97,19 @@ const FormAdd = ({ onAdd }) => {
       .catch(err => console.log(err));
   };
 
+  const getManufacturerAll = () => {
+    ManufacturerService.getAll()
+      .then(response => {
+        setManufacturer(response.data);
+        console.log(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
   useEffect(() => {
     getSupplierAll();
     getLocationAll();
+    getManufacturerAll();
   }, []);
 
   return (
@@ -113,20 +125,6 @@ const FormAdd = ({ onAdd }) => {
         variant="outlined"
         error={Boolean(errors.name)}
         helperText={errors.name?.message}
-        InputLabelProps={{
-          shrink: true
-        }}
-      />
-      <Controller
-        control={control}
-        as={TextField}
-        error={Boolean(errors.manufacturer)}
-        helperText={errors.manufacturer?.message}
-        name="manufacturer"
-        fullWidth
-        label="Nhà sản xuất"
-        margin="normal"
-        variant="outlined"
         InputLabelProps={{
           shrink: true
         }}
@@ -240,6 +238,30 @@ const FormAdd = ({ onAdd }) => {
         control={control}
       />
       <Controller
+        render={() => (
+          <Autocomplete
+            options={manufacturer}
+            onChange={handleChangeManufacturer}
+            getOptionLabel={option => option.name}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Nhà sản xuất"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="manufacturerId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="manufacturerId"
+        control={control}
+      />
+      <Controller
         control={control}
         as={TextField}
         error={Boolean(errors.quantity)}
@@ -249,8 +271,6 @@ const FormAdd = ({ onAdd }) => {
         label="Số lượng"
         margin="normal"
         variant="outlined"
-        rows={4}
-        multiline
         InputLabelProps={{
           shrink: true
         }}

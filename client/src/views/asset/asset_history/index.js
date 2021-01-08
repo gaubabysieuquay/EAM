@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, makeStyles } from '@material-ui/core';
-import Page from 'src/components/Page';
+import { makeStyles } from '@material-ui/core';
 import Results from './Result';
-import HistoryService from 'src/services/asset';
+import HistoryService from 'src/services/asset_history';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,9 +12,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const HistoryListView = props => {
-  const classes = useStyles();
+const HistoryListView = ({ id }) => {
   const [history, setHistory] = useState([]);
+
   const [historySearch, setHistorySearch] = useState([]);
   const [search, setSearch] = useState('');
 
@@ -24,6 +23,7 @@ const HistoryListView = props => {
       .then(response => {
         setHistory(response.data);
         setHistorySearch(response.data);
+        console.log(response.data);
       })
       .catch(err => console.log(err));
   };
@@ -32,6 +32,7 @@ const HistoryListView = props => {
     HistoryService.get(id)
       .then(response => {
         setHistory(response.data);
+        console.log(response.data);
       })
       .catch(err => {
         console.log(err);
@@ -74,8 +75,10 @@ const HistoryListView = props => {
   };
 
   useEffect(() => {
-    getHistory();
-  }, []);
+    getHistory(id);
+  }, [id]);
+
+  console.log(history);
 
   return (
     <Results

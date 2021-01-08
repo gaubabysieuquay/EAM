@@ -15,7 +15,10 @@ const headCells = [
     disablePadding: true,
     label: 'Tên'
   },
+  { id: 'location', disablePadding: false, label: 'Tên địa điểm' },
+  { id: 'supplier', disablePadding: false, label: 'Tên nhà cung cấp' },
   { id: 'status', disablePadding: false, label: 'Tình trạng' },
+  { id: 'expireDate', disablePadding: false, label: 'Ngày bảo hành' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
   { id: '', disablePadding: false, label: 'Actions' }
 ];

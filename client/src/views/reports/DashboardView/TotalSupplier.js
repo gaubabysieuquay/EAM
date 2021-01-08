@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -12,7 +12,8 @@ import {
   makeStyles,
   colors
 } from '@material-ui/core';
-import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import PeopleIcon from '@material-ui/icons/People';
+import SupplierService from 'src/services/supplier'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,8 +26,21 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TasksProgress = ({ className, ...rest }) => {
+const TotalSupplier = ({ className, ...rest }) => {
   const classes = useStyles();
+  const [supplier, setSupplier] = useState([]);
+
+  const getSupplierAll = () => {
+    SupplierService.getAll()
+      .then(response => {
+        setSupplier(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getSupplierAll();
+  }, []);
 
   return (
     <Card
@@ -45,18 +59,18 @@ const TasksProgress = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              TASKS PROGRESS
+              TỔNG NHÀ CUNG CẤP
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              75.5%
+              {supplier.length}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <InsertChartIcon />
+              <PeopleIcon />
             </Avatar>
           </Grid>
         </Grid>
@@ -71,8 +85,8 @@ const TasksProgress = ({ className, ...rest }) => {
   );
 };
 
-TasksProgress.propTypes = {
+TotalSupplier.propTypes = {
   className: PropTypes.string
 };
 
-export default TasksProgress;
+export default TotalSupplier;

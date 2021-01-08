@@ -28,12 +28,12 @@ const Sales = ({ className, ...rest }) => {
       {
         backgroundColor: colors.indigo[500],
         data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year'
+        label: 'Năm nay'
       },
       {
         backgroundColor: colors.grey[200],
         data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year'
+        label: 'Năm ngoái'
       },
       {
         barThickness: 12,
@@ -42,7 +42,20 @@ const Sales = ({ className, ...rest }) => {
         categoryPercentage: 0.5
       }
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+    labels: [
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'Tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12'
+    ]
   };
 
   const options = {
@@ -104,7 +117,7 @@ const Sales = ({ className, ...rest }) => {
             Last 7 days
           </Button>
         }
-        title="Latest Sales"
+        title="Chênh lệch thiết bị"
       />
       <Divider />
       <CardContent>

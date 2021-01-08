@@ -58,7 +58,7 @@ const Toolbar = ({ className, search, onChangeSearch, onAdd, ...rest }) => {
             <DialogContentText>
               Vui lòng điền các thông tin sau!
             </DialogContentText>
-            <Form onAdd={onAdd} />
+            <Form onAdd={onAdd} handleClose={handleClose} />
           </DialogContent>
         </Dialog>
       </Box>

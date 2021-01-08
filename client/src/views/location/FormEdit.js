@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
-import {
-  TextField,
-  InputAdornment,
-  DialogActions,
-  Button
-} from '@material-ui/core';
+import { TextField, DialogActions, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import MomentUtils from '@date-io/moment';
 import LocationService from 'src/services/location';
+import UserService from 'src/services/auth';
 
 const schema = Yup.object().shape({
   name: Yup.string()
@@ -21,7 +16,9 @@ const schema = Yup.object().shape({
     .max(255)
 });
 
-const FormEdit = ({ id, onUpdate }) => {
+const defaultData = [{ id: 1, username: 'mod' }];
+
+const FormEdit = ({ id, onUpdate, handleClose }) => {
   const initialFormState = {
     id: '',
     name: '',
@@ -31,26 +28,41 @@ const FormEdit = ({ id, onUpdate }) => {
     country: '',
     zip: '',
     phone: '',
-    note: ''
+    note: '',
+    userId: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [location, setLocation] = useState(initialFormState);
-  const { control, errors, reset} = useForm({
+  const [user, setUser] = useState([]);
+  const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = event => {
     const { name, value } = event.target;
     setLocation({ ...location, [name]: value });
     console.log('name: ' + name, 'value: ' + value);
   };
+
+  const handleChangeUser = (_, value) => {
+    setLocation({ ...location, userId: value.id });
+  };
+
+  const getUserAll = () => {
+    UserService.getAll()
+      .then(response => {
+        setUser(response.data);
+        console.log(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getUserAll();
+  }, []);
 
   const getLocation = id => {
     LocationService.get(id)
@@ -169,6 +181,32 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <Controller
+        render={() => (
+          <Autocomplete
+            options={user}
+            onChange={handleChangeUser}
+            value={location.User || user[0] || defaultData[0]}
+            getOptionLabel={option => option.username}
+            getOptionSelected={(option, value) => option.id === value.id}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Người quản lý"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="userId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="userId"
+        control={control}
+      />
+      <Controller
         control={control}
         error={Boolean(errors.note)}
         helperText={errors.note?.message}
@@ -191,6 +229,9 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Hủy
+        </Button>
         <Button color="primary" onClick={() => onUpdate(id, location)}>
           Xác nhận
         </Button>

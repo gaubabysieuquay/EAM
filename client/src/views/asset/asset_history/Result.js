@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Box,
   Card,
   Checkbox,
   Chip,
@@ -229,9 +228,14 @@ const Results = ({
                       scope="row"
                       padding="none"
                     >
-                      {history.name}
+                      {history.Asset.name}
                     </TableCell>
+                    <TableCell>{history.Location.name}</TableCell>
+                    <TableCell>{history.Supplier.name}</TableCell>
                     <TableCell>{statusInfo(history.status)}</TableCell>
+                    <TableCell>
+                      {moment(history.expireDate).format('DD/MM/YYYY')}
+                    </TableCell>
                     <TableCell>
                       {moment(history.createdAt).format('DD/MM/YYYY')}
                     </TableCell>

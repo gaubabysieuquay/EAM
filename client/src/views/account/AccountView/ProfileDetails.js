@@ -117,7 +117,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="firstName"
-                    value={user.firstName}
+                    value={user.firstName || ''}
                     onChange={handleChange}
                     label="Họ"
                     margin="normal"
@@ -139,7 +139,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="lastName"
-                    value={user.lastName}
+                    value={user.lastName || ''}
                     onChange={handleChange}
                     label="Tên"
                     margin="normal"
@@ -183,7 +183,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="phone"
-                    value={user.phone}
+                    value={user.phone || ''}
                     onChange={handleChange}
                     label="SDT"
                     margin="normal"
@@ -205,7 +205,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="city"
-                    value={user.city}
+                    value={user.city || ''}
                     onChange={handleChange}
                     label="Thành phố"
                     margin="normal"
@@ -227,7 +227,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="state"
-                    value={user.state}
+                    value={user.state || ''}
                     onChange={handleChange}
                     label="Tỉnh"
                     margin="normal"
@@ -249,7 +249,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   <TextField
                     fullWidth
                     name="address"
-                    value={user.address}
+                    value={user.address || ''}
                     onChange={handleChange}
                     label="Địa chỉ"
                     margin="normal"
@@ -264,16 +264,16 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <Controller
                 control={control}
-                error={Boolean(errors.city)}
-                helperText={errors.city?.message}
-                name="city"
+                error={Boolean(errors.country)}
+                helperText={errors.country?.message}
+                name="country"
                 render={() => (
                   <TextField
                     fullWidth
-                    name="city"
-                    value={user.city}
+                    name="country"
+                    value={user.country || ''}
                     onChange={handleChange}
-                    label="Thành phố"
+                    label="Quốc gia"
                     margin="normal"
                     variant="outlined"
                     InputLabelProps={{

@@ -11,9 +11,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      manufacturer: {
-        type: Sequelize.STRING,
-      },
       model: {
         type: Sequelize.STRING,
       },
@@ -31,6 +28,15 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
+      },
+      manufacturerId: {
+        type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Manufacturers",
+          key: "id",
+        },
       },
       supplierId: {
         type: Sequelize.INTEGER,

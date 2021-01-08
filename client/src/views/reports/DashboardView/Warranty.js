@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
-import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Button,
   colors,
   Card,
   CardHeader,
@@ -22,7 +20,6 @@ import {
   Tooltip,
   makeStyles
 } from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import AssetService from 'src/services/asset';
 
 const useStyles = makeStyles(() => ({

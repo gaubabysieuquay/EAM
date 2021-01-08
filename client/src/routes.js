@@ -13,8 +13,10 @@ import AssetView from 'src/views/asset';
 import AccessoryView from 'src/views/accessory';
 import Login from 'src/views/auth/Login';
 import Register from 'src/views/auth/Register';
-import Supplier from 'src/views/supplier';
-import Location from "src/views/location";
+import SupplierView from 'src/views/supplier';
+import LocationView from 'src/views/location';
+import ManufacturerView from 'src/views/manufacturer';
+import LicenseView from 'src/views/license';
 
 const routes = isLoggedIn => [
   {
@@ -29,8 +31,10 @@ const routes = isLoggedIn => [
       { path: 'users', element: <UserView /> },
       { path: 'assets', element: <AssetView /> },
       { path: 'accessories', element: <AccessoryView /> },
-      { path: 'suppliers', element: <Supplier /> },
-      { path: 'locations', element: <Location />},
+      { path: 'suppliers', element: <SupplierView /> },
+      { path: 'locations', element: <LocationView /> },
+      { path: 'manufacturers', element: <ManufacturerView /> },
+      { path: 'licenses', element: <LicenseView /> },
       { path: '*', element: <Navigate to="/404" /> },
       { path: '/', element: <Navigate to="/app/dashboard" /> }
     ]

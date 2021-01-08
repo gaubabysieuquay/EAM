@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
-import {
-  TextField,
-  DialogActions,
-  Button
-} from '@material-ui/core';
+import { TextField, DialogActions, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import SupplierService from 'src/services/supplier';
 
@@ -19,7 +15,7 @@ const schema = Yup.object().shape({
     .max(255)
 });
 
-const FormEdit = ({ id, onUpdate }) => {
+const FormEdit = ({ id, onUpdate, handleClose }) => {
   const initialFormState = {
     name: '',
     address: '',
@@ -40,10 +36,6 @@ const FormEdit = ({ id, onUpdate }) => {
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -250,6 +242,9 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <DialogActions>
+        <Button color="primary" onClick={handleClose}>
+          Hủy
+        </Button>
         <Button color="primary" onClick={() => onUpdate(id, supplier)}>
           Xác nhận
         </Button>

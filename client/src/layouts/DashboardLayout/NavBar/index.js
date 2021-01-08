@@ -20,7 +20,9 @@ import {
   WebAsset,
   AssignmentReturned,
   BarChart,
-  LocalMall
+  LocalMall,
+  Business,
+  Save
 } from '@material-ui/icons';
 import NavItem from './NavItem';
 
@@ -79,6 +81,18 @@ const items = [
     icon: Keyboard,
     title: 'Quản lý linh kiện',
     role: ''
+  },
+  {
+    href: '/app/licenses',
+    icon: Save,
+    title: 'Quản lý bản quyền phần mềm',
+    role: ''
+  },
+  {
+    href: '/app/manufacturers',
+    icon: Business,
+    title: 'Nhà sản xuất',
+    role: 'moderator'
   },
   {
     href: '/app/suppliers',

@@ -5,6 +5,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   const today = new Date();
   const locationData = {
+    userId: req.body.userId,
     name: req.body.name,
     address: req.body.address,
     city: req.body.city,
@@ -43,7 +44,14 @@ exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-  Location.findAll({ where: condition })
+  Location.findAll({
+    where: condition,
+    include: [
+      {
+        model: db.User,
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })
@@ -144,4 +152,3 @@ exports.findAllByName = (req, res) => {
       });
     });
 };
-

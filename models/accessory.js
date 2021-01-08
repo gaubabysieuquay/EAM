@@ -14,13 +14,21 @@ module.exports = (sequelize, DataTypes) => {
   Accessory.init(
     {
       name: DataTypes.STRING,
-      manufacturer: DataTypes.STRING,
       model: DataTypes.STRING,
       purchaseDate: DataTypes.DATE,
       purchaseCost: DataTypes.INTEGER,
       quantity: DataTypes.INTEGER,
       note: DataTypes.STRING,
       image: DataTypes.STRING,
+      manufacturerId: {
+        type: DataTypes.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Manufacturer",
+          key: "id",
+        },
+      },
       supplierId: {
         type: DataTypes.INTEGER,
         onDelete: "cascade",

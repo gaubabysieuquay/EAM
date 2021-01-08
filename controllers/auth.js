@@ -28,7 +28,6 @@ exports.signup = (req, res) => {
   User.create(userData)
     .then((user) => {
       if (req.body.roles) {
-        console.log("req:" + req.body.roles)
         Role.findAll({
           where: {
             name: {
@@ -99,7 +98,7 @@ exports.signin = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  var condition = { username: { [Op.not]: "mod" } };
+  const condition = { username: { [Op.not]: "mod" } };
 
   User.findAll({ where: condition, include: [{ model: db.Role }] })
     .then((data) => {

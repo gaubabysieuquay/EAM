@@ -29,7 +29,7 @@ import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
 import TabDialog from 'src/components/Tab';
-import HistoryListView from './asset_history'
+import HistoryListView from './asset_history/index'
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -310,7 +310,7 @@ const Results = ({
                                   handleClose={handleClose}
                                 />
                               }
-                              itemTwo={<HistoryListView/>}
+                              itemTwo={<HistoryListView id={assetId}/>}
                             />
                           </DialogContent>
                         </Dialog>

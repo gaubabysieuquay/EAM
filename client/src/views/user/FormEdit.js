@@ -2,14 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
-import {
-  TextField,
-  InputAdornment,
-  DialogActions,
-  Button
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import MomentUtils from '@date-io/moment';
+import { TextField, DialogActions, Button } from '@material-ui/core';
 import UserService from 'src/services/auth';
 
 const schema = Yup.object().shape({
@@ -21,7 +14,7 @@ const schema = Yup.object().shape({
     .max(255)
 });
 
-const FormEdit = ({ id, onUpdate }) => {
+const FormEdit = ({ id, onUpdate, handleClose }) => {
   const initialFormState = {
     username: '',
     firstName: '',
@@ -31,7 +24,7 @@ const FormEdit = ({ id, onUpdate }) => {
     state: '',
     country: '',
     phone: '',
-    email: '',
+    email: ''
   };
 
   const [open, setOpen] = useState(false);
@@ -41,10 +34,6 @@ const FormEdit = ({ id, onUpdate }) => {
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -230,6 +219,9 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <DialogActions>
+        <Button color="primary" onClick={handleClose}>
+          Hủy
+        </Button>
         <Button color="primary" onClick={() => onUpdate(id, user)}>
           Xác nhận
         </Button>

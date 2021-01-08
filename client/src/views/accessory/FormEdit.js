@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -18,6 +17,7 @@ import MomentUtils from '@date-io/moment';
 import AccessoryService from 'src/services/accessory';
 import SupplierService from 'src/services/supplier';
 import LocationService from 'src/services/location';
+import ManufacturerService from 'src/services/manufacturer';
 
 const schema = Yup.object().shape({
   name: Yup.string()
@@ -36,37 +36,34 @@ const schema = Yup.object().shape({
 
 const defaultData = [
   { id: 1, name: 'TestSup00' },
-  { id: 1, name: 'TestLo00' }
+  { id: 1, name: 'TestLo00' },
+  { id: 1, name: 'TestMan00'}
 ];
 
-const FormEdit = ({ id, onUpdate }) => {
+const FormEdit = ({ id, onUpdate, handleClose }) => {
   const initialFormState = {
     id: '',
     name: '',
-    manufacturer: '',
     model: '',
     purchaseDate: null,
     purchaseCost: '',
     quantity: '',
     note: '',
     supplierId: '',
-    locationId: ''
+    locationId: '',
+    manufacturerId: '',
   };
 
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [accessory, setAccessory] = useState(initialFormState);
   const [supplier, setSupplier] = useState([]);
   const [location, setLocation] = useState([]);
+  const [manufacturer, setManufacturer] = useState([]);
   const { control, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialFormState
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -83,6 +80,10 @@ const FormEdit = ({ id, onUpdate }) => {
 
   const handleChangeLocation = (_, value) => {
     setAccessory({ ...accessory, locationId: value.id });
+  };
+
+  const handleChangeManufacturer = (_, value) => {
+    setAccessory({ ...accessory, manufacturerId: value.id });
   };
 
   const getAccessory = id => {
@@ -106,6 +107,7 @@ const FormEdit = ({ id, onUpdate }) => {
       })
       .catch(err => console.log(err));
   };
+
   const getLocationAll = () => {
     LocationService.getAll()
       .then(response => {
@@ -114,9 +116,18 @@ const FormEdit = ({ id, onUpdate }) => {
       .catch(err => console.log(err));
   };
 
+  const getManufacturerAll = () => {
+    ManufacturerService.getAll()
+      .then(response => {
+        setManufacturer(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
   useEffect(() => {
     getSupplierAll();
     getLocationAll();
+    getManufacturerAll();
   }, []);
 
   return (
@@ -133,26 +144,6 @@ const FormEdit = ({ id, onUpdate }) => {
             value={accessory.name}
             onChange={handleChange}
             label="Tên linh kiện"
-            margin="normal"
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        error={Boolean(errors.manufacturer)}
-        helperText={errors.manufacturer?.message}
-        name="manufacturer"
-        render={() => (
-          <TextField
-            fullWidth
-            name="manufacturer"
-            value={accessory.manufacturer}
-            onChange={handleChange}
-            label="Nhà sản xuất"
             margin="normal"
             variant="outlined"
             InputLabelProps={{
@@ -239,9 +230,35 @@ const FormEdit = ({ id, onUpdate }) => {
       <Controller
         render={() => (
           <Autocomplete
+            options={manufacturer}
+            onChange={handleChangeManufacturer}
+            value={accessory.manufacturer || manufacturer[0] || defaultData[2]}
+            getOptionLabel={option => option.name}
+            getOptionSelected={(option, value) => option.id === value.id}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Nhà sản xuất"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                variant="outlined"
+                margin="normal"
+                name="manufacturerId"
+                fullWidth
+              />
+            )}
+          />
+        )}
+        name="manufacturerId"
+        control={control}
+      />
+      <Controller
+        render={() => (
+          <Autocomplete
             options={location}
             onChange={handleChangeLocation}
-            value={accessory.Location || supplier[0] || defaultData[1]}
+            value={accessory.Location || location[0] || defaultData[1]}
             getOptionLabel={option => option.name}
             getOptionSelected={(option, value) => option.id === value.id}
             renderInput={params => (
@@ -294,13 +311,11 @@ const FormEdit = ({ id, onUpdate }) => {
           <TextField
             fullWidth
             name="quantity"
-            label="Ghi chú"
+            label="Số lượng"
             margin="normal"
             value={accessory.quantity}
             onChange={handleChange}
             variant="outlined"
-            rows={4}
-            multiline
             InputLabelProps={{
               shrink: true
             }}
@@ -330,6 +345,9 @@ const FormEdit = ({ id, onUpdate }) => {
         )}
       />
       <DialogActions>
+        <Button color="primary" onClick={handleClose}>
+          Hủy
+        </Button>
         <Button color="primary" onClick={() => onUpdate(id, accessory)}>
           Xác nhận
         </Button>
