@@ -222,7 +222,9 @@ const Results = ({
                         {moment(license.purchaseDate).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell>{license.purchaseCost}</TableCell>
-                      <TableCell>{license.expireDate}</TableCell>
+                      <TableCell>
+                        {moment(license.expireDate).format('DD/MM/YYYY')}
+                      </TableCell>
                       <TableCell>
                         {moment(license.createdAt).format('DD/MM/YYYY')}
                       </TableCell>

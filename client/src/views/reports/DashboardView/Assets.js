@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
@@ -15,24 +16,95 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import AssetService from 'src/services/asset';
+import moment from 'moment';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const Sales = ({ className, ...rest }) => {
+const Assets = ({ className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [asset, setAsset] = useState([]);
+
+  const getAssetAll = () => {
+    AssetService.getAll()
+      .then(response => {
+        setAsset(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const countThisYear = num => {
+    return asset.reduce(
+      (counter, obj) =>
+        moment(obj.purchaseDate).month() === num &&
+        moment(obj.purchaseDate).year() === moment().year()
+          ? (counter += 1)
+          : counter,
+      0
+    );
+  };
+
+  const countLastYear = num => {
+    return asset.reduce(
+      (counter, obj) =>
+        moment(obj.purchaseDate).month() === num &&
+        moment(obj.purchaseDate).year() ===
+          moment()
+            .subtract(1, 'years')
+            .year()
+          ? (counter += 1)
+          : counter,
+      0
+    );
+  };
+
+  useEffect(() => {
+    getAssetAll();
+  }, []);
+
+  const datasetKeyProvider = () => {
+    return btoa(Math.random()).substring(0, 12);
+  };
+
   const data = {
     datasets: [
       {
         backgroundColor: colors.indigo[500],
-        data: [18, 5, 19, 27, 29, 19, 20],
+        data: [
+          countThisYear(0),
+          countThisYear(1),
+          countThisYear(2),
+          countThisYear(3),
+          countThisYear(4),
+          countThisYear(5),
+          countThisYear(6),
+          countThisYear(7),
+          countThisYear(8),
+          countThisYear(9),
+          countThisYear(10),
+          countThisYear(11)
+        ],
         label: 'Năm nay'
       },
       {
         backgroundColor: colors.grey[200],
-        data: [11, 20, 12, 29, 30, 25, 13],
+        data: [
+          countLastYear(0),
+          countLastYear(1),
+          countLastYear(2),
+          countLastYear(3),
+          countLastYear(4),
+          countLastYear(5),
+          countLastYear(6),
+          countLastYear(7),
+          countLastYear(8),
+          countLastYear(9),
+          countLastYear(10),
+          countLastYear(11)
+        ],
         label: 'Năm ngoái'
       },
       {
@@ -122,7 +194,11 @@ const Sales = ({ className, ...rest }) => {
       <Divider />
       <CardContent>
         <Box height={400} position="relative">
-          <Bar data={data} options={options} />
+          <Bar
+            datasetKeyProvider={datasetKeyProvider}
+            data={data}
+            options={options}
+          />
         </Box>
       </CardContent>
       <Divider />
@@ -140,8 +216,8 @@ const Sales = ({ className, ...rest }) => {
   );
 };
 
-Sales.propTypes = {
+Assets.propTypes = {
   className: PropTypes.string
 };
 
-export default Sales;
+export default Assets;
