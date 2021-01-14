@@ -84,7 +84,7 @@ const Warranty = ({ className, ...rest }) => {
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Thiết bị cần bảo trì hôm nay" />
+      <CardHeader title="Thiết bị cần bảo trì" />
       <Divider />
       <TableContainer>
         <Box minWidth={800}>

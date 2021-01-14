@@ -3,7 +3,7 @@ import { Container, Grid, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import TotalAssets from './TotalAssets';
 import Warranty from './Warranty';
-import LatestProducts from './LatestProducts';
+import LatestAssets from './LatestAssets';
 import Assets from './Assets';
 import TotalSupplier from './TotalSupplier';
 import TotalAccessories from './TotalAccessories';
@@ -45,7 +45,7 @@ const Dashboard = () => {
             <AssetByStatus />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <LatestProducts />
+            <LatestAssets />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <Warranty />

@@ -14,7 +14,11 @@ const getAllByName = name => {
 
 const getExpireDate = () => {
   return http.get(`assets/asset/expireDate`);
-}
+};
+
+const getByCreated = () => {
+  return http.get(`assets/asset/createdAt`);
+};
 
 const create = data => {
   console.log(data);
@@ -39,6 +43,7 @@ export default {
   get,
   getAllByName,
   getExpireDate,
+  getByCreated,
   create,
   update,
   remove,

@@ -123,7 +123,6 @@ exports.update = (req, res) => {
         message: "Error updating Asset with id=" + id,
       });
     });
-  
 };
 
 exports.delete = (req, res) => {
@@ -212,6 +211,23 @@ exports.findAllByExpire = (req, res) => {
 //Find all objects by condition
 exports.findAllByName = (req, res) => {
   Asset.findAll({ where: req.body.name })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving.",
+      });
+    });
+};
+
+//Get the assets with createdAt closest to today
+exports.findAllByCreate = (req, res) => {
+  Asset.findAll({
+    where: { createdAt: { [Op.lt]: sequelize.fn("now") } },
+    order: [["createdAt", "DESC"]],
+    limit: 5,
+  })
     .then((data) => {
       res.send(data);
     })

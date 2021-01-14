@@ -82,15 +82,18 @@ const FormAdd = ({ onAdd, handleClose }) => {
   };
 
   const handleChangeStatus = (_, value) => {
-    setValue('status', value.type);
+    if (value) setValue('status', value.type);
+    else setValue('status', null);
   };
 
   const handleChangeSupplier = (_, value) => {
-    setValue('supplierId', value.id);
+    if (value) setValue('supplierId', value.id);
+    else setValue('supplierId', null);
   };
 
   const handleChangeLocation = (_, value) => {
-    setValue('locationId', value.id);
+    if (value) setValue('locationId', value.id);
+    else setValue('locationId', null);
   };
 
   const getSupplierAll = () => {
