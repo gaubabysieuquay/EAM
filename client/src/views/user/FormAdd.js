@@ -32,20 +32,22 @@ const FormAdd = ({ onAdd, handleClose }) => {
     country: '',
     phone: '',
     email: '',
-    roles: []
+    roles: ''
   };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [role, setRole] = useState([]);
 
-  const { control, handleSubmit, errors, reset, setValue } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: initialFormState
-  });
+  const { control, handleSubmit, errors, reset, setValue, getValues } = useForm(
+    {
+      resolver: yupResolver(schema),
+      defaultValues: initialFormState
+    }
+  );
 
   const handleChangeRole = (_, value) => {
-    setValue('roles', value.name);
+    setValue('roles', [value.name]);
   };
 
   const getRoleAll = () => {

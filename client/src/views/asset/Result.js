@@ -29,7 +29,7 @@ import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
 import TabDialog from 'src/components/Tab';
-import HistoryListView from './asset_history/index'
+import HistoryListView from './asset_history/index';
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -39,13 +39,13 @@ const descendingComparator = (a, b, orderBy) => {
     return 1;
   }
   return 0;
-}
+};
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
+};
 
 const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -55,7 +55,7 @@ const stableSort = (array, comparator) => {
     return a[1] - b[1];
   });
   return stabilizedThis.map(el => el[0]);
-}
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -187,7 +187,7 @@ const Results = ({
             label="Không sẵn sàng"
           />
         );
-      case 4:
+      case 5:
         return (
           <Chip
             style={{ backgroundColor: colors.lightBlue[400] }}
@@ -271,7 +271,7 @@ const Results = ({
                       <TableCell>{asset.purchaseCost}</TableCell>
                       <TableCell>{statusInfo(asset.status)}</TableCell>
                       <TableCell>
-                        {moment(asset.createdAt).format('DD/MM/YYYY')}
+                        {moment(asset.expireDate).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell>
                         <IconButton
@@ -310,7 +310,7 @@ const Results = ({
                                   handleClose={handleClose}
                                 />
                               }
-                              itemTwo={<HistoryListView id={assetId}/>}
+                              itemTwo={<HistoryListView id={assetId} />}
                             />
                           </DialogContent>
                         </Dialog>

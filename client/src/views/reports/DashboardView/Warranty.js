@@ -116,7 +116,7 @@ const Warranty = ({ className, ...rest }) => {
                     {moment(warranties.purchaseDate).format('DD/MM/YYYY')}
                   </TableCell>
                   <TableCell>
-                    {moment(warranties.warranty).format('DD/MM/YYYY')}
+                    {moment(warranties.expireDate).format('DD/MM/YYYY')}
                   </TableCell>
                   <TableCell>{warranties.barcode}</TableCell>
                   <TableCell>{warranties.serial}</TableCell>

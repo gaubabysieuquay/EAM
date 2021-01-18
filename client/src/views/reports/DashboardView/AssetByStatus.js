@@ -53,7 +53,7 @@ const AssetByStatus = ({ className, ...rest }) => {
   const data = {
     datasets: [
       {
-        data: [count(1), count(3), count(2), count(4), count(0)],
+        data: [count(1), count(3), count(2), count(5), count(0)],
         backgroundColor: [
           colors.lightGreen[400],
           colors.red[400],
@@ -66,7 +66,13 @@ const AssetByStatus = ({ className, ...rest }) => {
         hoverBorderColor: colors.common.white
       }
     ],
-    labels: ['Sẵn sàng', 'Không sẵn sàng', 'Chờ duyệt', 'Lưu trữ', 'Chưa cập nhật']
+    labels: [
+      'Sẵn sàng',
+      'Không sẵn sàng',
+      'Chờ duyệt',
+      'Lưu trữ',
+      'Chưa cập nhật'
+    ]
   };
 
   const options = {
@@ -136,7 +142,11 @@ const AssetByStatus = ({ className, ...rest }) => {
           {status.map(({ color, icon: Icon, title, value }) => (
             <Box key={title} p={1} textAlign="center">
               <Icon color="action" />
-              <Typography color="textPrimary" style={{fontSize: '0.87rem'}} variant="body1">
+              <Typography
+                color="textPrimary"
+                style={{ fontSize: '0.79rem' }}
+                variant="body1"
+              >
                 {title}
               </Typography>
               <Typography style={{ color }} variant="h2">

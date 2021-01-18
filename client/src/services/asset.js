@@ -20,6 +20,10 @@ const getByCreated = () => {
   return http.get(`assets/asset/createdAt`);
 };
 
+const getAllBrokenAsset = () => {
+  return http.get(`assets/asset/brokenAsset`);
+};
+
 const create = data => {
   console.log(data);
   return http.post('/assets', data);
@@ -44,6 +48,7 @@ export default {
   getAllByName,
   getExpireDate,
   getByCreated,
+  getAllBrokenAsset,
   create,
   update,
   remove,

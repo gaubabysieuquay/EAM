@@ -5,6 +5,7 @@ import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
 import AssetService from 'src/services/asset';
+import AuthService from 'src/services/auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,6 +21,9 @@ const AssetListView = props => {
   const [asset, setAsset] = useState([]);
   const [assetSearch, setAssetSearch] = useState([]);
   const [search, setSearch] = useState('');
+  const [array, setArray] = useState([]);
+  const [currentUser, setCurrentUser] = useState(undefined);
+  const [moderator, setModerator] = useState(false);
   const navigate = useNavigate();
 
   const getAssetAll = () => {
@@ -27,9 +31,21 @@ const AssetListView = props => {
       .then(response => {
         setAsset(response.data);
         setAssetSearch(response.data);
+        setArray(response.data);
       })
       .catch(err => console.log(err));
   };
+
+  const showAssetByRole = array.filter(item => item.Location.userId === currentUser.id);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setModerator(user.roles.includes('ROLE_MODERATOR'));
+    }
+  }, []);
 
   const onChangeSearch = e => {
     const search = e.target.value;
@@ -103,7 +119,7 @@ const AssetListView = props => {
         />
         <Box mt={3}>
           <Results
-            assets={asset}
+            assets={moderator ? asset : showAssetByRole}
             deleteAsset={deleteAsset}
             deleteAllAsset={deleteAllAsset}
             onUpdate={updateAsset}

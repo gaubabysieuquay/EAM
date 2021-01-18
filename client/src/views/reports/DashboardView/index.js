@@ -9,6 +9,7 @@ import TotalSupplier from './TotalSupplier';
 import TotalAccessories from './TotalAccessories';
 import TotalLicense from './TotalLicense';
 import AssetByStatus from './AssetByStatus';
+import BrokenAsset from './BrokenAsset';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,6 +50,9 @@ const Dashboard = () => {
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <Warranty />
+          </Grid>
+          <Grid item lg={12} md={12} xl={12} xs={12}>
+            <BrokenAsset />
           </Grid>
         </Grid>
       </Container>

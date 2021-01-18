@@ -53,8 +53,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  const name = req.query.name;
-  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+  var condition = { status: { [Op.not]: 4 } };
 
   Asset.findAll({
     where: condition,
@@ -208,6 +207,25 @@ exports.findAllByExpire = (req, res) => {
     });
 };
 
+//Find all broken asset
+exports.findAllBrokenAsset = (req, res) => {
+  Asset.findAll({
+    where: {
+      status: 3,
+    },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error Some error occurred while retrieving the Asset.",
+      });
+    });
+};
+
 //Find all objects by condition
 exports.findAllByName = (req, res) => {
   Asset.findAll({ where: req.body.name })
@@ -234,6 +252,25 @@ exports.findAllByCreate = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving.",
+      });
+    });
+};
+
+exports.findAllArchive = (req, res) => {
+  var condition = { status: 4 };
+
+  Asset.findAll({
+    where: condition,
+    include: [{ model: db.Supplier }, { model: db.Location }],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error Some error occurred while retrieving the Asset.",
       });
     });
 };

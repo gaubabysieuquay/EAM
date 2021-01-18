@@ -28,6 +28,7 @@ exports.signup = (req, res) => {
   User.create(userData)
     .then((user) => {
       if (req.body.roles) {
+        console.log(req.body.roles)
         Role.findAll({
           where: {
             name: {

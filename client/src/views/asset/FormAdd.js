@@ -27,8 +27,9 @@ const schema = Yup.object().shape({
   model: Yup.string()
     .max(255)
     .required('Model is required'),
-  purchaseCost: Yup.string()
-    .max(255)
+  purchaseCost: Yup.number().typeError('Giá tiền phải là dạng số')
+    .min(1, 'Giá tiền nhỏ nhất là 1 VND')
+    .max(500000000, 'Giá tiền lớn nhất là 50000000 VND')
     .required('Purchase Cost is required')
 });
 
@@ -37,7 +38,7 @@ const statusList = [
   { name: 'Chờ duyệt', type: 2 },
   { name: 'Đang sửa chữa', type: 3 },
   { name: 'Thất lạc', type: 3 },
-  { name: 'Không thể sửa chữa', type: 3 },
+  { name: 'Hư hỏng', type: 3 },
   { name: 'Lưu trữ', type: 4 }
 ];
 

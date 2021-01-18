@@ -94,7 +94,7 @@ const AccessoryListView = props => {
   }, []);
 
   return (
-    <Page className={classes.root} title="Quản lý cơ sở vật chất">
+    <Page className={classes.root} title="Quản lý linh kiện">
       <Container maxWidth={false}>
         <Toolbar
           search={search}

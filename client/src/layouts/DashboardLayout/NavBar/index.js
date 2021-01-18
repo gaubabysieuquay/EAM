@@ -41,18 +41,6 @@ const items = [
     role: ''
   },
   {
-    href: '/app/customers',
-    icon: People,
-    title: 'Customers',
-    role: ''
-  },
-  {
-    href: '/app/products',
-    icon: LocalMall,
-    title: 'Products',
-    role: ''
-  },
-  {
     href: '/app/account',
     icon: Person,
     title: 'Account',

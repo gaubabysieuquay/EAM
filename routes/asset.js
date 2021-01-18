@@ -18,6 +18,8 @@ module.exports = (app) => {
 
   router.get("/asset/createdAt", assets.findAllByCreate);
 
+  router.get("/asset/brokenAsset", assets.findAllBrokenAsset);
+
   router.put("/:id", assets.update);
 
   router.delete("/:id", assets.delete);
