@@ -26,10 +26,11 @@ const schema = Yup.object().shape({
   model: Yup.string()
     .max(255)
     .required('Nhập số model!'),
-  purchaseCost: Yup.number().typeError('Giá tiền phải là dạng số')
+  purchaseCost: Yup.number()
+    .typeError('Giá tiền phải là dạng số')
     .min(1, 'Giá tiền nhỏ nhất là 1 VND')
     .max(500000000, 'Giá tiền lớn nhất là 50000000 VND')
-    .required('Purchase Cost is required'),
+    .required('Nhập giá tiền!'),
   quantity: Yup.string()
     .max(255)
     .required('Nhập số lượng!')
@@ -38,7 +39,7 @@ const schema = Yup.object().shape({
 const defaultData = [
   { id: 1, name: 'TestSup00' },
   { id: 1, name: 'TestLo00' },
-  { id: 1, name: 'TestMan00'}
+  { id: 1, name: 'TestMan00' }
 ];
 
 const FormEdit = ({ id, onUpdate, handleClose }) => {
@@ -52,7 +53,7 @@ const FormEdit = ({ id, onUpdate, handleClose }) => {
     note: '',
     supplierId: '',
     locationId: '',
-    manufacturerId: '',
+    manufacturerId: ''
   };
 
   const [open, setOpen] = useState(false);

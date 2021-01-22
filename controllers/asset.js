@@ -167,13 +167,27 @@ exports.findAllByExpire = (req, res) => {
   Asset.update(
     { status: 2 },
     {
-      where: sequelize.where(
-        sequelize.fn("date", sequelize.fn("now")),
-        "<=",
-        sequelize.fn("date", sequelize.col("expireDate")),
-        "<=",
-        sequelize.fn("date", sequelize.fn("now") + 10)
-      ),
+      where: {
+        [Op.and]: [
+          sequelize.where(
+            sequelize.fn("date", sequelize.col("expireDate")),
+            "<=",
+            sequelize.fn(
+              "date",
+              sequelize.fn(
+                "date_add",
+                sequelize.fn("now"),
+                sequelize.literal(`INTERVAL 10 DAY`)
+              )
+            )
+          ),
+          sequelize.where(
+            sequelize.fn("date", sequelize.fn("now")),
+            ">",
+            sequelize.fn("date", sequelize.col("expireDate"))
+          ),
+        ],
+      },
     }
   );
   Asset.update(
@@ -187,13 +201,27 @@ exports.findAllByExpire = (req, res) => {
     }
   );
   Asset.findAll({
-    where: sequelize.where(
-      sequelize.fn("date", sequelize.fn("now")),
-      "<=",
-      sequelize.fn("date", sequelize.col("expireDate")),
-      "<=",
-      sequelize.fn("date", sequelize.fn("now") + 10)
-    ),
+    where: {
+      [Op.and]: [
+        sequelize.where(
+          sequelize.fn("date", sequelize.col("expireDate")),
+          "<=",
+          sequelize.fn(
+            "date",
+            sequelize.fn(
+              "date_add",
+              sequelize.fn("now"),
+              sequelize.literal(`INTERVAL 10 DAY`)
+            )
+          )
+        ),
+        sequelize.where(
+          sequelize.fn("date", sequelize.fn("now")),
+          ">",
+          sequelize.fn("date", sequelize.col("expireDate"))
+        ),
+      ],
+    },
   })
     .then((data) => {
       res.send(data);
