@@ -53,6 +53,11 @@ const update = (id, data) => {
   return http.put(`/users/${id}`, data);
 };
 
+const verifyUser = (id, data) => {
+  console.log(data);
+  return http.put(`/users/user/${id}`, data);
+};
+
 const remove = id => {
   return http.delete(`/users/${id}`);
 };
@@ -71,6 +76,7 @@ export default {
   getAllByName,
   create,
   update,
+  verifyUser,
   remove,
   removeAll
 };

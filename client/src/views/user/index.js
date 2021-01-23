@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 const UserListView = props => {
   const classes = useStyles();
   const [user, setUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   const [userSearch, setUserSearch] = useState([]);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
@@ -27,6 +28,15 @@ const UserListView = props => {
       .then(response => {
         setUser(response.data);
         setUserSearch(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getUser = id => {
+    UserService.get(id)
+      .then(response => {
+        setCurrentUser(response.data);
+        console.log(response.data);
       })
       .catch(err => console.log(err));
   };
@@ -89,6 +99,18 @@ const UserListView = props => {
       });
   };
 
+  const verifyUser = (id, value) => { 
+    UserService.verifyUser(id, {verify: value})
+      .then(response => {
+        navigate('/app/users', { replace: true });
+        getUserAll();
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getUserAll();
   }, []);
@@ -102,12 +124,7 @@ const UserListView = props => {
           onAdd={addUser}
         />
         <Box mt={3}>
-          <Results
-            users={user}
-            deleteUser={deleteUser}
-            deleteAllUser={deleteAllUser}
-            onUpdate={updateUser}
-          />
+          <Results users={user} onUpdate={updateUser} verifyUser={verifyUser} />
         </Box>
       </Container>
     </Page>

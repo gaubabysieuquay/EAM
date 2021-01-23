@@ -23,12 +23,17 @@ exports.signup = (req, res) => {
     country: req.body.country,
     phone: req.body.phone,
     image: req.body.image,
-    roles: req.body.roles
+    verify: req.body.verify,
+    roles: req.body.roles,
   };
+
+  if (!req.body.verify) {
+    userData.verify = 0;
+  }
+
   User.create(userData)
     .then((user) => {
       if (req.body.roles) {
-        console.log(req.body.roles)
         Role.findAll({
           where: {
             name: {
@@ -62,7 +67,7 @@ exports.signin = (req, res) => {
         return res.status(404).send({ message: "Không tìm thấy tài khoản." });
       }
 
-      var passwordIsValid = bcrypt.compareSync(
+      let passwordIsValid = bcrypt.compareSync(
         req.body.password,
         user.password
       );
@@ -74,24 +79,31 @@ exports.signin = (req, res) => {
         });
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
+      let token = jwt.sign({ id: user.id }, config.secret, {
         //24 hours
         expiresIn: 86400,
       });
 
-      var authorities = [];
-      user.getRoles().then((roles) => {
-        for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        }
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
+      if (user.verify == true) {
+        console.log(user.verify)
+        let authorities = [];
+        user.getRoles().then((roles) => {
+          for (let i = 0; i < roles.length; i++) {
+            authorities.push("ROLE_" + roles[i].name.toUpperCase());
+          }
+          res.status(200).send({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            roles: authorities,
+            accessToken: token,
+          });
         });
-      });
+      } else {
+        return res
+          .status(401)
+          .send({ message: "Không được cấp quyền truy cập." });
+      }
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -131,8 +143,49 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
+  const userData = {
+    username: req.body.username,
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, 8),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    address: req.body.address,
+    city: req.body.city,
+    state: req.body.state,
+    country: req.body.country,
+    phone: req.body.phone,
+    image: req.body.image,
+  };
 
-  User.update(req.body, {
+  User.update(userData, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "User was updated successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot update User with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating User with id=" + id,
+      });
+    });
+};
+
+exports.verifyUser = (req, res) => {
+  const id = req.params.id;
+
+  const userData = {
+    verify: req.body.verify
+  };
+
+  User.update(userData, {
     where: { id: id },
   })
     .then((num) => {

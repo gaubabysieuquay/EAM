@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Box,
+  Chip,
+  colors,
   Card,
   Checkbox,
   Dialog,
@@ -20,9 +22,8 @@ import {
   Switch,
   makeStyles
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import EditIcon from '@material-ui/icons/Edit';
-import { red } from '@material-ui/core/colors';
 import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
@@ -78,14 +79,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Results = ({
-  className,
-  users,
-  deleteAllUser,
-  deleteUser,
-  onUpdate,
-  ...rest
-}) => {
+const verifyInfo = value => {
+  switch (value) {
+    case true:
+      return (
+        <Chip
+          style={{ backgroundColor: colors.lightGreen[400] }}
+          label="Xác thực"
+        />
+      );
+    default:
+      return (
+        <Chip
+          style={{ backgroundColor: colors.yellow[300] }}
+          label="Chưa xác thực"
+        />
+      );
+  }
+};
+
+const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
@@ -94,7 +107,18 @@ const Results = ({
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [userId, setUserId] = useState();
+
+  const handleVerified = () => {
+    if (isVerified == true) {
+      setIsVerified(false);
+      return isVerified;
+    } else {
+      setIsVerified(true);
+      return isVerified;
+    };
+  };
 
   const handleClickOpen = id => {
     setOpen(true);
@@ -163,10 +187,7 @@ const Results = ({
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <EnhancedTableToolbar
-        numSelected={selected.length}
-        deleteAllUser={deleteAllUser}
-      />
+      <EnhancedTableToolbar numSelected={selected.length} />
       <TableContainer>
         <Box minWidth={1050}>
           <Table
@@ -218,24 +239,24 @@ const Results = ({
                       <TableCell>{user.firstName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
+                      <TableCell>{verifyInfo(user.verify)}</TableCell>
                       <TableCell>
                         {moment(user.createdAt).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          style={{ color: red[500] }}
-                          onClick={() => deleteUser(user.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
                         <IconButton
                           aria-label="edit"
                           size="small"
                           onClick={() => handleClickOpen(user.id)}
                         >
                           <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() => verifyUser(user.id, handleVerified())}
+                        >
+                          <VerifiedUserIcon />
                         </IconButton>
                         <Dialog
                           open={open}

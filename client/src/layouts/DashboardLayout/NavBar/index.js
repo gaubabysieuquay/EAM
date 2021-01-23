@@ -25,7 +25,6 @@ import {
   Save
 } from '@material-ui/icons';
 import NavItem from './NavItem';
-
 import AuthService from 'src/services/auth';
 
 const users = {
@@ -44,12 +43,6 @@ const items = [
     href: '/app/account',
     icon: Person,
     title: 'Account',
-    role: ''
-  },
-  {
-    href: '/app/settings',
-    icon: Settings,
-    title: 'Cài đặt',
     role: ''
   },
   {
