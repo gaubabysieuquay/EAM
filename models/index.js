@@ -5,6 +5,7 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const config = require("../config/config.js");
+const asset = require("./asset.js");
 const db = {};
 
 console.log(config);
@@ -160,7 +161,7 @@ db.Location.belongsTo(db.User, {
   targetKey: "id",
 });
 db.User.hasMany(db.Location, {
-  onDelete: "cascade",
+  onDelete: "cascade",  
   foreignKey: "userId",
   targetKey: "id",
 });
@@ -187,6 +188,61 @@ db.Supplier.hasMany(db.License, {
   onDelete: "cascade",
   foreignKey: "supplierId",
   targetKey: "id",
+});
+
+//Trigger Asset
+db.Asset.afterCreate((asset, options) => {
+  db.Asset_history.create({
+    assetId: asset.id,
+    barcode: asset.barcode,
+    name: asset.name,
+    serial: asset.serial,
+    model: asset.model,
+    purchaseDate: asset.purchaseDate,
+    purchaseCost: asset.purchaseCost,
+    status: asset.status,
+    expireDate: asset.expireDate,
+    note: asset.note,
+    image: asset.image,
+    locationId: asset.locationId,
+    supplierId: asset.supplierId,
+  });
+});
+
+db.Asset.afterUpdate((asset, options) => {
+  db.Asset_history.create({
+    assetId: asset.id,
+    barcode: asset.barcode,
+    name: asset.name,
+    serial: asset.serial,
+    model: asset.model,
+    purchaseDate: asset.purchaseDate,
+    purchaseCost: asset.purchaseCost,
+    status: asset.status,
+    expireDate: asset.expireDate,
+    note: asset.note,
+    image: asset.image,
+    locationId: asset.locationId,
+    supplierId: asset.supplierId,
+  });
+});
+
+db.Asset.afterDestroy((asset, options) => {
+  db.Asset_history.create({
+    assetId: asset.id,
+    barcode: asset.barcode,
+    name: asset.name,
+    serial: asset.serial,
+    model: asset.model,
+    purchaseDate: asset.purchaseDate,
+    purchaseCost: asset.purchaseCost,
+    status: asset.status,
+    expireDate: asset.expireDate,
+    note: asset.note,
+    image: asset.image,
+    locationId: asset.locationId,
+    supplierId: asset.supplierId,
+  });
 });
 
 db.ROLES = ["user", "admin", "moderator"];
