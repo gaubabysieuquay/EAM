@@ -17,6 +17,36 @@ module.exports = {
           key: "id",
         },
       },
+      barcode: {
+        type: Sequelize.STRING,
+      },
+      name: {
+        type: Sequelize.STRING,
+      },
+      serial: {
+        type: Sequelize.STRING,
+      },
+      model: {
+        type: Sequelize.STRING,
+      },
+      purchaseDate: {
+        type: Sequelize.DATE,
+      },
+      purchaseCost: {
+        type: Sequelize.INTEGER,
+      },
+      status: {
+        type: Sequelize.INTEGER,
+      },
+      expireDate: {
+        type: Sequelize.DATE,
+      },
+      note: {
+        type: Sequelize.STRING,
+      },
+      image: {
+        type: Sequelize.STRING,
+      },
       locationId: {
         type: Sequelize.INTEGER,
         onDelete: "cascade",
@@ -34,12 +64,6 @@ module.exports = {
           model: "Suppliers",
           key: "id",
         },
-      },
-      status: {
-        type: Sequelize.INTEGER,
-      },
-      expireDate: {
-        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
