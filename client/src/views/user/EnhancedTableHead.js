@@ -18,6 +18,8 @@ const headCells = [
   { id: 'firstName', disablePadding: false, label: 'Tên' },
   { id: 'email', disablePadding: false, label: 'Email' },
   { id: 'phone', disablePadding: false, label: 'Phone' },
+  { id: 'asset', disablePadding: false, label: 'Thiết bị' },
+  { id: 'accessory', disablePadding: false, label: 'Linh kiện' },
   { id: 'verify', disablePadding: false, label: 'Tình trạng truy cập' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
   { id: '', disablePadding: false, label: 'Actions' }

@@ -23,11 +23,26 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER,
       },
+      availableQTY: {
+        type: Sequelize.INTEGER,
+      },
+      checkDate: {
+        type: Sequelize.DATE,
+      },
       note: {
         type: Sequelize.STRING,
       },
       image: {
         type: Sequelize.STRING,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
       manufacturerId: {
         type: Sequelize.INTEGER,
@@ -62,6 +77,10 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });

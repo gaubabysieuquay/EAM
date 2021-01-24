@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Box,
+  Button,
   Card,
   Checkbox,
   Chip,
@@ -28,6 +29,7 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import FormCheck from './FormCheck';
 import TabDialog from 'src/components/Tab';
 import HistoryListView from './asset_history/index';
 
@@ -96,16 +98,26 @@ const Results = ({
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openCheck, setOpenCheck] = useState(false);
   const [assetId, setAssetId] = useState();
 
-  const handleClickOpen = id => {
-    setOpen(true);
+  const handleClickOpenEdit = id => {
+    setOpenEdit(true);
     setAssetId(id);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpenCheck = id => {
+    setOpenCheck(true);
+    setAssetId(id);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleCloseCheck = () => {
+    setOpenCheck(false);
   };
 
   const handleRequestSort = (event, property) => {
@@ -262,7 +274,6 @@ const Results = ({
                       <TableCell>{asset.barcode}</TableCell>
                       <TableCell>{asset.serial}</TableCell>
                       <TableCell>{asset.model}</TableCell>
-                      <TableCell>Danh mục</TableCell>
                       <TableCell>{asset.Supplier.name || ''}</TableCell>
                       <TableCell>{asset.Location.name || ''}</TableCell>
                       <TableCell>
@@ -272,6 +283,34 @@ const Results = ({
                       <TableCell>{statusInfo(asset.status)}</TableCell>
                       <TableCell>
                         {moment(asset.expireDate).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          style={{ backgroundColor: colors.green[300] }}
+                          onClick={() => handleClickOpenCheck(asset.id)}
+                        >
+                          Check
+                        </Button>
+                        <Dialog
+                          open={openCheck}
+                          onClose={handleCloseCheck}
+                          aria-labelledby="form-dialog-title"
+                        >
+                          <DialogTitle id="form-dialog-title">
+                            Check
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              Vui lòng điền các thông tin sau!
+                            </DialogContentText>
+                            <FormCheck
+                              id={assetId}
+                              onUpdate={onUpdate}
+                              handleClose={handleCloseCheck}
+                            />
+                          </DialogContent>
+                        </Dialog>
                       </TableCell>
                       <TableCell>
                         <IconButton
@@ -285,13 +324,13 @@ const Results = ({
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={() => handleClickOpen(asset.id)}
+                          onClick={() => handleClickOpenEdit(asset.id)}
                         >
                           <EditIcon />
                         </IconButton>
                         <Dialog
-                          open={open}
-                          onClose={handleClose}
+                          open={openEdit}
+                          onClose={handleCloseEdit}
                           maxWidth="md"
                           aria-labelledby="form-dialog-title"
                         >
@@ -308,7 +347,7 @@ const Results = ({
                                 <Form
                                   id={assetId}
                                   onUpdate={onUpdate}
-                                  handleClose={handleClose}
+                                  handleClose={handleCloseEdit}
                                 />
                               }
                               titleTwo="Lịch sử lưu trữ"

@@ -92,6 +92,7 @@ exports.update = (req, res) => {
   const id = req.params.id;
   Asset.update(req.body, {
     where: { id: id },
+    individualHooks: true,
   })
     .then((num) => {
       if (num == 1) {
@@ -313,8 +314,18 @@ exports.getSupplier = (req, res) => {
     });
 };
 
-exports.getSupplierAll = (req, res) => {
-  Asset.findAll({ include: [{ model: db.Supplier }, { model: db.Location }] })
+exports.getAssetByUser = (req, res) => {
+  const userId = req.params.userId;
+  Asset.findAll({
+    include: [
+      {
+        model: db.Location,
+        where: {
+          userId: userId,
+        },
+      },
+    ],
+  })
     .then((data) => res.send(data))
     .catch((err) => {
       res.status(500).send({

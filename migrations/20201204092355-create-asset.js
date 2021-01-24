@@ -32,6 +32,9 @@ module.exports = {
       expireDate: {
         type: Sequelize.DATE,
       },
+      checkDate: {
+        type: Sequelize.DATE,
+      },
       note: {
         type: Sequelize.STRING,
       },
@@ -65,7 +68,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       deletedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });

@@ -118,6 +118,18 @@ db.Manufacturer.hasMany(db.Accessory, {
   targetKey: "id",
 });
 
+//1:M Accessory-User
+db.Accessory.belongsTo(db.User, {
+  onDelete: "cascade",
+  foreignKey: "userId",
+  targetKey: "id",
+});
+db.User.hasMany(db.Accessory, {
+  onDelete: "cascade",
+  foreignKey: "userId",
+  targetKey: "id",
+});
+
 //1:M Supplier-Asset_history
 db.Asset_history.belongsTo(db.Supplier, {
   onDelete: "cascade",
@@ -192,6 +204,7 @@ db.Supplier.hasMany(db.License, {
 
 //Trigger Asset
 db.Asset.afterCreate((asset, options) => {
+  console.log("Create")
   db.Asset_history.create({
     assetId: asset.id,
     barcode: asset.barcode,
@@ -220,6 +233,7 @@ db.Asset.afterUpdate((asset, options) => {
     purchaseCost: asset.purchaseCost,
     status: asset.status,
     expireDate: asset.expireDate,
+    checkDate: asset.checkDate,
     note: asset.note,
     image: asset.image,
     locationId: asset.locationId,
@@ -238,6 +252,7 @@ db.Asset.afterDestroy((asset, options) => {
     purchaseCost: asset.purchaseCost,
     status: asset.status,
     expireDate: asset.expireDate,
+    checkDate: asset.checkDate,
     note: asset.note,
     image: asset.image,
     locationId: asset.locationId,

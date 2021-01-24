@@ -88,12 +88,6 @@ const items = [
     title: 'Địa điểm',
     role: 'moderator'
   },
-  {
-    href: '/app/reports',
-    icon: Assignment,
-    title: 'Báo cáo thống kê',
-    role: 'moderator',
-  }
 ];
 
 const useStyles = makeStyles(() => ({

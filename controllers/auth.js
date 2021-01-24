@@ -85,7 +85,7 @@ exports.signin = (req, res) => {
       });
 
       if (user.verify == true) {
-        console.log(user.verify)
+        console.log(user.verify);
         let authorities = [];
         user.getRoles().then((roles) => {
           for (let i = 0; i < roles.length; i++) {
@@ -182,7 +182,7 @@ exports.verifyUser = (req, res) => {
   const id = req.params.id;
 
   const userData = {
-    verify: req.body.verify
+    verify: req.body.verify,
   };
 
   User.update(userData, {

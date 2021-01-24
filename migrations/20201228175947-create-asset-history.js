@@ -41,6 +41,9 @@ module.exports = {
       expireDate: {
         type: Sequelize.DATE,
       },
+      checkDate: {
+        type: Sequelize.DATE,
+      },
       note: {
         type: Sequelize.STRING,
       },

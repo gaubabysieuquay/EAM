@@ -59,6 +59,9 @@ exports.findAll = (req, res) => {
       {
         model: db.Manufacturer,
       },
+      {
+        model: db.User,
+      },
     ],
   })
     .then((data) => {

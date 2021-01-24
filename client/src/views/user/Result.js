@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -28,6 +28,9 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import AssetService from 'src/services/asset';
+import AccessoryService from 'src/services/accessory';
+import LicenseService from 'src/services/license';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -109,6 +112,45 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
   const [open, setOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [userId, setUserId] = useState();
+  const [asset, setAsset] = useState([]);
+  const [accessory, setAccessory] = useState([]);
+  const [license, setLicense] = useState([]);
+
+  const getAssetAll = () => {
+    AssetService.getAll()
+      .then(response => {
+        setAsset(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getAccessoryAll = () => {
+    AccessoryService.getAll()
+      .then(response => {
+        setAccessory(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getLicenseAll = () => {
+    LicenseService.getAll()
+      .then(response => {
+        setLicense(response.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getAssetAll();
+    getAccessoryAll();
+    getLicenseAll();
+  }, []);
+
+  const countAsset = (array, userId) =>
+    array.filter(item => item.Location.userId === userId).length;
+
+    const count = (array, userId) =>
+    array.filter(item => item.userId === userId).length;
 
   const handleVerified = () => {
     if (isVerified == true) {
@@ -239,6 +281,8 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
                       <TableCell>{user.firstName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
+                      <TableCell>{countAsset(asset, user.id)}</TableCell>
+                      <TableCell>{count(accessory, user.id)}</TableCell>
                       <TableCell>{verifyInfo(user.verify)}</TableCell>
                       <TableCell>
                         {moment(user.createdAt).format('DD/MM/YYYY')}
