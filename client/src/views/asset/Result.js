@@ -303,6 +303,7 @@ const Results = ({
                               Vui lòng điền các thông tin sau!
                             </DialogContentText>
                             <TabDialog
+                              titleOne="Thông tin tài sản"
                               itemOne={
                                 <Form
                                   id={assetId}
@@ -310,6 +311,7 @@ const Results = ({
                                   handleClose={handleClose}
                                 />
                               }
+                              titleTwo="Lịch sử lưu trữ"
                               itemTwo={<HistoryListView id={assetId} />}
                             />
                           </DialogContent>

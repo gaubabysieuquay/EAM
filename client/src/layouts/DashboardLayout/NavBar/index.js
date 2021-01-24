@@ -22,7 +22,8 @@ import {
   BarChart,
   LocalMall,
   Business,
-  Save
+  Save,
+  Assignment,
 } from '@material-ui/icons';
 import NavItem from './NavItem';
 import AuthService from 'src/services/auth';
@@ -54,7 +55,7 @@ const items = [
   {
     href: '/app/assets',
     icon: WebAsset,
-    title: 'Quản lý cơ sở vật chất',
+    title: 'Quản lý thiết bị',
     role: ''
   },
   {
@@ -86,6 +87,12 @@ const items = [
     icon: Room,
     title: 'Địa điểm',
     role: 'moderator'
+  },
+  {
+    href: '/app/reports',
+    icon: Assignment,
+    title: 'Báo cáo thống kê',
+    role: 'moderator',
   }
 ];
 

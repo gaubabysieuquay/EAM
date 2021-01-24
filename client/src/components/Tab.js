@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SimpleTabs = ({ itemOne, itemTwo }) => {
+const SimpleTabs = ({ itemOne, itemTwo, titleOne, titleTwo }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -58,8 +58,8 @@ const SimpleTabs = ({ itemOne, itemTwo }) => {
           onChange={handleChange}
           aria-label="simple tabs example"
         >
-          <Tab label="Thông tin tài sản" {...a11yProps(0)} />
-          <Tab label="Lịch sử" {...a11yProps(1)} />
+          <Tab label={titleOne} {...a11yProps(0)} />
+          <Tab label={titleTwo} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
