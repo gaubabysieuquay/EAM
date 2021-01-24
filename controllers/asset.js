@@ -2,6 +2,7 @@ const sequelize = require("sequelize");
 const db = require("../models");
 const Asset = db.Asset;
 const Asset_history = db.Asset_history;
+const History = db.History;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -31,13 +32,6 @@ exports.create = (req, res) => {
       if (!asset) {
         Asset.create(assetData)
           .then((asset) => {
-            asset.createAsset_history({
-              assetId: req.body.id,
-              locationId: req.body.locationId,
-              supplierId: req.body.supplierId,
-              status: req.body.status,
-              expireDate: req.body.expireDate,
-            });
             res.send({ message: asset.name + " Added" });
           })
           .catch((err) => {
@@ -101,13 +95,6 @@ exports.update = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        Asset_history.create({
-          assetId: id,
-          locationId: req.body.locationId,
-          supplierId: req.body.supplierId,
-          status: req.body.status,
-          expireDate: req.body.expireDate,
-        });
         res.send({
           message: "Asset was updated successfully.",
         });
