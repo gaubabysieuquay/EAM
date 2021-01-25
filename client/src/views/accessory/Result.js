@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Box,
+  Button,
   Card,
   Checkbox,
   colors,
@@ -27,6 +28,7 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import FormCheck from './FormCheck';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -93,16 +95,26 @@ const Results = ({
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openCheck, setOpenCheck] = useState(false);
   const [accessoryId, setAccessoryId] = useState();
 
-  const handleClickOpen = id => {
-    setOpen(true);
+  const handleClickOpenEdit = id => {
+    setOpenEdit(true);
     setAccessoryId(id);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpenCheck = (id) => {
+    setOpenCheck(true);
+    setAccessoryId(id);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleCloseCheck = () => {
+    setOpenCheck(false);
   };
 
   const handleRequestSort = (event, property) => {
@@ -219,7 +231,6 @@ const Results = ({
                       <TableCell>''</TableCell>
                       <TableCell>{accessory.Manufacturer.name || ''}</TableCell>
                       <TableCell>{accessory.model}</TableCell>
-                      <TableCell>Danh mục</TableCell>
                       <TableCell>{accessory.Supplier.name || ''}</TableCell>
                       <TableCell>{accessory.Location.name || ''}</TableCell>
                       <TableCell>
@@ -227,8 +238,37 @@ const Results = ({
                       </TableCell>
                       <TableCell>{accessory.purchaseCost}</TableCell>
                       <TableCell>{accessory.quantity}</TableCell>
+                      <TableCell>{accessory.availableQTY}</TableCell>
                       <TableCell>
                         {moment(accessory.createdAt).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          style={{ backgroundColor: colors.green[300] }}
+                          onClick={() => handleClickOpenCheck(accessory.id)}
+                        >
+                          Check
+                        </Button>
+                        <Dialog
+                          open={openCheck}
+                          onClose={handleCloseCheck}
+                          aria-labelledby="form-dialog-title"
+                        >
+                          <DialogTitle id="form-dialog-title">
+                            Check
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              Vui lòng điền các thông tin sau!
+                            </DialogContentText>
+                            <FormCheck
+                              id={accessoryId}
+                              onUpdate={onUpdate}
+                              handleClose={handleCloseCheck}
+                            />
+                          </DialogContent>
+                        </Dialog>
                       </TableCell>
                       <TableCell>
                         <IconButton
@@ -242,13 +282,13 @@ const Results = ({
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={() => handleClickOpen(accessory.id)}
+                          onClick={() => handleClickOpenEdit(accessory.id)}
                         >
                           <EditIcon />
                         </IconButton>
                         <Dialog
-                          open={open}
-                          onClose={handleClose}
+                          open={openEdit}
+                          onClose={handleCloseEdit}
                           aria-labelledby="form-dialog-title"
                         >
                           <DialogTitle id="form-dialog-title">
@@ -261,7 +301,7 @@ const Results = ({
                             <Form
                               id={accessoryId}
                               onUpdate={onUpdate}
-                              handleClose={handleClose}
+                              handleClose={handleCloseEdit}
                             />
                           </DialogContent>
                         </Dialog>

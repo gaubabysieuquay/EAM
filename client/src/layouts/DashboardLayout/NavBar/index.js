@@ -22,10 +22,10 @@ import {
   BarChart,
   LocalMall,
   Business,
-  Save
+  Save,
+  Assignment,
 } from '@material-ui/icons';
 import NavItem from './NavItem';
-
 import AuthService from 'src/services/auth';
 
 const users = {
@@ -47,12 +47,6 @@ const items = [
     role: ''
   },
   {
-    href: '/app/settings',
-    icon: Settings,
-    title: 'Cài đặt',
-    role: ''
-  },
-  {
     href: '/app/users',
     icon: People,
     title: 'Người dùng',
@@ -61,7 +55,7 @@ const items = [
   {
     href: '/app/assets',
     icon: WebAsset,
-    title: 'Quản lý cơ sở vật chất',
+    title: 'Quản lý thiết bị',
     role: ''
   },
   {
@@ -93,7 +87,7 @@ const items = [
     icon: Room,
     title: 'Địa điểm',
     role: 'moderator'
-  }
+  },
 ];
 
 const useStyles = makeStyles(() => ({

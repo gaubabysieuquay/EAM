@@ -2,6 +2,7 @@ const sequelize = require("sequelize");
 const db = require("../models");
 const Asset = db.Asset;
 const Asset_history = db.Asset_history;
+const History = db.History;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -31,13 +32,6 @@ exports.create = (req, res) => {
       if (!asset) {
         Asset.create(assetData)
           .then((asset) => {
-            asset.createAsset_history({
-              assetId: req.body.id,
-              locationId: req.body.locationId,
-              supplierId: req.body.supplierId,
-              status: req.body.status,
-              expireDate: req.body.expireDate,
-            });
             res.send({ message: asset.name + " Added" });
           })
           .catch((err) => {
@@ -98,16 +92,10 @@ exports.update = (req, res) => {
   const id = req.params.id;
   Asset.update(req.body, {
     where: { id: id },
+    individualHooks: true,
   })
     .then((num) => {
       if (num == 1) {
-        Asset_history.create({
-          assetId: id,
-          locationId: req.body.locationId,
-          supplierId: req.body.supplierId,
-          status: req.body.status,
-          expireDate: req.body.expireDate,
-        });
         res.send({
           message: "Asset was updated successfully.",
         });
@@ -326,8 +314,18 @@ exports.getSupplier = (req, res) => {
     });
 };
 
-exports.getSupplierAll = (req, res) => {
-  Asset.findAll({ include: [{ model: db.Supplier }, { model: db.Location }] })
+exports.getAssetByUser = (req, res) => {
+  const userId = req.params.userId;
+  Asset.findAll({
+    include: [
+      {
+        model: db.Location,
+        where: {
+          userId: userId,
+        },
+      },
+    ],
+  })
     .then((data) => res.send(data))
     .catch((err) => {
       res.status(500).send({

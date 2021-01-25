@@ -20,8 +20,11 @@ const headCells = [
   { id: 'productKey', disablePadding: false, label: 'Key bản quyền' },
   { id: 'purchaseDate', disablePadding: false, label: 'Ngày mua' },
   { id: 'purchaseCost', disablePadding: false, label: 'Giá mua' },
+  { id: 'seat', disablePadding: false, label: 'Số lượng' },
+  { id: 'availableSeat', disablePadding: false, label: 'Còn lại' },
   { id: 'expireDate', disablePadding: false, label: 'Ngày hết hạn' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
+  { id: 'check', disablePadding: false, label: 'Check' },
   { id: '', disablePadding: false, label: 'Actions' }
 ];
 

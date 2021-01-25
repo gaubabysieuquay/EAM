@@ -19,7 +19,7 @@ const headCells = [
   { id: 'email', disablePadding: false, label: 'Email' },
   { id: 'fax', disablePadding: false, label: 'Fax' },
   { id: 'phone', disablePadding: false, label: 'SDT' },
-  { id: 'assets', disablePadding: false, label: 'Tài sản' },
+  { id: 'assets', disablePadding: false, label: 'Thiết bị' },
   { id: 'accessories', disablePadding: false, label: 'Linh kiện' },
   { id: 'licenses', disablePadding: false, label: 'Bản quyền' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },

@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     note: DataTypes.STRING
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'Supplier',
   });
   return Supplier;

@@ -19,13 +19,13 @@ const headCells = [
   { id: 'barcode', disablePadding: false, label: 'Barcode' },
   { id: 'serial', disablePadding: false, label: 'Serial' },
   { id: 'model', disablePadding: false, label: 'Model' },
-  { id: 'category', disablePadding: false, label: 'Danh mục' },
   { id: 'supplier', disablePadding: false, label: 'Nhà cung cấp' },
   { id: 'location', disablePadding: false, label: 'Địa điểm' },
   { id: 'purchaseDate', disablePadding: false, label: 'Ngày mua' },
   { id: 'purchaseCost', disablePadding: false, label: 'Giá mua' },
   { id: 'status', disablePadding: false, label: 'Tình trạng' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
+  { id: 'check', disablePadding: false, label: 'Check' },
   { id: '', disablePadding: false, label: 'Actions' }
 ];
 

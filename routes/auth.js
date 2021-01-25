@@ -35,6 +35,8 @@ module.exports = (app) => {
 
   router.put("/:id", controller.update);
 
+  router.put("/user/:id", controller.verifyUser);
+
   router.delete("/:id", controller.delete);
 
   router.delete("/", controller.deleteAll);

@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   License.init({
     name: DataTypes.STRING,
     productKey: DataTypes.STRING,
+    seat: DataTypes.INTEGER,
     purchaseDate: DataTypes.DATE,
     purchaseCost: DataTypes.INTEGER,
     expireDate: DataTypes.DATE,
@@ -40,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'License',
   });
   return License;

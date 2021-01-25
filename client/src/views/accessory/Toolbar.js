@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import Form from './FormAdd';
+import AuthService from 'src/services/auth';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -31,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 const Toolbar = ({ className, search, onChangeSearch, onAdd, ...rest }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,14 +43,25 @@ const Toolbar = ({ className, search, onChangeSearch, onAdd, ...rest }) => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes('ROLE_MODERATOR'));
+    }
+  }, []);
+
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box display="flex" justifyContent="flex-end">
         <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button>
-        <Button color="primary" variant="contained" onClick={handleClickOpen}>
-          Thêm
-        </Button>
+        {!showModeratorBoard && (
+          <Button color="primary" variant="contained" onClick={handleClickOpen}>
+            Thêm
+          </Button>
+        )}
         <Dialog
           open={open}
           onClose={handleClose}

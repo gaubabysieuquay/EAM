@@ -18,13 +18,14 @@ const headCells = [
   { id: 'image', disablePadding: false, label: 'Hình minh họa' },
   { id: 'manufacturer', disablePadding: false, label: 'Nhà sản xuất' },
   { id: 'model', disablePadding: false, label: 'Model' },
-  { id: 'category', disablePadding: false, label: 'Danh mục' },
   { id: 'supplier', disablePadding: false, label: 'Nhà cung cấp' },
   { id: 'location', disablePadding: false, label: 'Địa điểm' },
   { id: 'purchaseDate', disablePadding: false, label: 'Ngày mua' },
   { id: 'purchaseCost', disablePadding: false, label: 'Giá mua' },
-  { id: 'quantity', disablePadding: false, label: 'Số lượng' },
+  { id: 'quantity', disablePadding: false, label: ' Tổng số lượng' },
+  { id: 'availableQTY', disablePadding: false, label: 'Số lượng còn lại' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
+  { id: 'check', disablePadding: false, label: 'Check' },
   { id: '', disablePadding: false, label: 'Actions' }
 ];
 

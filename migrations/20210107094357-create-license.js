@@ -14,6 +14,9 @@ module.exports = {
       productKey: {
         type: Sequelize.STRING
       },
+      seat: {
+        type: Sequelize.INTEGER
+      },
       purchaseDate: {
         type: Sequelize.DATE
       },
@@ -43,6 +46,10 @@ module.exports = {
           model: "Manufacturers",
           key: "id",
         },
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,

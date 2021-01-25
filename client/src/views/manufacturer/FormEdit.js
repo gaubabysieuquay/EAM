@@ -8,7 +8,10 @@ import ManufacturerService from 'src/services/manufacturer';
 const schema = Yup.object().shape({
   name: Yup.string()
     .max(255)
-    .required('Nhập tên nhà sản xuất!')
+    .required('Nhập tên nhà sản xuất!'),
+  supportEmail: Yup.string()
+    .email('Email không hợp lệ!')
+    .max(255)
 });
 
 const FormEdit = ({ id, onUpdate, handleClose }) => {

@@ -18,8 +18,19 @@ module.exports = (sequelize, DataTypes) => {
       purchaseDate: DataTypes.DATE,
       purchaseCost: DataTypes.INTEGER,
       quantity: DataTypes.INTEGER,
+      availableQTY: DataTypes.INTEGER,
+      checkDate: DataTypes.DATE,
       note: DataTypes.STRING,
       image: DataTypes.STRING,
+      userId: {
+        type: DataTypes.INTEGER,
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        references: {
+          model: "User",
+          key: "id",
+        },
+      },
       manufacturerId: {
         type: DataTypes.INTEGER,
         onDelete: "cascade",
@@ -50,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true,
       modelName: "Accessory",
     }
   );

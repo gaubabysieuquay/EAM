@@ -2,13 +2,8 @@ import React from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  ListItem,
-  makeStyles
-} from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
+import { Button, ListItem, makeStyles } from '@material-ui/core';
+const useStyles = makeStyles(theme => ({
   item: {
     display: 'flex',
     paddingTop: 0,
@@ -40,13 +35,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NavItem = ({
-  className,
-  href,
-  icon: Icon,
-  title,
-  ...rest
-}) => {
+const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -61,15 +50,8 @@ const NavItem = ({
         component={RouterLink}
         to={href}
       >
-        {Icon && (
-          <Icon
-            className={classes.icon}
-            size="20"
-          />
-        )}
-        <span className={classes.title}>
-          {title}
-        </span>
+        {Icon && <Icon className={classes.icon} size="20" />}
+        <span className={classes.title}>{title}</span>
       </Button>
     </ListItem>
   );

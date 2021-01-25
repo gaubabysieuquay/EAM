@@ -7,7 +7,10 @@ import { TextField, DialogActions, Button } from '@material-ui/core';
 const schema = Yup.object().shape({
   name: Yup.string()
     .max(255)
-    .required('Nhập tên nhà sản xuất!')
+    .required('Nhập tên nhà sản xuất!'),
+  supportEmail: Yup.string()
+    .email('Email không hợp lệ!')
+    .max(255)
 });
 
 const FormAdd = ({ onAdd, handleClose }) => {
@@ -103,8 +106,6 @@ const FormAdd = ({ onAdd, handleClose }) => {
         label="Email hỗ trợ"
         margin="normal"
         variant="outlined"
-        rows={4}
-        multiline
         InputLabelProps={{
           shrink: true
         }}
