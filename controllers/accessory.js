@@ -11,6 +11,7 @@ exports.create = (req, res) => {
     purchaseDate: req.body.purchaseDate,
     purchaseCost: req.body.purchaseCost,
     quantity: req.body.quantity,
+    availableQTY: req.body.quantity,
     note: req.body.note,
     image: req.body.image,
     manufacturerId: req.body.manufacturerId,
@@ -101,6 +102,7 @@ exports.update = (req, res) => {
 
   Accessory.update(req.body, {
     where: { id: id },
+    individualHooks: true,
   })
     .then((num) => {
       if (num == 1) {

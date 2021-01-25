@@ -130,6 +130,66 @@ db.User.hasMany(db.Accessory, {
   targetKey: "id",
 });
 
+//1:M Accessory-History
+db.Accessory_history.belongsTo(db.Accessory, {
+  onDelete: "cascade",
+  foreignKey: "accessoryId",
+  targetKey: "id",
+});
+db.Accessory.hasMany(db.Accessory_history, {
+  onDelete: "cascade",
+  foreignKey: "accessoryId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-Location
+db.Accessory_history.belongsTo(db.Supplier, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Supplier.hasMany(db.Accessory_history, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-Location
+db.Accessory_history.belongsTo(db.Location, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+db.Location.hasMany(db.Accessory_history, {
+  onDelete: "cascade",
+  foreignKey: "locationId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-Manufacturer
+db.Accessory_history.belongsTo(db.Manufacturer, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+db.Manufacturer.hasMany(db.Accessory_history, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-User
+db.Accessory_history.belongsTo(db.User, {
+  onDelete: "cascade",
+  foreignKey: "userId",
+  targetKey: "id",
+});
+db.User.hasMany(db.Accessory_history, {
+  onDelete: "cascade",
+  foreignKey: "userId",
+  targetKey: "id",
+});
+
 //1:M Supplier-Asset_history
 db.Asset_history.belongsTo(db.Supplier, {
   onDelete: "cascade",
@@ -257,6 +317,61 @@ db.Asset.afterDestroy((asset, options) => {
     image: asset.image,
     locationId: asset.locationId,
     supplierId: asset.supplierId,
+  });
+});
+
+//Trigger Accessory
+db.Accessory.afterCreate((accessory, options) => {
+  console.log("Create")
+  db.Accessory_history.create({
+    accessoryId: accessory.id,
+    name: accessory.name,
+    model: accessory.model,
+    purchaseDate: accessory.purchaseDate,
+    purchaseCost: accessory.purchaseCost,
+    quantity: accessory.quantity,
+    availableQTY: accessory.availableQTY,
+    note: accessory.note,
+    image: accessory.image,
+    manufacturerId: accessory.manufacturerId,
+    supplierId: accessory.supplierId,
+    locationId: accessory.locationId,
+  });
+});
+
+db.Accessory.afterUpdate((accessory, options) => {
+  db.Accessory_history.create({
+    accessoryId: accessory.id,
+    name: accessory.name,
+    model: accessory.model,
+    purchaseDate: accessory.purchaseDate,
+    purchaseCost: accessory.purchaseCost,
+    quantity: accessory.quantity,
+    availableQTY: accessory.availableQTY,
+    note: accessory.note,
+    image: accessory.image,
+    userId: accessory.id,
+    manufacturerId: accessory.manufacturerId,
+    supplierId: accessory.supplierId,
+    locationId: accessory.locationId,
+  });
+});
+
+db.Accessory.afterDestroy((accessory, options) => {
+  db.Accessory_history.create({
+    accessoryId: accessory.id,
+    name: accessory.name,
+    model: accessory.model,
+    purchaseDate: accessory.purchaseDate,
+    purchaseCost: accessory.purchaseCost,
+    quantity: accessory.quantity,
+    availableQTY: accessory.availableQTY,
+    note: accessory.note,
+    image: accessory.image,
+    userId: accessory.id,
+    manufacturerId: accessory.manufacturerId,
+    supplierId: accessory.supplierId,
+    locationId: accessory.locationId,
   });
 });
 
