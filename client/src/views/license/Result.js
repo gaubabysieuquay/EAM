@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Box,
+  Button,
   Card,
   Checkbox,
   colors,
@@ -27,6 +28,7 @@ import moment from 'moment';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
+import FormCheck from './FormCheck';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -93,16 +95,26 @@ const Results = ({
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [open, setOpen] = useState(false);
+  const [openCheck, setOpenCheck] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [licenseId, setLicenseId] = useState();
 
-  const handleClickOpen = id => {
-    setOpen(true);
+  const handleClickOpenEdit = id => {
+    setOpenEdit(true);
     setLicenseId(id);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpenCheck = id => {
+    setOpenCheck(true);
+    setLicenseId(id);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleCloseCheck = () => {
+    setOpenCheck(false);
   };
 
   const handleRequestSort = (event, property) => {
@@ -222,11 +234,41 @@ const Results = ({
                         {moment(license.purchaseDate).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell>{license.purchaseCost}</TableCell>
+                      <TableCell>{license.seat}</TableCell>
+                      <TableCell>{license.availableSeat}</TableCell>
                       <TableCell>
                         {moment(license.expireDate).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell>
                         {moment(license.createdAt).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          style={{ backgroundColor: colors.green[300] }}
+                          onClick={() => handleClickOpenCheck(license.id)}
+                        >
+                          Check
+                        </Button>
+                        <Dialog
+                          open={openCheck}
+                          onClose={handleCloseCheck}
+                          aria-labelledby="form-dialog-title"
+                        >
+                          <DialogTitle id="form-dialog-title">
+                            Check
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              Vui lòng điền các thông tin sau!
+                            </DialogContentText>
+                            <FormCheck
+                              id={licenseId}
+                              onUpdate={onUpdate}
+                              handleClose={handleCloseCheck}
+                            />
+                          </DialogContent>
+                        </Dialog>
                       </TableCell>
                       <TableCell>
                         <IconButton
@@ -240,13 +282,13 @@ const Results = ({
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={() => handleClickOpen(license.id)}
+                          onClick={() => handleClickOpenEdit(license.id)}
                         >
                           <EditIcon />
                         </IconButton>
                         <Dialog
-                          open={open}
-                          onClose={handleClose}
+                          open={openEdit}
+                          onClose={handleCloseEdit}
                           aria-labelledby="form-dialog-title"
                         >
                           <DialogTitle id="form-dialog-title">
@@ -259,7 +301,7 @@ const Results = ({
                             <Form
                               id={licenseId}
                               onUpdate={onUpdate}
-                              handleClose={handleClose}
+                              handleClose={handleCloseEdit}
                             />
                           </DialogContent>
                         </Dialog>

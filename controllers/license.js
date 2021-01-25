@@ -7,6 +7,8 @@ exports.create = (req, res) => {
   const today = new Date();
   const licenseData = {
     name: req.body.name,
+    seat: req.body.seat,
+    availableSeat: req.body.seat,
     productKey: req.body.productKey,
     purchaseDate: req.body.purchaseDate,
     purchaseCost: req.body.purchaseCost,
@@ -22,6 +24,7 @@ exports.create = (req, res) => {
     where: {
       name: req.body.name,
     },
+    individualHooks: true,
   })
     .then((license) => {
       if (!license) {

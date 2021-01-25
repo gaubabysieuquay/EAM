@@ -22,6 +22,7 @@ require("./routes/accessory")(app);
 require("./routes/license")(app);
 require("./routes/asset_history")(app);
 require("./routes/accessory_history")(app);
+require("./routes/license_history")(app);
 
 
 app.listen(port, () => {

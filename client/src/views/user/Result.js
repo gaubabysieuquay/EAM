@@ -29,7 +29,7 @@ import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
 import AssetService from 'src/services/asset';
-import AccessoryService from 'src/services/accessory';
+import AccessoryHistoryService from 'src/services/accessory_history';
 import LicenseService from 'src/services/license';
 
 function descendingComparator(a, b, orderBy) {
@@ -125,9 +125,10 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
   };
 
   const getAccessoryAll = () => {
-    AccessoryService.getAll()
+    AccessoryHistoryService.getAll()
       .then(response => {
         setAccessory(response.data);
+        console.log(response.data);
       })
       .catch(err => console.log(err));
   };
@@ -149,7 +150,7 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
   const countAsset = (array, userId) =>
     array.filter(item => item.Location.userId === userId).length;
 
-    const count = (array, userId) =>
+  const count = (array, userId) =>
     array.filter(item => item.userId === userId).length;
 
   const handleVerified = () => {
@@ -159,7 +160,7 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
     } else {
       setIsVerified(true);
       return isVerified;
-    };
+    }
   };
 
   const handleClickOpen = id => {

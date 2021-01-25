@@ -233,7 +233,7 @@ db.Location.belongsTo(db.User, {
   targetKey: "id",
 });
 db.User.hasMany(db.Location, {
-  onDelete: "cascade",  
+  onDelete: "cascade",
   foreignKey: "userId",
   targetKey: "id",
 });
@@ -262,9 +262,57 @@ db.Supplier.hasMany(db.License, {
   targetKey: "id",
 });
 
+//1:M Accessory-History
+db.License_history.belongsTo(db.License, {
+  onDelete: "cascade",
+  foreignKey: "licenseId",
+  targetKey: "id",
+});
+db.License.hasMany(db.License_history, {
+  onDelete: "cascade",
+  foreignKey: "licenseId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-Location
+db.License_history.belongsTo(db.Supplier, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+db.Supplier.hasMany(db.License_history, {
+  onDelete: "cascade",
+  foreignKey: "supplierId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-Manufacturer
+db.License_history.belongsTo(db.Manufacturer, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+db.Manufacturer.hasMany(db.License_history, {
+  onDelete: "cascade",
+  foreignKey: "manufacturerId",
+  targetKey: "id",
+});
+
+//1:M Accessory_history-User
+db.License_history.belongsTo(db.User, {
+  onDelete: "cascade",
+  foreignKey: "userId",
+  targetKey: "id",
+});
+db.User.hasMany(db.License_history, {
+  onDelete: "cascade",
+  foreignKey: "userId",
+  targetKey: "id",
+});
+
 //Trigger Asset
 db.Asset.afterCreate((asset, options) => {
-  console.log("Create")
+  console.log("Create");
   db.Asset_history.create({
     assetId: asset.id,
     barcode: asset.barcode,
@@ -322,7 +370,7 @@ db.Asset.afterDestroy((asset, options) => {
 
 //Trigger Accessory
 db.Accessory.afterCreate((accessory, options) => {
-  console.log("Create")
+  console.log("Create");
   db.Accessory_history.create({
     accessoryId: accessory.id,
     name: accessory.name,
@@ -350,7 +398,7 @@ db.Accessory.afterUpdate((accessory, options) => {
     availableQTY: accessory.availableQTY,
     note: accessory.note,
     image: accessory.image,
-    userId: accessory.id,
+    userId: accessory.userId,
     manufacturerId: accessory.manufacturerId,
     supplierId: accessory.supplierId,
     locationId: accessory.locationId,
@@ -368,10 +416,58 @@ db.Accessory.afterDestroy((accessory, options) => {
     availableQTY: accessory.availableQTY,
     note: accessory.note,
     image: accessory.image,
-    userId: accessory.id,
+    userId: accessory.userId,
     manufacturerId: accessory.manufacturerId,
     supplierId: accessory.supplierId,
     locationId: accessory.locationId,
+  });
+});
+
+//Trigger License
+db.License.afterCreate((license, options) => {
+  console.log("Create");
+  db.License_history.create({
+    licenseId: license.id,
+    name: license.name,
+    seat: license.seat,
+    purchaseDate: license.purchaseDate,
+    purchaseCost: license.purchaseCost,
+    expireDate: license.expireDate,
+    note: license.note,
+    manufacturerId: license.manufacturerId,
+    supplierId: license.supplierId,
+  });
+});
+
+db.License.afterUpdate((license, options) => {
+  db.License_history.create({
+    licenseId: license.id,
+    name: license.name,
+    seat: license.seat,
+    availableSeat: license.availableSeat,
+    purchaseDate: license.purchaseDate,
+    purchaseCost: license.purchaseCost,
+    expireDate: license.expireDate,
+    note: license.note,
+    userId: license.userId,
+    manufacturerId: license.manufacturerId,
+    supplierId: license.supplierId,
+  });
+});
+
+db.License.afterDestroy((license, options) => {
+  db.License_history.create({
+    licenseId: license.id,
+    name: license.name,
+    seat: license.seat,
+    availableSeat: license.availableSeat,
+    purchaseDate: license.purchaseDate,
+    purchaseCost: license.purchaseCost,
+    expireDate: license.expireDate,
+    note: license.note,
+    userId: license.userId,
+    manufacturerId: license.manufacturerId,
+    supplierId: license.supplierId,
   });
 });
 
