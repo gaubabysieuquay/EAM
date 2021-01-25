@@ -15,7 +15,6 @@ const headCells = [
     disablePadding: true,
     label: 'Tên'
   },
-  { id: 'image', disablePadding: false, label: 'Hình minh họa' },
   { id: 'address', disablePadding: false, label: 'Địa chỉ' },
   { id: 'assets', disablePadding: false, label: 'Tài sản' },
   { id: 'city', disablePadding: false, label: 'Thành phố' },

@@ -49,7 +49,11 @@ const LicenseListView = props => {
   return (
     <Page className={classes.root} title="Lưu trữ bản quyền phần mềm">
       <Container maxWidth={false}>
-        <Toolbar search={search} onChangeSearch={onChangeSearch} />
+        <Toolbar
+          search={search}
+          onChangeSearch={onChangeSearch}
+          data={license}
+        />
         <Box mt={3}>
           <Results licenses={license} />
         </Box>

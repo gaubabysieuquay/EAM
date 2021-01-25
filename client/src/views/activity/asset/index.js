@@ -53,7 +53,7 @@ const AssetListView = props => {
   return (
     <Page className={classes.root} title="Lưu trữ thiết bị">
       <Container maxWidth={false}>
-        <Toolbar search={search} onChangeSearch={onChangeSearch} />
+        <Toolbar search={search} onChangeSearch={onChangeSearch} data={asset} />
         <Box mt={3}>
           <Results assets={asset} />
         </Box>

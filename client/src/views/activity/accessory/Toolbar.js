@@ -12,6 +12,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
+import { CSVLink } from 'react-csv';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -23,15 +24,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Toolbar = ({ className, search, onChangeSearch, ...rest }) => {
+const Toolbar = ({
+  className,
+  search,
+  onChangeSearch,
+  data,
+  ...rest
+}) => {
   const classes = useStyles();
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box display="flex" justifyContent="flex-end">
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        <Button className={classes.exportButton}>
+          <CSVLink data={data} filename="data.csv">
+            Xuất
+          </CSVLink>
+        </Button>
       </Box>
       <Box mt={3}>
         <Card>
