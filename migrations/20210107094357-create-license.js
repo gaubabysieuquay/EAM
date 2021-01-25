@@ -17,6 +17,9 @@ module.exports = {
       seat: {
         type: Sequelize.INTEGER
       },
+      availableSeat: {
+        type: Sequelize.INTEGER
+      },
       purchaseDate: {
         type: Sequelize.DATE
       },

@@ -9,10 +9,6 @@ import {
   TextField,
   InputAdornment,
   SvgIcon,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
@@ -29,15 +25,6 @@ const useStyles = makeStyles(theme => ({
 
 const Toolbar = ({ className, search, onChangeSearch, ...rest }) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>

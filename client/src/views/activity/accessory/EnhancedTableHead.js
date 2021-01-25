@@ -5,14 +5,13 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
-  Checkbox
 } from '@material-ui/core';
 
 const headCells = [
   {
     id: 'name',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Tên'
   },
   { id: 'manufacturer', disablePadding: false, label: 'Nhà sản xuất' },
@@ -24,18 +23,13 @@ const headCells = [
   { id: 'quantity', disablePadding: false, label: ' Tổng số lượng' },
   { id: 'availableQTY', disablePadding: false, label: 'Số lượng còn lại' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
-  { id: 'check', disablePadding: false, label: 'Check' },
-  { id: '', disablePadding: false, label: 'Actions' }
 ];
 
 const EnhancedTableHead = (props) => {
   const {
     classes,
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort
   } = props;
   const createSortHandler = property => event => {
@@ -45,14 +39,6 @@ const EnhancedTableHead = (props) => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all accessories' }}
-          />
-        </TableCell>
         {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
@@ -81,12 +67,9 @@ const EnhancedTableHead = (props) => {
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired
 };
 
 export default EnhancedTableHead;

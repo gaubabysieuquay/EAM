@@ -10,7 +10,7 @@ exports.findAll = (req, res) => {
         model: db.Supplier,
       },
       {
-        model: db.Location,
+        model: db.Manufacturer,
       },
       {
         model: db.License,
@@ -38,7 +38,7 @@ exports.findOne = (req, res) => {
         model: db.Supplier,
       },
       {
-        model: db.Location,
+        model: db.Manufacturer,
       },
       {
         model: db.License,

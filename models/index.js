@@ -430,6 +430,7 @@ db.License.afterCreate((license, options) => {
     licenseId: license.id,
     name: license.name,
     seat: license.seat,
+    availableSeat: license.availableSeat,
     purchaseDate: license.purchaseDate,
     purchaseCost: license.purchaseCost,
     expireDate: license.expireDate,

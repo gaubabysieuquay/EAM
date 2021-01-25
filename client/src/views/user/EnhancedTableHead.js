@@ -20,6 +20,7 @@ const headCells = [
   { id: 'phone', disablePadding: false, label: 'Phone' },
   { id: 'asset', disablePadding: false, label: 'Thiết bị' },
   { id: 'accessory', disablePadding: false, label: 'Linh kiện' },
+  { id: 'license', disablePadding: false, label: 'Bản quyền' },
   { id: 'verify', disablePadding: false, label: 'Tình trạng truy cập' },
   { id: 'createAt', disablePadding: false, label: 'Ngày nhập' },
   { id: '', disablePadding: false, label: 'Actions' }
