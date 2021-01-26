@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Button, ListItem, makeStyles } from '@material-ui/core';
+import {
+  Button,
+  ListItem,
+  Collapse,
+  List,
+  makeStyles
+} from '@material-ui/core';
+import { ExpandMore, ExpandLess } from '@material-ui/icons';
 const useStyles = makeStyles(theme => ({
   item: {
     display: 'flex',
@@ -35,25 +42,60 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
+const NavItem = ({
+  className,
+  href,
+  icon: Icon,
+  title,
+  expand,
+  reportItems,
+  ...rest
+}) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   return (
-    <ListItem
-      className={clsx(classes.item, className)}
-      disableGutters
-      {...rest}
-    >
-      <Button
-        activeClassName={classes.active}
-        className={classes.button}
-        component={RouterLink}
-        to={href}
+    <div>
+      <ListItem
+        className={clsx(classes.item, className)}
+        disableGutters
+        onClick={handleClick}
+        {...rest}
       >
-        {Icon && <Icon className={classes.icon} size="20" />}
-        <span className={classes.title}>{title}</span>
-      </Button>
-    </ListItem>
+        <Button
+          activeClassName={classes.active}
+          className={classes.button}
+          component={RouterLink}
+          to={href}
+        >
+          {Icon && <Icon className={classes.icon} size="20" />}
+          <span className={classes.title}>{title}</span>
+        </Button>
+        {expand === true && (open ? <ExpandLess /> : <ExpandMore />)}
+      </ListItem>
+      {expand === true && (
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {reportItems.map((items, i) => (
+              <ListItem className={clsx(classes.item, className)} key={i}>
+                <Button
+                  activeClassName={classes.active}
+                  className={classes.button}
+                  component={RouterLink}
+                  to={items.href}
+                >
+                  <span className={classes.title}>{items.title}</span>
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
+      )}
+    </div>
   );
 };
 

@@ -30,7 +30,7 @@ import AuthService from 'src/services/auth';
 
 const users = {
   avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Junior Developer',
+  jobTitle: 'Junior Developer'
 };
 
 const items = [
@@ -87,6 +87,28 @@ const items = [
     icon: Room,
     title: 'Địa điểm',
     role: 'moderator'
+  },
+  {
+    href: '/app/reports',
+    icon: Assignment,
+    title: 'Báo cáo',
+    role: 'moderator',
+    expand: true
+  }
+];
+
+const reportItems = [
+  {
+    href: '/app/reports/assets',
+    title: 'Lưu trữ thiết bị',
+  },
+  {
+    href: '/app/reports/accessories',
+    title: 'Lưu trữ linh kiện',
+  },
+  {
+    href: '/app/reports/licenses',
+    title: 'Lưu trữ bản quyền',
   },
 ];
 
@@ -159,6 +181,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                 key={item.title}
                 title={item.title}
                 icon={item.icon}
+                expand={item.expand}
               />
             ))}
           {showModeratorBoard &&
@@ -170,6 +193,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                   key={item.title}
                   title={item.title}
                   icon={item.icon}
+                  expand={item.expand}
+                  reportItems={reportItems}
                 />
               ))}
         </List>

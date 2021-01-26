@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
-import LicenseService from 'src/services/license_history';
+import AccessoryService from 'src/services/accessory_history';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,17 +15,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LicenseListView = props => {
+const AccessoryListView = props => {
   const classes = useStyles();
-  const [license, setLicense] = useState([]);
-  const [licenseSearch, setLicenseSearch] = useState([]);
+  const [accessory, setAccessory] = useState([]);
+  const [accessorySearch, setAccessorySearch] = useState([]);
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
-  const getLicenseAll = () => {
-    LicenseService.getAll()
+  const getAccessoryAll = () => {
+    AccessoryService.getAll()
       .then(response => {
-        setLicense(response.data);
-        setLicenseSearch(response.data);
+        setAccessory(response.data);
+        setAccessorySearch(response.data);
       })
       .catch(err => console.log(err));
   };
@@ -32,9 +34,9 @@ const LicenseListView = props => {
   const onChangeSearch = e => {
     const search = e.target.value;
     setSearch(search);
-    LicenseService.getAllByName(search)
+    AccessoryService.getAllByName(search)
       .then(response => {
-        setLicense(response.data);
+        setAccessory(response.data);
         console.log(response.data);
       })
       .catch(err => {
@@ -43,23 +45,23 @@ const LicenseListView = props => {
   };
 
   useEffect(() => {
-    getLicenseAll();
+    getAccessoryAll();
   }, []);
 
   return (
-    <Page className={classes.root} title="Lưu trữ bản quyền phần mềm">
+    <Page className={classes.root} title="Lưu trữ thiết bị">
       <Container maxWidth={false}>
         <Toolbar
           search={search}
           onChangeSearch={onChangeSearch}
-          data={license}
+          data={accessory}
         />
         <Box mt={3}>
-          <Results licenses={license} />
+          <Results accessories={accessory} />
         </Box>
       </Container>
     </Page>
   );
 };
 
-export default LicenseListView;
+export default AccessoryListView;

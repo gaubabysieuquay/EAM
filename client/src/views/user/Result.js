@@ -30,7 +30,7 @@ import EnhancedTableToolbar from './EnhancedTableToolbar';
 import Form from './FormEdit';
 import AssetService from 'src/services/asset';
 import AccessoryHistoryService from 'src/services/accessory_history';
-import LicenseService from 'src/services/license';
+import LicenseHistoryService from 'src/services/license_history';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -134,7 +134,7 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
   };
 
   const getLicenseAll = () => {
-    LicenseService.getAll()
+    LicenseHistoryService.getAll()
       .then(response => {
         setLicense(response.data);
       })
@@ -154,7 +154,7 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
     array.filter(item => item.userId === userId).length;
 
   const handleVerified = () => {
-    if (isVerified == true) {
+    if (isVerified === true) {
       setIsVerified(false);
       return isVerified;
     } else {
@@ -282,8 +282,9 @@ const Results = ({ className, users, onUpdate, verifyUser, ...rest }) => {
                       <TableCell>{user.firstName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
-                      <TableCell>{countAsset(asset, user.id)}</TableCell>
-                      <TableCell>{count(accessory, user.id)}</TableCell>
+                      <TableCell>{countAsset(asset, user.id) || 0}</TableCell>
+                      <TableCell>{count(accessory, user.id) || 0}</TableCell>
+                      <TableCell>{count(license, user.id) || 0}</TableCell>
                       <TableCell>{verifyInfo(user.verify)}</TableCell>
                       <TableCell>
                         {moment(user.createdAt).format('DD/MM/YYYY')}

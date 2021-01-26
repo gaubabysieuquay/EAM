@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import Results from './Result';
 import Toolbar from './Toolbar';
-import LicenseService from 'src/services/license_history';
+import AssetService from 'src/services/asset_history';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,17 +15,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LicenseListView = props => {
+const AssetListView = props => {
   const classes = useStyles();
-  const [license, setLicense] = useState([]);
-  const [licenseSearch, setLicenseSearch] = useState([]);
+  const [asset, setAsset] = useState([]);
+  const [assetSearch, setAssetSearch] = useState([]);
   const [search, setSearch] = useState('');
+  const [array, setArray] = useState([]);
+  const navigate = useNavigate();
 
-  const getLicenseAll = () => {
-    LicenseService.getAll()
+  const getAssetAll = () => {
+    AssetService.getAll()
       .then(response => {
-        setLicense(response.data);
-        setLicenseSearch(response.data);
+        setAsset(response.data);
+        setAssetSearch(response.data);
+        setArray(response.data);
       })
       .catch(err => console.log(err));
   };
@@ -32,9 +36,9 @@ const LicenseListView = props => {
   const onChangeSearch = e => {
     const search = e.target.value;
     setSearch(search);
-    LicenseService.getAllByName(search)
+    AssetService.getAllByName(search)
       .then(response => {
-        setLicense(response.data);
+        setAsset(response.data);
         console.log(response.data);
       })
       .catch(err => {
@@ -43,23 +47,19 @@ const LicenseListView = props => {
   };
 
   useEffect(() => {
-    getLicenseAll();
+    getAssetAll();
   }, []);
 
   return (
-    <Page className={classes.root} title="Lưu trữ bản quyền phần mềm">
+    <Page className={classes.root} title="Lưu trữ thiết bị">
       <Container maxWidth={false}>
-        <Toolbar
-          search={search}
-          onChangeSearch={onChangeSearch}
-          data={license}
-        />
+        <Toolbar search={search} onChangeSearch={onChangeSearch} data={asset} />
         <Box mt={3}>
-          <Results licenses={license} />
+          <Results assets={asset} />
         </Box>
       </Container>
     </Page>
   );
 };
 
-export default LicenseListView;
+export default AssetListView;

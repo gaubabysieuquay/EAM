@@ -17,7 +17,9 @@ import SupplierView from 'src/views/supplier';
 import LocationView from 'src/views/location';
 import ManufacturerView from 'src/views/manufacturer';
 import LicenseView from 'src/views/license';
-import ActivityView from 'src/views/activity'
+import ReportLicenseView from 'src/views/activity/license';
+import ReportAssetView from 'src/views/activity/asset';
+import ReportAccessoryView from 'src/views/activity/accessory';
 
 const routes = isLoggedIn => [
   {
@@ -36,7 +38,9 @@ const routes = isLoggedIn => [
       { path: 'locations', element: <LocationView /> },
       { path: 'manufacturers', element: <ManufacturerView /> },
       { path: 'licenses', element: <LicenseView /> },
-      { path: 'reports', element: <ActivityView /> },
+      { path: 'reports/licenses', element: <ReportLicenseView /> },
+      { path: 'reports/assets', element: <ReportAssetView /> },
+      { path: 'reports/accessories', element: <ReportAccessoryView /> },
       { path: '*', element: <Navigate to="/404" /> },
       { path: '/', element: <Navigate to="/app/dashboard" /> }
     ]

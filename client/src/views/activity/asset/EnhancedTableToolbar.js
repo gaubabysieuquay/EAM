@@ -1,16 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Toolbar,
-  Tooltip,
   Typography,
-  IconButton,
   makeStyles,
   lighten
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 
 const useToolbarStyles = makeStyles(theme => ({
   root: {
@@ -43,7 +38,7 @@ const EnhancedTableToolbar = props => {
         id="tableTitle"
         component="div"
       >
-        Danh sách báo cáo bản quyền
+        Danh sách thiết bị
       </Typography>
     </Toolbar>
   );
